@@ -4,7 +4,9 @@ import { purple } from '@mui/material/colors';
 import React, { Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+
 import AdminFeature from './features/admin';
+import AuthFeature from './features/auth';
 
 const theme = createTheme({
   palette: {
@@ -12,13 +14,6 @@ const theme = createTheme({
       main: '#34495e',
     },
     secondary: purple,
-  },
-  typography: {
-    fontFamily: 'Quicksand',
-    fontWeightLight: 400,
-    fontWeightRegular: 500,
-    fontWeightMedium: 600,
-    fontWeightBold: 700,
   },
 });
 
@@ -29,6 +24,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <BrowserRouter>
             <Routes>
+              <Route path="/auth/*" element={<AuthFeature />} />
               <Route path="/*" element={<AdminFeature />} />
             </Routes>
           </BrowserRouter>
