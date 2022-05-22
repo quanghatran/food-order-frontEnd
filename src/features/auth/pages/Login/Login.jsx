@@ -29,16 +29,18 @@ export default function Login() {
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div className="loginPaper">
-            <img className="loginLogoApp" src={logoFoodApp} alt="logo_app" />
+            <Link to="/">
+              <img className="loginLogoApp" src={logoFoodApp} alt="logo_app" />
+            </Link>
             <Typography component="h1" variant="h3" className="titleLogin">
               Food Order
             </Typography>
             <Typography component="h3" variant="h5" className="subtitleLogin">
-              Đăng Nhập
+              Login Page
             </Typography>
             <form className="loginForm" autoComplete="off" onSubmit={handleLogin}>
               <TextField
-                label="Số điện thoại"
+                label="Phone Number"
                 color="primary"
                 validate="true"
                 type="number"
@@ -50,7 +52,7 @@ export default function Login() {
                 required
               />
               <TextField
-                label="Mật khẩu"
+                label="Password"
                 variant="outlined"
                 color="primary"
                 validate="true"
@@ -67,13 +69,13 @@ export default function Login() {
                   severity="error"
                   style={{ marginTop: '1rem', justifyContent: 'center' }}
                 >
-                  Tài khoản hoặc mật khẩu không chính xác
+                  Account or password is not correct!
                 </Alert>
               )}
               <Box className="loginLinkNav">
-                <Link to="/auth/register">Chưa có tài khoản?</Link>
+                <Link to="/auth/register">Don`t have account?</Link>
 
-                <Link to="/auth/forgot-password">Quên mật khẩu</Link>
+                <Link to="/auth/forgot-password">Forgot password</Link>
               </Box>
               <Button
                 variant="contained"
@@ -83,7 +85,7 @@ export default function Login() {
                 fullWidth
                 className="loginButton"
               >
-                Đăng Nhập
+                Login
               </Button>
             </form>
           </div>

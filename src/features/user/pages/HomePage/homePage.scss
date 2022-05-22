@@ -1,0 +1,42 @@
+.homePageWrapper {
+  // background: rgb(238, 238, 238);
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
+
+  .homePageBanner {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    text-align: center;
+  }
+
+  .homePageMainContent {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+
+    .homePageFilter {
+      flex: 1;
+      border-radius: 15px;
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+      align-self: flex-start;
+      position: sticky;
+      top: 20px;
+    }
+
+    .homePageProductsWrapper {
+      flex: 3;
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+    }
+  }
+
+  .titleCurve {
+    text-transform: capitalize;
+    margin-bottom: 20px;
+    font-size: 25px;
+    font-weight: 600;
+    color: #333;
+  }
+}

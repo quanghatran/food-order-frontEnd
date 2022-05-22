@@ -1,0 +1,67 @@
+.footerWrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 100px;
+  margin-top: 100px;
+  padding-bottom: 40px;
+
+  h3 {
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    line-height: 30px;
+  }
+
+  p {
+    font-size: 18px;
+    color: rgb(136, 136, 136);
+    font-weight: 400;
+    margin: 0;
+    margin-top: 10px;
+    line-height: 27px;
+  }
+
+  .footerContact {
+    flex: 1;
+    .footerContactItem {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 20px;
+
+      svg {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+
+  .footerDetail {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+
+    .footerNameApp {
+      font-size: 50px;
+      font-family: 'Pacifico', cursive;
+      margin-bottom: 30px;
+      color: #53d1b0;
+    }
+
+    .footerSocialMedia {
+      margin-top: 30px;
+      display: flex;
+    }
+
+    i {
+      margin-right: 40px;
+      font-size: 40px;
+    }
+
+    i:hover {
+      color: rgb(136, 136, 136);
+    }
+  }
+}

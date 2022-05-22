@@ -4,9 +4,10 @@ import { purple } from '@mui/material/colors';
 import React, { Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-
 import AdminFeature from './features/admin';
 import AuthFeature from './features/auth';
+import StoreFeature from './features/store';
+import UserFeature from './features/user';
 
 const theme = createTheme({
   palette: {
@@ -25,7 +26,9 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/auth/*" element={<AuthFeature />} />
-              <Route path="/*" element={<AdminFeature />} />
+              <Route path="/*" element={<UserFeature />} />
+              <Route path="/store/*" element={<StoreFeature />} />
+              <Route path="/admin/*" element={<AdminFeature />} />
             </Routes>
           </BrowserRouter>
         </ThemeProvider>

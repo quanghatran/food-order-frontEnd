@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
 .App-logo {
@@ -36,4 +38,18 @@
   100% {
     transform: translateY(0px);
   }
+}
+
+.paddingLeftRight {
+  padding-left: 200px;
+  padding-right: 200px;
+}
+
+.marginLeftRight {
+  margin-left: 200px;
+  margin-right: 200px;
+}
+
+.textDecorationNone {
+  text-decoration: none;
 }

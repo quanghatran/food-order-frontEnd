@@ -1,0 +1,9 @@
+.adminFeatureWrapper {
+  display: flex;
+  background-color: #f5f7fa;
+  // flex-grow: 2;
+  .adminContentWrapper {
+    margin-top: 5rem;
+    flex-grow: 1;
+  }
+}

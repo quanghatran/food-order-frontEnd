@@ -6,6 +6,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 import { ToastContainer } from 'react-toastify';
+import 'swiper/css/bundle';
 
 const container = document.getElementById('root');
 const root = createRoot(container);

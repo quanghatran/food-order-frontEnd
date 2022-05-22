@@ -31,16 +31,19 @@ export default function Register() {
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div className="registerPaper">
-            <img className="registerLogoApp" src={logoFoodApp} alt="logo_app" />
+            <Link to="/">
+              <img className="registerLogoApp" src={logoFoodApp} alt="logo_app" />
+            </Link>
+
             <Typography component="h1" variant="h3" className="titleRegister">
               Food Order
             </Typography>
             <Typography component="h3" variant="h5" className="subtitleRegister">
-              Đăng Ký
+              Register
             </Typography>
             <form className="registerForm" autoComplete="off" onSubmit={handleRegister}>
               <TextField
-                label="Số điện thoại"
+                label="Phone Number"
                 color="primary"
                 validate="true"
                 type="number"
@@ -52,7 +55,7 @@ export default function Register() {
                 required
               />
               <TextField
-                label="Mật khẩu"
+                label="Password"
                 variant="outlined"
                 color="primary"
                 validate="true"
@@ -64,7 +67,7 @@ export default function Register() {
                 autoComplete="current-password"
               />
               <TextField
-                label="Nhập lại mật khẩu"
+                label="Retype Password"
                 variant="outlined"
                 color="primary"
                 validate="true"
@@ -75,7 +78,7 @@ export default function Register() {
                 required
                 autoComplete="current-password"
               />
-              {signInError && (
+              {/* {signInError && (
                 <Alert
                   variant="filled"
                   severity="error"
@@ -83,9 +86,9 @@ export default function Register() {
                 >
                   Tài khoản hoặc mật khẩu không chính xác
                 </Alert>
-              )}
+              )} */}
               <Box className="registerLinkNav">
-                <Link to="/auth/login">Đã có tài khoản?</Link>
+                <Link to="/auth/login">Already have a account?</Link>
 
                 {/* <Link to="/forgot-password">Quên mật khẩu</Link> */}
               </Box>
@@ -97,7 +100,7 @@ export default function Register() {
                 fullWidth
                 className="registerButton"
               >
-                Đăng ký
+                Register
               </Button>
             </form>
           </div>
