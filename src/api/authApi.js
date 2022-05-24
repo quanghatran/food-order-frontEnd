@@ -1,10 +1,12 @@
+import { POST_LOGIN } from '../constants/subUrl';
 import axiosClient from './axiosClient';
 
 const authApi = {
   postLogin: (params) => {
-    const url = '/login';
+    const url = POST_LOGIN;
     return axiosClient.post(url, params);
   },
+
   // postAddCoacher: (params) => {
   // 	const url = "/api/admin/add-coacher";
   // 	return axiosAdmin.post(url, params);

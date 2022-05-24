@@ -1,26 +1,48 @@
+import { LoadingButton } from '@mui/lab';
 import { Alert, Button, Container, CssBaseline, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { unwrapResult } from '@reduxjs/toolkit';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import logoFoodApp from '../../../../assets/images/common/logo_food_order.png';
+import { postAuthLogin } from '../../authSlice';
 import './login.scss';
 
 export default function Login() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
-  const [signInError, setSignInError] = useState(false);
+  const loading = useSelector((state) => state.auth.loading);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-
-    // TODO: fetch call api to login, save jwt into local storage, display toastify, redirect to previous page,...
 
     const dataLogin = {
       phoneNumber,
       password,
     };
 
-    console.log('data login: ', dataLogin);
+    console.log(dataLogin);
+
+    if (dataLogin) {
+      const fetchLogin = async () => {
+        try {
+          const result = await dispatch(postAuthLogin(dataLogin));
+
+          unwrapResult(result);
+          toast.success('Create User Success');
+          // navigate('/admin/user');
+        } catch (error) {
+          toast.error(`Login Failed`);
+        }
+      };
+
+      fetchLogin();
+    }
   };
 
   return (
@@ -63,21 +85,16 @@ export default function Login() {
                 required
                 autoComplete="current-password"
               />
-              {signInError && (
-                <Alert
-                  variant="filled"
-                  severity="error"
-                  style={{ marginTop: '1rem', justifyContent: 'center' }}
-                >
-                  Account or password is not correct!
-                </Alert>
-              )}
+
               <Box className="loginLinkNav">
                 <Link to="/auth/register">Don`t have account?</Link>
 
                 <Link to="/auth/forgot-password">Forgot password</Link>
               </Box>
-              <Button
+
+              <LoadingButton
+                loading={loading}
+                loadingPosition="end"
                 variant="contained"
                 color="primary"
                 size="large"
@@ -86,7 +103,7 @@ export default function Login() {
                 className="loginButton"
               >
                 Login
-              </Button>
+              </LoadingButton>
             </form>
           </div>
         </Container>

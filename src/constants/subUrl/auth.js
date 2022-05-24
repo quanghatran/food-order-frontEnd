@@ -1,0 +1,9 @@
+export const POST_USER_REGISTER = '/api/v1/auth/user/register';
+export const POST_STORE_REGISTER = '/api/v1/auth/store/register';
+export const POST_REACTIVE = '/api/v1/auth/reactive';
+export const POST_FORGOT_PASSWORD = '/api/v1/auth/forgot-password';
+export const GET_USER_VERIFY = '/api/v1/auth/user/verify';
+export const GET_STORE_VERIFY = '/api/v1/auth/store/verify';
+export const GET_USER_RESETPASSWORD = '/api/v1/auth/user/reset-password';
+export const GET_STORE_RESETPASSWORD = '/api/v1/auth/store/reset-password';
+export const POST_LOGIN = '/api/v1/auth/login';

@@ -3,6 +3,7 @@ import authApi from '../../api/authApi';
 
 export const postAuthLogin = createAsyncThunk('auth/postAuthLogin', async (params) => {
   const response = await authApi.postLogin(params);
+  console.log(response);
   return response;
 });
 
@@ -21,6 +22,7 @@ const authSlice = createSlice({
       state.loading = true;
     },
     [postAuthLogin.fulfilled]: (state, action) => {
+      console.log(action.payload);
       state.error = '';
       state.loading = false;
       state.current = action.payload;
