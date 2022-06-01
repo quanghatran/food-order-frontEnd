@@ -113,7 +113,7 @@ export default function NavigationAdmin(props) {
           </Typography>
         </Link>
         <p className="barge">
-          <span style={{ textTransform: 'uppercase' }}>{userInfo.role}</span>
+          <span style={{ textTransform: 'uppercase' }}>{user.role}</span>
         </p>
       </Toolbar>
       <Divider />

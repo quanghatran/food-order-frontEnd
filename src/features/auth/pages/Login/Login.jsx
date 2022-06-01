@@ -2,10 +2,11 @@ import { LoadingButton } from '@mui/lab';
 import { Container, CssBaseline, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import authApi from '../../../../api/authApi';
 import logoFoodApp from '../../../../assets/images/common/logo_food_order.png';
 import { getUserInfo } from '../../../user/userSlice';
 import { postAuthLogin } from '../../authSlice';
@@ -15,6 +16,7 @@ export default function Login() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const loading = useSelector((state) => state.auth.loading);
+  // const [errorMessage, setErrorMessage] = useState(null);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,6 +30,7 @@ export default function Login() {
     };
 
     if (dataLogin) {
+      localStorage.removeItem('verifyToken');
       const fetchLogin = async () => {
         try {
           const result = await dispatch(postAuthLogin(dataLogin));
@@ -50,6 +53,9 @@ export default function Login() {
           }
         } catch (error) {
           // console.log(error);
+          // setErrorMessage(error.message);
+          navigate('/auth/verify');
+
           toast.error(error.message);
         }
       };
@@ -57,6 +63,10 @@ export default function Login() {
       fetchLogin();
     }
   };
+
+  // if (errorMessage === 'User is not verify') {
+  //   navigate('/auth/verify');
+  // }
 
   return (
     <div className="loginWrapper">

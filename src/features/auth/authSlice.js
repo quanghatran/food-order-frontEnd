@@ -15,10 +15,15 @@ export const postAuthLogin = createAsyncThunk('auth/postAuthLogin', async (param
 
 export const postAuthRegister = createAsyncThunk(
   'auth/postAuthRegister',
-  async (params, thunkApi) => {
+  async ({ data, role }, thunkApi) => {
     try {
-      const response = await authApi.postRegister(params);
-      return response;
+      if (role !== '/auth/store-register') {
+        const response = await authApi.postUserRegister(data);
+        return response;
+      } else {
+        const response = await authApi.postStoreRegister(data);
+        return response;
+      }
     } catch (err) {
       if (!err.response) {
         throw err;

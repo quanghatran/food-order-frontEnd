@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import { unwrapResult } from '@reduxjs/toolkit';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import logoFoodApp from '../../../../assets/images/common/logo_food_order.png';
 import { postAuthRegister } from '../../authSlice';
@@ -15,7 +15,10 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [address, setAddress] = useState('');
   const [retypePassword, setRetypePassword] = useState('');
+
+  const { pathname } = useLocation();
 
   const loading = useSelector((state) => state.auth.loading);
   const dispatch = useDispatch();
@@ -24,20 +27,22 @@ export default function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    const data = {
-      name,
-      phoneNumber,
-      email,
-      password,
-    };
+    let role = pathname;
+    let data = {};
+
+    if (role !== '/auth/store-register') {
+      data = { name, phoneNumber, email, password };
+    } else {
+      data = { name, phoneNumber, email, address, password };
+    }
 
     if (data) {
       try {
-        const resultRegister = await dispatch(postAuthRegister(data));
+        const resultRegister = await dispatch(postAuthRegister({ data, role }));
         unwrapResult(resultRegister);
 
-        toast.success('Create User Success');
-        navigate('/');
+        toast.success(resultRegister.payload.message);
+        navigate('/auth/login');
       } catch (error) {
         toast.error(error.message);
       }
@@ -58,7 +63,7 @@ export default function Register() {
               Food Order
             </Typography>
             <Typography component="h3" variant="h5" className="subtitleRegister">
-              Register
+              {pathname === '/auth/register' ? 'User Register' : 'Store Register'}
             </Typography>
             <form className="registerForm" autoComplete="off" onSubmit={handleRegister}>
               <TextField
@@ -79,7 +84,6 @@ export default function Register() {
                 validate="true"
                 type="email"
                 onChange={(e) => setEmail(e.target.value)}
-                autoFocus
                 fullWidth
                 variant="outlined"
                 margin="normal"
@@ -91,12 +95,24 @@ export default function Register() {
                 validate="true"
                 type="number"
                 onChange={(e) => setPhoneNumber(e.target.value)}
-                autoFocus
                 fullWidth
                 variant="outlined"
                 margin="normal"
                 required
               />
+              {pathname === '/auth/store-register' && (
+                <TextField
+                  label="Address"
+                  color="primary"
+                  validate="true"
+                  type="string"
+                  onChange={(e) => setAddress(e.target.value)}
+                  fullWidth
+                  variant="outlined"
+                  margin="normal"
+                  required
+                />
+              )}
               <TextField
                 label="Password"
                 variant="outlined"
@@ -124,6 +140,11 @@ export default function Register() {
 
               <Box className="registerLinkNav">
                 <Link to="/auth/login">Already have a account?</Link>
+                {pathname === '/auth/register' ? (
+                  <Link to="/auth/store-register">Become a partner</Link>
+                ) : (
+                  <Link to="/auth/register">Become a user</Link>
+                )}
               </Box>
               <LoadingButton
                 loading={loading}

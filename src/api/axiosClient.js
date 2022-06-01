@@ -11,8 +11,23 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(async (req) => {
   const accessToken = localStorage.getItem('accessToken');
+  const verifyToken = localStorage.getItem('verifyToken');
 
+  // verify token
+  if (verifyToken) {
+    console.log(1);
+
+    req.headers = {
+      ...req.headers,
+      Authorization: `Bearer ${verifyToken}`,
+    };
+    return req;
+  }
+
+  // attach access token
   if (accessToken) {
+    console.log(2);
+
     req.headers = {
       ...req.headers,
       Authorization: `Bearer ${accessToken}`,
