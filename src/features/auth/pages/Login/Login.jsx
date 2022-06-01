@@ -1,12 +1,13 @@
 import { LoadingButton } from '@mui/lab';
-import { Alert, Button, Container, CssBaseline, TextField, Typography } from '@mui/material';
+import { Container, CssBaseline, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { unwrapResult } from '@reduxjs/toolkit';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import logoFoodApp from '../../../../assets/images/common/logo_food_order.png';
+import { getUserInfo } from '../../../user/userSlice';
 import { postAuthLogin } from '../../authSlice';
 import './login.scss';
 
@@ -26,18 +27,30 @@ export default function Login() {
       password,
     };
 
-    console.log(dataLogin);
-
     if (dataLogin) {
       const fetchLogin = async () => {
         try {
           const result = await dispatch(postAuthLogin(dataLogin));
 
           unwrapResult(result);
-          toast.success('Create User Success');
-          // navigate('/admin/user');
+
+          localStorage.setItem('accessToken', result.payload.accessToken);
+          localStorage.setItem('user', JSON.stringify(result.payload.user));
+
+          const userInfo = await dispatch(getUserInfo());
+          localStorage.setItem('userInfo', JSON.stringify(userInfo.payload));
+
+          toast.success('Login Success');
+          if (result.payload.user.role === 'admin') {
+            navigate('/admin');
+          } else if (result.payload.user.role === 'store') {
+            navigate('/store');
+          } else {
+            navigate('/');
+          }
         } catch (error) {
-          toast.error(`Login Failed`);
+          // console.log(error);
+          toast.error(error.message);
         }
       };
 
@@ -94,7 +107,7 @@ export default function Login() {
 
               <LoadingButton
                 loading={loading}
-                loadingPosition="end"
+                // loadingPosition="end"
                 variant="contained"
                 color="primary"
                 size="large"

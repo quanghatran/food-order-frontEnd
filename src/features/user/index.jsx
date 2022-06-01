@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
 import HomePage from './pages/HomePage/HomePage';
-import Category from './pages/Category/Category';
+import Categories from './pages/Categories/Categories';
 import './user.scss';
 import Cart from './pages/Cart/Cart';
 
@@ -16,7 +16,8 @@ export default function UserFeature() {
       <div className="userFeatureBody marginLeftRight">
         <Routes>
           <Route index element={<HomePage />} />
-          <Route path="/category/:categoryID" element={<Category />} />
+          <Route path="/categories/:categoryParam" element={<Categories />} />
+          <Route path="/categories" element={<Categories />} />
           <Route path="/cart" element={<Cart />} />
         </Routes>
       </div>

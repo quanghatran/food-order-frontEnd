@@ -1,28 +1,47 @@
+import { LoadingButton } from '@mui/lab';
 import { Alert, Button, Container, CssBaseline, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
+import { unwrapResult } from '@reduxjs/toolkit';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import logoFoodApp from '../../../../assets/images/common/logo_food_order.png';
+import { postAuthRegister } from '../../authSlice';
 import './register.scss';
 
 export default function Register() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [retypePassword, setRetypePassword] = useState('');
 
-  const [signInError, setSignInError] = useState(false);
+  const loading = useSelector((state) => state.auth.loading);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
-    // TODO: fetch call api to register, save jwt into local storage, display toastify, redirect to previous page,...
-
-    const dataRegister = {
+    const data = {
+      name,
       phoneNumber,
+      email,
       password,
     };
 
-    console.log('data register: ', dataRegister);
+    if (data) {
+      try {
+        const resultRegister = await dispatch(postAuthRegister(data));
+        unwrapResult(resultRegister);
+
+        toast.success('Create User Success');
+        navigate('/');
+      } catch (error) {
+        toast.error(error.message);
+      }
+    }
   };
 
   return (
@@ -42,6 +61,30 @@ export default function Register() {
               Register
             </Typography>
             <form className="registerForm" autoComplete="off" onSubmit={handleRegister}>
+              <TextField
+                label="User Name"
+                color="primary"
+                validate="true"
+                type="text"
+                onChange={(e) => setName(e.target.value)}
+                autoFocus
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                required
+              />
+              <TextField
+                label="Email"
+                color="primary"
+                validate="true"
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+                autoFocus
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                required
+              />
               <TextField
                 label="Phone Number"
                 color="primary"
@@ -78,30 +121,22 @@ export default function Register() {
                 required
                 autoComplete="current-password"
               />
-              {/* {signInError && (
-                <Alert
-                  variant="filled"
-                  severity="error"
-                  style={{ marginTop: '1rem', justifyContent: 'center' }}
-                >
-                  Tài khoản hoặc mật khẩu không chính xác
-                </Alert>
-              )} */}
+
               <Box className="registerLinkNav">
                 <Link to="/auth/login">Already have a account?</Link>
-
-                {/* <Link to="/forgot-password">Quên mật khẩu</Link> */}
               </Box>
-              <Button
+              <LoadingButton
+                loading={loading}
+                // loadingPosition="end"
                 variant="contained"
                 color="primary"
                 size="large"
                 type="submit"
                 fullWidth
-                className="registerButton"
+                className="loginButton"
               >
-                Register
-              </Button>
+                REGISTER
+              </LoadingButton>
             </form>
           </div>
         </Container>

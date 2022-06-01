@@ -1,6 +1,9 @@
 import { Box, Typography } from '@mui/material';
-import React from 'react';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import TitleUserPage from '../../../../components/common/TitleUserPage/TitleUserPage';
+import { getListCategory } from '../../../categories/categoriesSlice';
 import Categories from '../../components/Categories/Categories';
 import ListProduct from '../../components/ListProduct/ListProduct';
 import Slider from '../../components/Slider/Slider';
@@ -8,6 +11,25 @@ import Stores from '../../components/Stores/Stores';
 import './homePage.scss';
 
 export default function HomePage() {
+  const dispatch = useDispatch();
+
+  const [listCategory, setListCategory] = useState(null);
+
+  useEffect(() => {
+    const fetchGetListCategory = async () => {
+      try {
+        const listCategory = await dispatch(getListCategory());
+        unwrapResult(listCategory);
+
+        setListCategory(listCategory.payload.data);
+      } catch (error) {
+        console.log('Get list category error: ', error);
+      }
+    };
+
+    fetchGetListCategory();
+  }, []);
+
   return (
     <div className="homePageWrapper">
       <Box className="homePageBanner">
@@ -15,8 +37,8 @@ export default function HomePage() {
       </Box>
 
       <Box className="homePageCategory">
-        <TitleUserPage title="Categories" link="/category/123" />
-        <Categories />
+        <TitleUserPage title="Categories" link="/categories" />
+        <Categories listCategory={listCategory} />
       </Box>
 
       <Box className="homePageMainContentWrapper">

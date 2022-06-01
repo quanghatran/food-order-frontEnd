@@ -1,44 +1,66 @@
-import dashBoardIcon from '../../assets/images/admin/dashboard.svg';
-import productIcon from '../../assets/images/admin/database.svg';
-import settingIcon from '../../assets/images/admin/setting.svg';
-import ordersIcon from '../../assets/images/admin/shopping-card.svg';
-import userIcon from '../../assets/images/admin/user.svg';
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import StorageIcon from '@mui/icons-material/Storage';
+import LogoutIcon from '@mui/icons-material/Logout';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 export const listAdminNavbar = [
-  { id: 1, title: 'DashBoard', icon: dashBoardIcon, link: '/admin/' },
+  { id: 1, title: 'DashBoard', icon: <DashboardIcon />, link: '/admin/' },
   {
     id: 2,
-    title: 'Product',
-    icon: productIcon,
-    link: '/admin/product',
+    title: 'Stores',
+    icon: <StorefrontIcon />,
+    link: '/admin/stores',
     isOpen: true,
 
-    subItem: [
-      { id: 3, title: 'Product List', link: '/admin/product' },
-      { id: 4, title: 'Add Product', link: '/admin/product/add' },
-    ],
+    // subItem: [
+    //   { id: 3, title: 'List Store', link: '/admin/stores' },
+    //   { id: 4, title: 'Add Store', link: '/admin/store/add' },
+    // ],
   },
   {
     id: 5,
-    title: 'User',
-    icon: userIcon,
+    title: 'Users',
+    icon: <PersonOutlinedIcon />,
     link: '/admin/user',
     isOpen: true,
-    subItem: [
-      { id: 6, title: 'User List', link: '/admin/user' },
-      { id: 7, title: 'Add User', link: '/admin/user/add' },
-    ],
   },
-  { id: 8, title: 'Orders', icon: ordersIcon, link: '/admin/orders' },
+  {
+    id: 8,
+    title: 'Orders',
+    icon: <ShoppingCartOutlinedIcon />,
+    link: '/admin/orders',
+  },
   {
     id: 9,
-    title: 'Settings',
-    icon: settingIcon,
-    link: '/admin/settings',
+    title: 'Products',
+    icon: <StorageIcon />,
+    link: '/admin/products',
     isOpen: true,
-    subItem: [
-      { id: 10, title: 'Change Info', link: '/admin/settings' },
-      { id: 11, title: 'Logout', link: '/admin/settings' },
-    ],
+    // subItem: [
+    //   { id: 10, title: 'List Product', link: '/admin/products' },
+    //   { id: 11, title: 'Add Product', link: '/admin/product/add' },
+    // ],
+  },
+  {
+    id: 12,
+    title: 'Categories',
+    icon: <CategoryOutlinedIcon />,
+    link: '/admin/category',
+  },
+  {
+    id: 13,
+    title: 'Information',
+    icon: <SettingsIcon />,
+    link: '/admin/info',
+  },
+  {
+    id: 15,
+    title: 'Logout',
+    icon: <LogoutIcon />,
+    link: '#',
   },
 ];

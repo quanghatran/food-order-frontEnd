@@ -23,7 +23,7 @@ import {
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import menuIcon from '../../../assets/images/admin/menu.svg';
-import { listAdminNavbar } from '../../../constants/admin';
+import PopUpConfirm from '../PopUpConfirm/PopUpConfirm';
 import './navigationAdmin.scss';
 
 const drawerWidth = 240;
@@ -69,21 +69,41 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function NavigationAdmin(props) {
   const { window } = props;
+  const listAdminNavbar = props.listNavbar;
   const idAdminNavbar = localStorage.getItem('idAdminNavbar');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(idAdminNavbar || 1);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
   const navigate = useNavigate();
-  const [adminNavbar, setAdminNavbar] = useState(listAdminNavbar);
+
+  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleClickItem = (item, subItem) => {
-    setSelectedIndex(item.id);
-    navigate(item.link);
-    localStorage.setItem('idAdminNavbar', item.id);
+  const handleConfirmClose = () => {
+    setIsConfirmOpen(false);
   };
+
+  const onConfirmSubmit = () => {
+    // handle logout
+    localStorage.clear();
+    navigate('/auth/login');
+  };
+
+  const handleClickItem = (item) => {
+    if (item.title === 'Logout') {
+      setIsConfirmOpen(true);
+    } else {
+      setSelectedIndex(item.id);
+      navigate(item.link);
+      localStorage.setItem('idAdminNavbar', item.id);
+    }
+  };
+
   const drawer = (
     <div style={{ minHeight: '100vh', backgroundColor: '#3d464d' }}>
       <Toolbar className="welcomeAdminWrapper">
@@ -93,7 +113,7 @@ export default function NavigationAdmin(props) {
           </Typography>
         </Link>
         <p className="barge">
-          <span>ADMIN</span>
+          <span style={{ textTransform: 'uppercase' }}>{userInfo.role}</span>
         </p>
       </Toolbar>
       <Divider />
@@ -113,15 +133,15 @@ export default function NavigationAdmin(props) {
               </ListSubheader>
             }
           >
-            {adminNavbar &&
+            {listAdminNavbar &&
               selectedIndex &&
-              adminNavbar.map((item) => (
+              listAdminNavbar.map((item) => (
                 <div key={item.title}>
                   <ListItemButton
                     onClick={(e) => handleClickItem(item, item.subItem)}
                     selected={!item.subItem && selectedIndex === item.id}
                   >
-                    <img style={{ paddingRight: '10px' }} src={item.icon} alt={item.name} />
+                    <span style={{ marginRight: '10px' }}> {item.icon}</span>
                     <ListItemText primary={item.title} />
                     {item.subItem && (
                       <>{item.isOpen ? <KeyboardArrowDownIcon /> : <KeyboardArrowLeftIcon />}</>
@@ -194,12 +214,16 @@ export default function NavigationAdmin(props) {
                 className="avatarAdmin"
                 width="40"
                 height="40"
-                src="https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/large/800/Baymax.Big-Hero-6.webp"
+                src={
+                  userInfo.avatar
+                    ? userInfo.avatar
+                    : 'https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/large/800/Baymax.Big-Hero-6.webp'
+                }
                 alt="avatar_admin"
               />
               <span className="adminInfo">
-                <div className="nameAdmin">Nam Nguyễn</div>
-                <span className="roleInfo"> Admin</span>
+                <div className="nameAdmin">{user.name}</div>
+                <span className="roleInfo">{user.role} </span>
               </span>
             </Box>
           </Box>
@@ -242,6 +266,13 @@ export default function NavigationAdmin(props) {
         component="main"
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       ></Box>
+      <PopUpConfirm
+        dialogTitle="Confirm logout"
+        dialogContent="Are you sure want logout"
+        isConfirmOpen={isConfirmOpen}
+        handleConfirmClose={handleConfirmClose}
+        onConfirmSubmit={onConfirmSubmit}
+      />
     </Box>
   );
 }

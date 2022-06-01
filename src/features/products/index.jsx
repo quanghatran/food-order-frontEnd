@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import AddUpdateProduct from './Pages/AddUpdateProduct/AddUpdateProduct';
 import ListProduct from './Pages/ListProduct/ListProduct';
 
-export default function Products() {
+export default function ProductsFeature() {
   return (
     <>
       <Routes>

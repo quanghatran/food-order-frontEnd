@@ -1,0 +1,14 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "13.229.84.201",
+      "port": 5432,
+      "askForPassword": true,
+      "driver": "PostgreSQL",
+      "name": "food_order",
+      "database": "food_order",
+      "username": "postgres"
+    }
+  ]
+}

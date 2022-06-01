@@ -1,0 +1,14 @@
+.listCategoryWrapper {
+  .headerListCategory {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .tableHeaderItem {
+    font-weight: 600;
+    font-size: 17px;
+    color: #fff;
+  }
+}

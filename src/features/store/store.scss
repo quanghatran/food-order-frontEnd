@@ -1,0 +1,10 @@
+.storeFeatureWrapper {
+  display: flex;
+  background-color: #f5f7fa;
+
+  .storeContentWrapper {
+    margin-top: 6rem;
+    margin-right: 50px;
+    flex-grow: 1;
+  }
+}

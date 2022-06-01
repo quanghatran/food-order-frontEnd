@@ -1,0 +1,47 @@
+.categoriesWrapper {
+  .categoryBox {
+    text-align: center;
+  }
+
+  .categoryItem {
+    margin-bottom: 10px;
+  }
+
+  .categoryBox {
+    cursor: pointer;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    position: relative;
+    border-radius: 15px;
+
+    .categoryBoxOverlay {
+      border-radius: 15px;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+
+      h1 {
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        text-transform: capitalize;
+        color: #fff;
+      }
+    }
+
+    &:hover,
+    &.active {
+      .categoryBoxOverlay {
+        display: block;
+      }
+    }
+  }
+}
