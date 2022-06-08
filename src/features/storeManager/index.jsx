@@ -1,11 +1,14 @@
-import React from 'react';
-import TitleAdminStorePage from '../../components/common/TitleAdminStorePage/TitleAdminStorePage';
+import { Route, Routes } from 'react-router-dom';
+import ListStoreManager from './pages/ListStoreManager/ListStoreManager';
 
 export default function StoresManagerFeature() {
   return (
     <>
-      <TitleAdminStorePage title="Stores Manager" />
-      <div>StoresManagerFeature</div>
+      <Routes>
+        <Route index element={<ListStoreManager />} />
+        {/* <Route path="add" element={<AddUpdateUserManager />} /> */}
+        {/* <Route path="/:userId" element={<AddUpdateUserManager />} /> */}
+      </Routes>
     </>
   );
 }

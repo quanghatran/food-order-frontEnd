@@ -6,6 +6,8 @@ import HomePage from './pages/HomePage/HomePage';
 import Categories from './pages/Categories/Categories';
 import './user.scss';
 import Cart from './pages/Cart/Cart';
+import ProductPage from './pages/ProductPage/ProductPage';
+import ProductDetail from './pages/ProductDetail/ProductDetail';
 
 export default function UserFeature() {
   const isLoggedIn = false;
@@ -18,6 +20,8 @@ export default function UserFeature() {
           <Route index element={<HomePage />} />
           <Route path="/categories/:categoryParam" element={<Categories />} />
           <Route path="/categories" element={<Categories />} />
+          <Route path="/products" element={<ProductPage />} />
+          <Route path="/product/:productId" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
         </Routes>
       </div>

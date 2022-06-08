@@ -1,7 +1,7 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import AddUpdateProduct from './Pages/AddUpdateProduct/AddUpdateProduct';
 import ListProduct from './Pages/ListProduct/ListProduct';
+import React from 'react';
 
 export default function ProductsFeature() {
   return (
@@ -9,7 +9,7 @@ export default function ProductsFeature() {
       <Routes>
         <Route index element={<ListProduct />} />
         <Route path="add" element={<AddUpdateProduct />} />
-        {/* <Route path="/:userId" element={<AddUpdateUserManager />} /> */}
+        <Route path="/:productId" element={<AddUpdateProduct />} />
       </Routes>
     </>
   );

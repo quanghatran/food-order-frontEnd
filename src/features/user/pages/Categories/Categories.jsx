@@ -7,6 +7,8 @@ import '../../components/Categories/categories.scss';
 import ListProduct from '../../components/ListProduct/ListProduct';
 import '../HomePage/homePage.scss';
 import './category.scss';
+import React from 'react';
+import TitleUserPage from '../../../../components/common/TitleUserPage/TitleUserPage';
 
 export default function Category() {
   const dispatch = useDispatch();
@@ -38,6 +40,9 @@ export default function Category() {
 
   return (
     <div className="categoryWrapper homePageWrapper categoriesWrapper">
+      <Box className="homePageCategory">
+        <TitleUserPage title="Categories" link="/#" />
+      </Box>
       <Box className="homePageMainContentWrapper">
         <Box className="homePageMainContent">
           <Box className="homePageFilter">
@@ -72,7 +77,7 @@ export default function Category() {
           </Box>
 
           <Box className="homePageProductsWrapper">
-            <Box className="homePageProducts">
+            {/* <Box className="homePageProducts">
               <Typography className="titleCurve" component="h1" variant="h3">
                 Noodle
               </Typography>
@@ -81,7 +86,7 @@ export default function Category() {
               <ListProduct img="https://preview.ait-themes.club/citadela/fooddelivery/wp-content/uploads/sites/17/2020/11/ramen-600x450.jpg" />
               <br />
               <ListProduct img="https://preview.ait-themes.club/citadela/fooddelivery/wp-content/uploads/sites/17/2020/11/ramen-600x450.jpg" />
-            </Box>
+            </Box> */}
           </Box>
         </Box>
       </Box>

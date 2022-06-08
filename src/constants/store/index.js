@@ -1,11 +1,11 @@
-import StorefrontIcon from '@mui/icons-material/Storefront';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import StorageIcon from '@mui/icons-material/Storage';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoyaltyIcon from '@mui/icons-material/Loyalty';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import StorageIcon from '@mui/icons-material/Storage';
+import React from 'react';
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 
 export const listStoreNavbar = [
   { id: 1, title: 'DashBoard', icon: <DashboardIcon />, link: '/store/' },
@@ -17,9 +17,14 @@ export const listStoreNavbar = [
   },
   {
     id: 3,
-    title: 'Sale Code',
+    title: 'Sale Codes',
     icon: <LoyaltyIcon />,
     link: '/store/sale-codes',
+    // isOpen: true,
+    // subItem: [
+    //   { id: 45, title: 'List Sale Code', link: '/store/sale-codes' },
+    //   { id: 46, title: 'Add Sale Code', link: '/store/sale-codes/add' },
+    // ],
   },
   // {
   //   id: 4,
@@ -45,17 +50,34 @@ export const listStoreNavbar = [
   //   ],
   // },
   {
-    id: 9,
+    id: 34,
     title: 'Products',
     icon: <StorageIcon />,
     link: '/store/products',
     isOpen: true,
+    subItem: [
+      { id: 34, title: 'List Product', link: '/store/products' },
+      { id: 35, title: 'Add Product', link: '/store/products/add' },
+    ],
   },
   {
-    id: 12,
-    title: 'Categories',
-    icon: <CategoryOutlinedIcon />,
-    link: '/store/category',
+    id: 89,
+    title: 'Monthly Fee',
+    icon: <CurrencyExchangeIcon />,
+    link: '/store/monthly-fee',
+  },
+  // {
+  //   id: 12,
+  //   title: 'Categories',
+  //   icon: <CategoryOutlinedIcon />,
+  //   link: '/store/category',
+  // },
+  {
+    id: 5,
+    title: 'Account',
+    icon: <SettingsIcon />,
+    link: '/store/info',
+    isOpen: true,
   },
   {
     id: 15,

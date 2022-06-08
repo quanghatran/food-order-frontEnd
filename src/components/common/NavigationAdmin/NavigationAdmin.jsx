@@ -77,8 +77,8 @@ export default function NavigationAdmin(props) {
 
   const navigate = useNavigate();
 
-  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-  const user = JSON.parse(localStorage.getItem('user'));
+  const userInfo = JSON.parse(localStorage.getItem('accountInfo'));
+  const user = JSON.parse(localStorage.getItem('account'));
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -215,8 +215,8 @@ export default function NavigationAdmin(props) {
                 width="40"
                 height="40"
                 src={
-                  userInfo.avatar
-                    ? userInfo.avatar
+                  userInfo.images
+                    ? userInfo.images
                     : 'https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/large/800/Baymax.Big-Hero-6.webp'
                 }
                 alt="avatar_admin"

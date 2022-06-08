@@ -23,6 +23,7 @@ import {
 } from '../../categoriesSlice';
 import AddUpdateCategory from '../../components/AddUpdateCategory';
 import './listCategory.scss';
+import React from 'react';
 
 export default function ListCategory() {
   const dispatch = useDispatch();
@@ -92,8 +93,8 @@ export default function ListCategory() {
       // update category by id
       try {
         const dataDispatch = {
-          idCategory,
-          dataSubmit,
+          idCategory: idCategory,
+          dataSubmit: dataSubmit,
         };
 
         const result = await dispatch(updateCategory(dataDispatch));
@@ -208,7 +209,7 @@ export default function ListCategory() {
               ) : (
                 <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell align="center">
-                    <p>Don`t have any categoy yet!</p>
+                    <p>Don`t have any category yet!</p>
                   </TableCell>
                 </TableRow>
               )}

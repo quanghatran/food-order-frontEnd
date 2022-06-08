@@ -7,6 +7,8 @@ import UserManagerFeature from '../userManager';
 import './admin.scss';
 import HomePage from './pages/HomePage/HomePage';
 import { listAdminNavbar } from '../../constants/admin/';
+import React from 'react';
+import ProductManager from './pages/ProductManager/ProductManager';
 
 export default function AdminFeature() {
   return (
@@ -17,7 +19,7 @@ export default function AdminFeature() {
           <Route index element={<HomePage />} />
           <Route path="/stores/*" element={<StoresManagerFeature />} />
 
-          <Route path="/product/*" element={<Products />} />
+          <Route path="/products/*" element={<ProductManager />} />
           <Route path="/user/*" element={<UserManagerFeature />} />
 
           <Route path="/category/*" element={<CategoriesFeature />} />

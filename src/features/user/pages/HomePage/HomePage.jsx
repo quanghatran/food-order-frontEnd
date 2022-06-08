@@ -9,6 +9,7 @@ import ListProduct from '../../components/ListProduct/ListProduct';
 import Slider from '../../components/Slider/Slider';
 import Stores from '../../components/Stores/Stores';
 import './homePage.scss';
+import React from 'react';
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ export default function HomePage() {
           <Box className="homePageFilter">
             <h1>Filter</h1>
           </Box>
-          <Box className="homePageProductsWrapper">
+          {/* <Box className="homePageProductsWrapper">
             <Box className="homePageProducts">
               <Typography className="titleCurve" component="h1" variant="h3">
                 Near You
@@ -68,7 +69,7 @@ export default function HomePage() {
               </Typography>
               <ListProduct img="https://preview.ait-themes.club/citadela/fooddelivery/wp-content/uploads/sites/17/2020/11/smoothies-768x576.jpg" />
             </Box>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
       <Box className="homePageStores">

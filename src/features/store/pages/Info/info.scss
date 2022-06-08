@@ -1,0 +1,50 @@
+.storeInfoWrapper {
+  .headerStoreInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .storeInfoContent {
+    padding: 30px;
+    .storeAvatar {
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+
+    .storeInfo {
+      margin-top: 10px;
+      display: block;
+    }
+  }
+
+  .storeInfoContent {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    align-items: flex-start;
+
+    .storeAvatar {
+      flex: 2;
+      overflow: hidden;
+    }
+
+    .contentWrapper {
+      flex: 3;
+
+      .basicInfo,
+      .advanceInfo {
+        display: flex;
+        justify-content: space-between;
+        gap: 40px;
+        align-items: center;
+      }
+
+      .divideContent {
+        flex: 1;
+      }
+    }
+  }
+}

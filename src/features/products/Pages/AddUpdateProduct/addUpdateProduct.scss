@@ -1,0 +1,52 @@
+.addUpdateProductWrapper {
+  .headerListCategory {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .tableHeaderItem {
+    font-weight: 600;
+    font-size: 17px;
+    color: #fff;
+  }
+
+  .addUpdateProductContent {
+    display: flex;
+    gap: 60px;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .basicProductInfo {
+      flex: 3;
+
+      .descriptionProduct {
+        input {
+          height: 100px;
+        }
+      }
+    }
+
+    .imageCategoryProduct {
+      flex: 1;
+
+      .imageFieldWrapper {
+        .imageFIeldTitle {
+          text-align: right;
+        }
+      }
+    }
+  }
+
+  .buttonAddUpdateWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    gap: 40px;
+  }
+
+  .productFieldsWrapper {
+    padding: 30px;
+  }
+}

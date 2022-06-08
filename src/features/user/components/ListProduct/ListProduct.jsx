@@ -4,7 +4,7 @@ import React from 'react';
 import Product from '../Product/Product';
 import './listProduct.scss';
 
-export default function ListProduct({ img }) {
+export default function ListProduct({ img, elementPerRow }) {
   return (
     <div className="listProductWrapper">
       <Box sx={{ flexGrow: 1 }}>

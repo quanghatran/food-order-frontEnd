@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import authApi from '../../../../api/authApi';
 import logoFoodApp from '../../../../assets/images/common/logo_food_order.png';
 import '../Login/login.scss';
+import React from 'react';
 
 export default function VerifyEmail() {
   const loading = useSelector((state) => state.auth.loading);

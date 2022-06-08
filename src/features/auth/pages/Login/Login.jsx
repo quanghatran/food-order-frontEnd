@@ -6,11 +6,12 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import authApi from '../../../../api/authApi';
 import logoFoodApp from '../../../../assets/images/common/logo_food_order.png';
 import { getUserInfo } from '../../../user/userSlice';
+import { getStoreInfo } from '../../../store/storeSlice';
 import { postAuthLogin } from '../../authSlice';
 import './login.scss';
+import React from 'react';
 
 export default function Login() {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -38,17 +39,19 @@ export default function Login() {
           unwrapResult(result);
 
           localStorage.setItem('accessToken', result.payload.accessToken);
-          localStorage.setItem('user', JSON.stringify(result.payload.user));
-
-          const userInfo = await dispatch(getUserInfo());
-          localStorage.setItem('userInfo', JSON.stringify(userInfo.payload));
+          localStorage.setItem('account', JSON.stringify(result.payload.user));
 
           toast.success('Login Success');
           if (result.payload.user.role === 'admin') {
             navigate('/admin');
           } else if (result.payload.user.role === 'store') {
+            const accountInfo = await dispatch(getStoreInfo());
+            await localStorage.setItem('accountInfo', JSON.stringify(accountInfo.payload));
+
             navigate('/store');
           } else {
+            const accountInfo = await dispatch(getUserInfo());
+            await localStorage.setItem('accountInfo', JSON.stringify(accountInfo.payload));
             navigate('/');
           }
         } catch (error) {

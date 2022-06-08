@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { searchProductByCategory } from '../../../categories/categoriesSlice';
 import './categories.scss';
+import React from 'react';
 
 export default function Categories({ listCategory }) {
   const dispatch = useDispatch();

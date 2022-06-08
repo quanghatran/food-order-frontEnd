@@ -4,6 +4,7 @@ import { useState } from 'react';
 import uploadFile from '../../assets/images/common/uploadFile.svg';
 // import { AdminInputField } from './AdminInputField';
 import './importFileField.scss';
+import React from 'react';
 
 export const ImportFileField = ({ onImportFileChange, urlImageCategory }) => {
   const [selectedImage, setSelectedImage] = useState(null);

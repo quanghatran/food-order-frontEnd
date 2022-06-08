@@ -8,12 +8,13 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import logo from '../../../../assets/images/common/logo_food_order.png';
 import userIcon from '../../../../assets/images/user/user-icon.png';
 import './header.scss';
+import React from 'react';
 
 export default function Header({ isLoggedIn }) {
   const navigate = useNavigate();
 
   const [totalPrice, setTotalPrice] = useState(0);
-  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  const userInfo = JSON.parse(localStorage.getItem('accountInfo'));
 
   const handleMoveToCart = () => {
     navigate('/cart');
@@ -28,9 +29,9 @@ export default function Header({ isLoggedIn }) {
         <Box className="headerNavListNav">
           <NavLink to="/">Home</NavLink>
           <NavLink to="/categories">Categories</NavLink>
-          <NavLink to="/menu">Products</NavLink>
+          <NavLink to="/products">Products</NavLink>
           <NavLink to="/contact">Contact</NavLink>
-          <NavLink to="/help">Help</NavLink>
+          {/* <NavLink to="/help">Help</NavLink> */}
         </Box>
       </Box>
 

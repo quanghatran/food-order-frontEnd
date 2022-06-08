@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import authApi from '../../../../api/authApi';
 import logoFoodApp from '../../../../assets/images/common/logo_food_order.png';
 import './forgotPassword.scss';
+import React from 'react';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');

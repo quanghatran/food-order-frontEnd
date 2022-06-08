@@ -81,7 +81,7 @@ export default function ListUserManager() {
   return (
     <Box className="listCategoryWrapper listUserWrapper">
       <Box className="headerListCategory">
-        <TitleAdminStorePage title="List User" />
+        <TitleAdminStorePage title="User Manager" />
         {/* <Button
           variant="contained"
           endIcon={<AddIcon />}
@@ -133,9 +133,11 @@ export default function ListUserManager() {
                           alt="user"
                         />
                         <div className="userDetailBox">
-                          <div className="name">{user.name}</div>
-                          <div className="email">{user.email}</div>
-                          <div className="phoneNumber">{user.phoneNumber}</div>
+                          <div className="name">
+                            <b style={{ fontSize: '18px' }}>{user.name}</b>
+                          </div>
+                          <div className="email">Email: {user.email}</div>
+                          <div className="phoneNumber">Phone Number: {user.phoneNumber}</div>
                         </div>
                       </Box>
                     </TableCell>

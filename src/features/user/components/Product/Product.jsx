@@ -1,27 +1,52 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
-import React from 'react';
+import CurrencyFormat from 'react-currency-format';
+import { Link } from 'react-router-dom';
 import imageUnknown from '../../../../assets/images/common/logo_food_order.png';
 import './product.scss';
 
-export default function Product({ img }) {
+export default function Product({ data, img }) {
+  console.log(data);
   return (
     <div className="productWrapper">
       <Card>
         <CardMedia
           component="img"
           alt="green iguana"
-          height="150"
-          image={img ? img : imageUnknown}
+          height="200"
+          style={{ objectFit: 'contain' }}
+          image={data.images ? data.images[0] : imageUnknown}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            Lizard
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles
+          <Link className="textDecorationNone nameLinkProduct" to={`/product/${data.id}`}>
+            <Typography gutterBottom variant="h5" component="div">
+              <b>{data.name}</b>
+            </Typography>
+          </Link>
+          {/* <Typography variant="body2" color="text.secondary">
+            {data.description}
+          </Typography> */}
+          <Typography style={{ fontSize: '18px' }} variant="body2" color="text.secondary">
+            <b>
+              <CurrencyFormat value={data.price} displayType={'text'} thousandSeparator={true} />{' '}
+              vnđ
+            </b>
           </Typography>
         </CardContent>
         <CardActions>
+          <Link
+            style={{ marginRight: '15px', marginLeft: '10px' }}
+            className="textDecorationNone nameLinkProduct"
+            to={`/product/${data.id}`}
+          >
+            <Button
+              className="productButtonAddCart"
+              size="small"
+              variant="contained"
+              color="primary"
+            >
+              Detail
+            </Button>
+          </Link>
           <Button
             className="productButtonAddCart"
             size="small"

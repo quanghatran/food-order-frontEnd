@@ -5,19 +5,15 @@
     margin-bottom: 30px;
     font-family: 'Pacifico', cursive;
     margin-bottom: 30px;
-    color: #53d1b0;
+    color: #333;
     transition: all 0.3 ease-in-out;
     display: inline-block;
-
-    // &:hover {
-    //   color: #3dbe9c;
-    // }
 
     &:after {
       height: 3px;
       display: block;
       width: 60%;
-      background: #53d1b0;
+      background: #333;
       content: '';
     }
   }

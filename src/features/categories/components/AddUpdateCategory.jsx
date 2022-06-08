@@ -9,11 +9,10 @@ import {
   Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { ImportFileField } from '../../../components/formFields/ImportFileField';
-import categoryApi from '../../../api/categoryApi';
-import { unwrapResult } from '@reduxjs/toolkit';
+import React from 'react';
 
 export default function AddUpdateCategory({
   idCategory,

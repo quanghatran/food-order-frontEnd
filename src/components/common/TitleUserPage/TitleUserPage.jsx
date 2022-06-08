@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import './titleUserPage.scss';
+import React from 'react';
 
 export default function TitleUserPage({ title }) {
   return (
