@@ -1,4 +1,4 @@
-import { GET_ALL_PRODUCT, GET_OWNER_PRODUCTS } from '../constants/subUrl';
+import { GET_ALL_PRODUCT, GET_OWNER_PRODUCTS, GET_PRODUCT_DETAIL } from '../constants/subUrl';
 import axiosClient from './axiosClient';
 
 const productApi = {
@@ -9,6 +9,11 @@ const productApi = {
 
   getOwnerProducts: (params) => {
     const url = GET_OWNER_PRODUCTS;
+    return axiosClient.get(url, params);
+  },
+
+  getProductDetail: (idProduct, params) => {
+    const url = `${GET_PRODUCT_DETAIL}${idProduct}`;
     return axiosClient.get(url, params);
   },
 };

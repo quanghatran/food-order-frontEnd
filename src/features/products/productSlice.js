@@ -11,10 +11,19 @@ export const getOwnerProducts = createAsyncThunk('products/getOwnerProducts', as
   return response;
 });
 
+export const getProductDetail = createAsyncThunk(
+  'products/getProductDetail',
+  async (idProduct, params) => {
+    const response = await productApi.getProductDetail(idProduct, params);
+    return response;
+  }
+);
+
 const productSlice = createSlice({
   name: 'products',
   initialState: {
     current: {},
+    productDetail: {},
     message: '',
     loading: false,
     error: '',
@@ -44,6 +53,19 @@ const productSlice = createSlice({
       state.current = action.payload;
     },
     [getOwnerProducts.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // handle get product detail
+    [getProductDetail.pending]: (state) => {
+      state.loading = true;
+    },
+    [getProductDetail.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.productDetail = action.payload;
+    },
+    [getProductDetail.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },
