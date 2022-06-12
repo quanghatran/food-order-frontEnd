@@ -5,7 +5,6 @@ import imageUnknown from '../../../../assets/images/common/logo_food_order.png';
 import './product.scss';
 
 export default function Product({ data, img }) {
-  console.log(data);
   return (
     <div className="productWrapper">
       <Card>
@@ -28,7 +27,7 @@ export default function Product({ data, img }) {
           <Typography style={{ fontSize: '18px' }} variant="body2" color="text.secondary">
             <b>
               <CurrencyFormat value={data.price} displayType={'text'} thousandSeparator={true} />{' '}
-              vnđ
+              VNĐ
             </b>
           </Typography>
         </CardContent>

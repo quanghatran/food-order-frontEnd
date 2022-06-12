@@ -12,7 +12,7 @@ export default function Categories({ listCategory }) {
 
   const handleClickSearchProductByCategory = (cateogryName) => {
     dispatch(searchProductByCategory(cateogryName));
-    navigate('/categories');
+    navigate('/category');
   };
 
   return (

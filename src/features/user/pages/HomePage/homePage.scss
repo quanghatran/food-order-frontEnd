@@ -37,4 +37,22 @@
     font-weight: 600;
     color: #333;
   }
+
+  .titleProductByCategories {
+    font-size: 22px;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+
+  .filterWrapper {
+    padding: 30px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    .filterTitle {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+    }
+  }
 }

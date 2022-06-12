@@ -1,42 +1,107 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Grid, TextField, Typography } from '@mui/material';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import TitleUserPage from '../../../../components/common/TitleUserPage/TitleUserPage';
 import { getListCategory } from '../../../categories/categoriesSlice';
+import { getProductsByCategory, getTopProducts } from '../../../products/productSlice';
+import { getAllStore } from '../../../storeManager/storeManagerSlice';
 import Categories from '../../components/Categories/Categories';
-import ListProduct from '../../components/ListProduct/ListProduct';
+import Product from '../../components/Product/Product';
 import Slider from '../../components/Slider/Slider';
 import Stores from '../../components/Stores/Stores';
 import './homePage.scss';
-import React from 'react';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 export default function HomePage() {
   const dispatch = useDispatch();
 
   const [listCategory, setListCategory] = useState(null);
+  const [listStore, setListStore] = useState(null);
+  const [topProducts, setTopProducts] = useState(null);
+  // const [topProducts, setTopProducts] = useState(null);
 
+  const [nameCategory1, setNameCategory1] = useState('');
+  const [listProductByCategory1, setListProductByCategory1] = useState(null);
+  const [nameCategory2, setNameCategory2] = useState('');
+  const [listProductByCategory2, setListProductByCategory2] = useState(null);
+  const [nameCategory3, setNameCategory3] = useState('');
+  const [listProductByCategory3, setListProductByCategory3] = useState(null);
+  const [nameCategory4, setNameCategory4] = useState('');
+  const [listProductByCategory4, setListProductByCategory4] = useState(null);
+
+  // fetch get list category
   useEffect(() => {
     const fetchGetListCategory = async () => {
       try {
-        const listCategory = await dispatch(getListCategory());
-        unwrapResult(listCategory);
+        const result = await dispatch(getListCategory());
+        unwrapResult(result);
+        const listCategory = result.payload.data;
+        setListCategory(listCategory);
 
-        setListCategory(listCategory.payload.data);
+        if (listCategory) {
+          const listProductByCategory1 = await dispatch(getProductsByCategory(listCategory[0].id));
+          setNameCategory1(listCategory[0].name);
+          setListProductByCategory1(listProductByCategory1.payload.data);
+
+          const listProductByCategory2 = await dispatch(getProductsByCategory(listCategory[1].id));
+          setNameCategory2(listCategory[1].name);
+          setListProductByCategory2(listProductByCategory2.payload.data);
+
+          const listProductByCategory3 = await dispatch(getProductsByCategory(listCategory[2].id));
+          setNameCategory3(listCategory[2].name);
+          setListProductByCategory3(listProductByCategory3.payload.data);
+
+          const listProductByCategory4 = await dispatch(getProductsByCategory(listCategory[3].id));
+          setNameCategory4(listCategory[3].name);
+          setListProductByCategory4(listProductByCategory4.payload.data);
+        }
       } catch (error) {
         console.log('Get list category error: ', error);
       }
     };
 
     fetchGetListCategory();
-  }, []);
+  }, [dispatch]);
+
+  // fetch get list store
+  useEffect(() => {
+    const fetchGetListStore = async () => {
+      try {
+        const listStore = await dispatch(getAllStore());
+        unwrapResult(listStore);
+
+        setListStore(listStore.payload);
+      } catch (error) {
+        console.log('Get list store error: ', error);
+      }
+    };
+
+    fetchGetListStore();
+  }, [dispatch]);
+
+  // fetch get list products by specific request
+  useEffect(() => {
+    const fetchGetTopProduct = async () => {
+      try {
+        // get list top product
+        const resultTopProducts = await dispatch(getTopProducts({ limit: 8 }));
+        unwrapResult(resultTopProducts);
+
+        setTopProducts(resultTopProducts.payload.data);
+      } catch (error) {
+        console.log('Get list category error: ', error);
+      }
+    };
+
+    fetchGetTopProduct();
+  }, [dispatch]);
 
   return (
     <div className="homePageWrapper">
       <Box className="homePageBanner">
         <Slider />
       </Box>
-
       <Box className="homePageCategory">
         <TitleUserPage title="Categories" link="/categories" />
         <Categories listCategory={listCategory} />
@@ -46,35 +111,90 @@ export default function HomePage() {
         <TitleUserPage title="Products" link="products" />
         <Box className="homePageMainContent">
           <Box className="homePageFilter">
-            <h1>Filter</h1>
+            <Box className="filterWrapper">
+              <Box className="filterTitle">
+                <Typography className="titleCurve" component="h1" variant="h3">
+                  Filtesr
+                </Typography>
+                <FilterListIcon fontSize="medium" />
+              </Box>
+              <Box className="searchWrapper">
+                <TextField
+                  id="filled-hidden-label-small"
+                  fullWidth
+                  placeholder="Search by name"
+                  variant="outlined"
+                  size="large"
+                />
+              </Box>
+            </Box>
           </Box>
-          {/* <Box className="homePageProductsWrapper">
-            <Box className="homePageProducts">
-              <Typography className="titleCurve" component="h1" variant="h3">
-                Near You
-              </Typography>
-              <ListProduct img="https://preview.ait-themes.club/citadela/fooddelivery/wp-content/uploads/sites/17/2020/11/ramen-600x450.jpg" />
-            </Box>
+          <Box className="homePageProductsWrapper">
+            {listProductByCategory1 && (
+              <Box>
+                <Typography className="titleCurve" component="h1" variant="h3">
+                  {nameCategory1 ?? 'Category Name'}
+                </Typography>
+                <Grid container spacing={{ xs: 2, md: 4 }}>
+                  {listProductByCategory1.map((productCategory, index) => (
+                    <Grid key={index} item xs={12} md={6} lg={3}>
+                      <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            )}
 
-            <Box className="homePageProducts">
-              <Typography className="titleCurve" component="h1" variant="h3">
-                The Hottest Food
-              </Typography>
-              <ListProduct img="https://preview.ait-themes.club/citadela/fooddelivery/wp-content/uploads/sites/17/2020/11/pork-belly-600x450.jpg" />
-            </Box>
+            {listProductByCategory2 && (
+              <Box>
+                <Typography className="titleCurve" component="h1" variant="h3">
+                  {nameCategory2 ?? 'Category Name'}
+                </Typography>
+                <Grid container spacing={{ xs: 2, md: 4 }}>
+                  {listProductByCategory2.map((productCategory, index) => (
+                    <Grid key={index} item xs={12} md={6} lg={3}>
+                      <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            )}
 
-            <Box className="homePageProducts">
-              <Typography className="titleCurve" component="h1" variant="h3">
-                Đồ giải khát
-              </Typography>
-              <ListProduct img="https://preview.ait-themes.club/citadela/fooddelivery/wp-content/uploads/sites/17/2020/11/smoothies-768x576.jpg" />
-            </Box>
-          </Box> */}
+            {listProductByCategory3 && (
+              <Box>
+                <Typography className="titleCurve" component="h1" variant="h3">
+                  {nameCategory3 ?? 'Category Name'}
+                </Typography>
+                <Grid container spacing={{ xs: 2, md: 4 }}>
+                  {listProductByCategory3.map((productCategory, index) => (
+                    <Grid key={index} item xs={12} md={6} lg={3}>
+                      <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            )}
+
+            {listProductByCategory4 && (
+              <Box>
+                <Typography className="titleCurve" component="h1" variant="h3">
+                  {nameCategory4 ?? 'Category Name'}
+                </Typography>
+                <Grid container spacing={{ xs: 2, md: 4 }}>
+                  {listProductByCategory4.map((productCategory, index) => (
+                    <Grid key={index} item xs={12} md={6} lg={3}>
+                      <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            )}
+          </Box>
         </Box>
       </Box>
       <Box className="homePageStores">
         <TitleUserPage title="Restaurants" link="/stores" />
-        <Stores />
+        <Stores listStore={listStore} />
       </Box>
     </div>
   );

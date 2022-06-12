@@ -1,4 +1,10 @@
-import { GET_ALL_PRODUCT, GET_OWNER_PRODUCTS, GET_PRODUCT_DETAIL } from '../constants/subUrl';
+import {
+  GET_ALL_PRODUCT,
+  GET_OWNER_PRODUCTS,
+  GET_PRODUCT_BY_CATEGORY,
+  GET_PRODUCT_DETAIL,
+  GET_TOP_PRODUCTS,
+} from '../constants/subUrl';
 import axiosClient from './axiosClient';
 
 const productApi = {
@@ -14,6 +20,16 @@ const productApi = {
 
   getProductDetail: (idProduct, params) => {
     const url = `${GET_PRODUCT_DETAIL}${idProduct}`;
+    return axiosClient.get(url, params);
+  },
+
+  getTopProducts: (params) => {
+    const url = GET_TOP_PRODUCTS;
+    return axiosClient.get(url, params);
+  },
+
+  getProductsByCategory: (idCategory, params) => {
+    const url = `${GET_PRODUCT_BY_CATEGORY}${idCategory}`;
     return axiosClient.get(url, params);
   },
 };

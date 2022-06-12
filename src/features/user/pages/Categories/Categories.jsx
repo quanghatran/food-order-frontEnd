@@ -2,20 +2,22 @@ import { Box, Grid, Typography } from '@mui/material';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import TitleUserPage from '../../../../components/common/TitleUserPage/TitleUserPage';
 import { getListCategory, searchProductByCategory } from '../../../categories/categoriesSlice';
+import { getProductsByCategory } from '../../../products/productSlice';
 import '../../components/Categories/categories.scss';
-import ListProduct from '../../components/ListProduct/ListProduct';
+import Product from '../../components/Product/Product';
 import '../HomePage/homePage.scss';
 import './category.scss';
-import React from 'react';
-import TitleUserPage from '../../../../components/common/TitleUserPage/TitleUserPage';
 
 export default function Category() {
   const dispatch = useDispatch();
   const categoryName = useSelector((state) => state.categories.categoryName);
 
   const [listCategory, setListCategory] = useState(null);
-  const [categoryID, setCategoryID] = useState(categoryName ? categoryName : '');
+  const [categoryID, setCategoryID] = useState(categoryName ? categoryName : 'Coffee');
+  const [listProductByCategory, setListProductByCategory] = useState(null);
+  const [categorySelected, setNameCategorySelected] = useState();
 
   useEffect(() => {
     const fetchGetListCategory = async () => {
@@ -24,19 +26,30 @@ export default function Category() {
         unwrapResult(listCategory);
 
         setListCategory(listCategory.payload.data);
+
+        // TODO: fetch list product by categoried that selected
+        if (categorySelected) {
+          try {
+            const listProductByCategory = await dispatch(getProductsByCategory(categorySelected));
+            unwrapResult(listProductByCategory);
+
+            setListProductByCategory(listProductByCategory.payload.data);
+          } catch (error) {
+            console.log('Get list product by categoriy failed: ', error);
+          }
+        }
       } catch (error) {
         console.log('Get list category error: ', error);
       }
     };
     fetchGetListCategory();
-  }, [categoryID]);
+  }, [categoryID, categorySelected]);
 
-  const handleChangeCategory = (category) => {
-    dispatch(searchProductByCategory(category));
-    setCategoryID(category);
+  const handleChangeCategory = (categoryName, categoryId) => {
+    dispatch(searchProductByCategory(categoryName));
+    setCategoryID(categoryName);
+    setNameCategorySelected(categoryId);
   };
-
-  // TODO: fetch list product by categoried that selected
 
   return (
     <div className="categoryWrapper homePageWrapper categoriesWrapper">
@@ -56,7 +69,7 @@ export default function Category() {
                     <Grid className="categoryItem" item xs={6} key={category.id}>
                       <Box
                         className={`categoryBox ${categoryID === category.name ? 'active' : ''}`}
-                        onClick={(e) => handleChangeCategory(category.name)}
+                        onClick={(e) => handleChangeCategory(category.name, category.id)}
                       >
                         <img
                           width="60"
@@ -77,16 +90,21 @@ export default function Category() {
           </Box>
 
           <Box className="homePageProductsWrapper">
-            {/* <Box className="homePageProducts">
-              <Typography className="titleCurve" component="h1" variant="h3">
-                Noodle
-              </Typography>
-              <ListProduct img="https://preview.ait-themes.club/citadela/fooddelivery/wp-content/uploads/sites/17/2020/11/ramen-600x450.jpg" />
-              <br />
-              <ListProduct img="https://preview.ait-themes.club/citadela/fooddelivery/wp-content/uploads/sites/17/2020/11/ramen-600x450.jpg" />
-              <br />
-              <ListProduct img="https://preview.ait-themes.club/citadela/fooddelivery/wp-content/uploads/sites/17/2020/11/ramen-600x450.jpg" />
-            </Box> */}
+            {listProductByCategory && (
+              <Box>
+                <Typography className="titleCurve" component="h1" variant="h3">
+                  {categoryID ?? 'Category Name'}
+                </Typography>
+                {/* <p className="titleProductByCategories">{categoryID ?? 'Category Name'}</p> */}
+                <Grid container spacing={{ xs: 2, md: 4 }}>
+                  {listProductByCategory.map((productCategory) => (
+                    <Grid key={productCategory.productId} item xs={12} md={6} lg={3}>
+                      <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>

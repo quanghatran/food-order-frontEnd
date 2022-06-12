@@ -19,10 +19,25 @@ export const getProductDetail = createAsyncThunk(
   }
 );
 
+export const getTopProducts = createAsyncThunk('products/getTopProducts', async (params) => {
+  const response = await productApi.getTopProducts(params);
+  return response;
+});
+
+export const getProductsByCategory = createAsyncThunk(
+  'products/getProductsByCategory',
+  async (idCategory, params) => {
+    const response = await productApi.getProductsByCategory(idCategory, params);
+    return response;
+  }
+);
+
 const productSlice = createSlice({
   name: 'products',
   initialState: {
     current: {},
+    listTopProduct: {},
+    productByCategory: [],
     productDetail: {},
     message: '',
     loading: false,
@@ -70,43 +85,32 @@ const productSlice = createSlice({
       state.error = action.error;
     },
 
-    // // handle delete category
-    // [deleteSaleCode.pending]: (state) => {
-    //   state.loading = true;
-    // },
-    // [deleteSaleCode.fulfilled]: (state, action) => {
-    //   state.loading = false;
-    //   state.message = action.payload;
-    // },
-    // [deleteSaleCode.rejected]: (state, action) => {
-    //   state.loading = false;
-    //   state.error = action.error;
-    // },
+    // handle get top products
+    [getTopProducts.pending]: (state) => {
+      state.loading = true;
+    },
+    [getTopProducts.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.listTopProduct = action.payload;
+    },
+    [getTopProducts.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
 
-    // // handle add new category
-    // [addSaleCode.pending]: (state) => {
-    //   state.loading = true;
-    // },
-    // [addSaleCode.fulfilled]: (state, action) => {
-    //   state.loading = false;
-    //   state.message = action.payload;
-    // },
-    // [addSaleCode.rejected]: (state, action) => {
-    //   state.loading = false;
-    //   state.error = action.error;
-    // },
-    // // // handle update category by id
-    // // [updateCategory.pending]: (state) => {
-    // //   state.loading = true;
-    // // },
-    // // [updateCategory.fulfilled]: (state, action) => {
-    // //   state.loading = false;
-    // //   state.message = action.payload;
-    // // },
-    // // [updateCategory.rejected]: (state, action) => {
-    // //   state.loading = false;
-    // //   state.error = action.error;
-    // // },
+    // handle get top products
+    [getProductsByCategory.pending]: (state) => {
+      state.loading = true;
+    },
+    [getProductsByCategory.fulfilled]: (state, action) => {
+      state.loading = false;
+      const products = action.payload;
+      state.productByCategory = { ...state.productByCategory, products };
+    },
+    [getProductsByCategory.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
   },
 });
 

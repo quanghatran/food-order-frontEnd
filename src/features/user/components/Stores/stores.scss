@@ -1,0 +1,49 @@
+.storeWrapper {
+  .listStoreWrapper {
+    .listStoreItem {
+      position: relative;
+      cursor: pointer;
+      box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%);
+      position: relative;
+      border-radius: 15px;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+
+      .storeInfo {
+        .nameStore {
+          font-weight: bold;
+        }
+
+        .starStore {
+          display: flex;
+          align-items: flex-end;
+        }
+      }
+
+      .storeBoxOverlay {
+        border-radius: 15px;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: none;
+      }
+
+      &:hover,
+      &.active {
+        .storeBoxOverlay {
+          display: block;
+        }
+      }
+    }
+  }
+
+  .altTitle {
+    margin-top: 40px;
+    font-size: 20px;
+  }
+}

@@ -28,8 +28,9 @@ export default function Header({ isLoggedIn }) {
         </Link>
         <Box className="headerNavListNav">
           <NavLink to="/">Home</NavLink>
-          <NavLink to="/categories">Categories</NavLink>
-          <NavLink to="/products">Products</NavLink>
+          <NavLink to="/category">Categories</NavLink>
+          <NavLink to="/product">Products</NavLink>
+          <NavLink to="/restaurant">Restaurants</NavLink>
           <NavLink to="/contact">Contact</NavLink>
           {/* <NavLink to="/help">Help</NavLink> */}
         </Box>

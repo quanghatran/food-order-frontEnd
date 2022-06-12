@@ -61,11 +61,11 @@ export default function ProductManager() {
     <Box className="listProductWrapper listCategoryWrapper listUserWrapper">
       <Box className="headerListCategory">
         <TitleAdminStorePage list title="Product Manager" />
-        <Button variant="contained" endIcon={<AddIcon />}>
+        {/* <Button variant="contained" endIcon={<AddIcon />}>
           <Link style={{ color: '#fff', textDecoration: 'none' }} to="/store/products/add">
             Add
           </Link>
-        </Button>
+        </Button> */}
       </Box>
       <Box>
         <TableContainer component={Paper}>
@@ -162,7 +162,7 @@ export default function ProductManager() {
                         >
                           Delete
                         </Button>
-                        <Button
+                        {/* <Button
                           variant="text"
                           size="small"
                           style={{ margin: 'auto 10px' }}
@@ -170,7 +170,7 @@ export default function ProductManager() {
                           // onClick={(e) => handleClickUpdateCategory(category.id, category)}
                         >
                           Update
-                        </Button>
+                        </Button> */}
                       </Box>
                     </TableCell>
                   </TableRow>
