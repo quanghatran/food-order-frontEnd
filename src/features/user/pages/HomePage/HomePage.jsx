@@ -12,6 +12,9 @@ import Slider from '../../components/Slider/Slider';
 import Stores from '../../components/Stores/Stores';
 import './homePage.scss';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import productApi from '../../../../api/productApi';
+import SearchDebouce from '../../../../components/common/SearchDebounce/SearchForm';
+import ProductSearch from '../../components/ProductSearch/ProductSearch';
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -20,7 +23,7 @@ export default function HomePage() {
   const [listStore, setListStore] = useState(null);
   const [topProducts, setTopProducts] = useState(null);
   // const [topProducts, setTopProducts] = useState(null);
-
+  const [searchProducts, setSearchProducts] = useState('');
   const [nameCategory1, setNameCategory1] = useState('');
   const [listProductByCategory1, setListProductByCategory1] = useState(null);
   const [nameCategory2, setNameCategory2] = useState('');
@@ -97,6 +100,21 @@ export default function HomePage() {
     fetchGetTopProduct();
   }, [dispatch]);
 
+  const initialValue = {
+    search: '',
+  };
+  const handleSubmitSearchForm = (FormValue) => {
+    if (FormValue.searchTerm === '') return;
+    (async () => {
+      try {
+        const response = await productApi.getProductByName(FormValue.searchTerm);
+        setSearchProducts(response);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  };
+
   return (
     <div className="homePageWrapper">
       <Box className="homePageBanner">
@@ -118,78 +136,96 @@ export default function HomePage() {
                 </Typography>
                 <FilterListIcon fontSize="medium" />
               </Box>
-              <Box className="searchWrapper">
-                <TextField
-                  id="filled-hidden-label-small"
-                  fullWidth
-                  placeholder="Search by name"
-                  variant="outlined"
-                  size="large"
+              <Box>
+                <SearchDebouce
+                  initialValue={initialValue}
+                  onSubmit={handleSubmitSearchForm}
+                  width="100%"
                 />
               </Box>
             </Box>
           </Box>
-          <Box className="homePageProductsWrapper">
-            {listProductByCategory1 && (
-              <Box>
-                <Typography className="titleCurve" component="h1" variant="h3">
-                  {nameCategory1 ?? 'Category Name'}
-                </Typography>
-                <Grid container spacing={{ xs: 2, md: 4 }}>
-                  {listProductByCategory1.map((productCategory, index) => (
-                    <Grid key={index} item xs={12} md={6} lg={3}>
-                      <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
-                    </Grid>
-                  ))}
-                </Grid>
-              </Box>
-            )}
+          {searchProducts === '' ? (
+            <Box className="homePageProductsWrapper">
+              {listProductByCategory1 && (
+                <Box>
+                  <Typography className="titleCurve" component="h1" variant="h3">
+                    {nameCategory1 ?? 'Category Name'}
+                  </Typography>
+                  <Grid container spacing={{ xs: 2, md: 4 }}>
+                    {listProductByCategory1.map((productCategory, index) => (
+                      <Grid key={index} item xs={12} md={6} lg={3}>
+                        <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+              )}
 
-            {listProductByCategory2 && (
-              <Box>
-                <Typography className="titleCurve" component="h1" variant="h3">
-                  {nameCategory2 ?? 'Category Name'}
-                </Typography>
-                <Grid container spacing={{ xs: 2, md: 4 }}>
-                  {listProductByCategory2.map((productCategory, index) => (
-                    <Grid key={index} item xs={12} md={6} lg={3}>
-                      <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
-                    </Grid>
-                  ))}
-                </Grid>
-              </Box>
-            )}
+              {listProductByCategory2 && (
+                <Box>
+                  <Typography className="titleCurve" component="h1" variant="h3">
+                    {nameCategory2 ?? 'Category Name'}
+                  </Typography>
+                  <Grid container spacing={{ xs: 2, md: 4 }}>
+                    {listProductByCategory2.map((productCategory, index) => (
+                      <Grid key={index} item xs={12} md={6} lg={3}>
+                        <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+              )}
 
-            {listProductByCategory3 && (
-              <Box>
-                <Typography className="titleCurve" component="h1" variant="h3">
-                  {nameCategory3 ?? 'Category Name'}
-                </Typography>
-                <Grid container spacing={{ xs: 2, md: 4 }}>
-                  {listProductByCategory3.map((productCategory, index) => (
-                    <Grid key={index} item xs={12} md={6} lg={3}>
-                      <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
-                    </Grid>
-                  ))}
-                </Grid>
-              </Box>
-            )}
+              {listProductByCategory3 && (
+                <Box>
+                  <Typography className="titleCurve" component="h1" variant="h3">
+                    {nameCategory3 ?? 'Category Name'}
+                  </Typography>
+                  <Grid container spacing={{ xs: 2, md: 4 }}>
+                    {listProductByCategory3.map((productCategory, index) => (
+                      <Grid key={index} item xs={12} md={6} lg={3}>
+                        <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+              )}
 
-            {listProductByCategory4 && (
-              <Box>
-                <Typography className="titleCurve" component="h1" variant="h3">
-                  {nameCategory4 ?? 'Category Name'}
-                </Typography>
-                <Grid container spacing={{ xs: 2, md: 4 }}>
-                  {listProductByCategory4.map((productCategory, index) => (
-                    <Grid key={index} item xs={12} md={6} lg={3}>
-                      <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
-                    </Grid>
-                  ))}
-                </Grid>
-              </Box>
-            )}
-          </Box>
+              {listProductByCategory4 && (
+                <Box>
+                  <Typography className="titleCurve" component="h1" variant="h3">
+                    {nameCategory4 ?? 'Category Name'}
+                  </Typography>
+                  <Grid container spacing={{ xs: 2, md: 4 }}>
+                    {listProductByCategory4.map((productCategory, index) => (
+                      <Grid key={index} item xs={12} md={6} lg={3}>
+                        <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+              )}
+            </Box>
+          ) : (
+            <Box className="homePageProductsWrapper">
+              {searchProducts && (
+                <Box>
+                  <Typography className="titleCurve" component="h1" variant="h3">
+                    Search Result
+                  </Typography>
+                  <Grid container spacing={{ xs: 2, md: 4 }}>
+                    {searchProducts &&
+                      searchProducts.map((product, index) => (
+                        <Grid key={index} item xs={12} md={6} lg={3}>
+                          <ProductSearch style={{ marginBottom: '40px' }} data={product} />
+                        </Grid>
+                      ))}
+                  </Grid>
+                </Box>
+              )}
+            </Box>
+          )}
         </Box>
       </Box>
       <Box className="homePageStores">

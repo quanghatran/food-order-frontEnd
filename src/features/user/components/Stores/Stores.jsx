@@ -9,7 +9,7 @@ export default function Stores({ listStore }) {
 
   const handleClickSearchProductByStore = (storeId) => {
     // dispatch(searchProductByCategory(cateogryName));
-    navigate(`/product-store/${storeId}`);
+    navigate(`/restaurant/${storeId}`);
   };
 
   return (

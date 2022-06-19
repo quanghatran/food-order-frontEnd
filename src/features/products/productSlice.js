@@ -11,6 +11,11 @@ export const getOwnerProducts = createAsyncThunk('products/getOwnerProducts', as
   return response;
 });
 
+export const addProduct = createAsyncThunk('products/addProduct', async (formData) => {
+  const response = await productApi.addProduct(formData);
+  return response;
+});
+
 export const getProductDetail = createAsyncThunk(
   'products/getProductDetail',
   async (idProduct, params) => {
@@ -32,12 +37,21 @@ export const getProductsByCategory = createAsyncThunk(
   }
 );
 
+export const getProductsByStore = createAsyncThunk(
+  'products/getProductsByStore',
+  async (idStore, params) => {
+    const response = await productApi.getProductByStore(idStore, params);
+    return response;
+  }
+);
+
 const productSlice = createSlice({
   name: 'products',
   initialState: {
     current: {},
     listTopProduct: {},
     productByCategory: [],
+    productByStore: {},
     productDetail: {},
     message: '',
     loading: false,
@@ -55,6 +69,19 @@ const productSlice = createSlice({
       state.current = action.payload;
     },
     [getListProduct.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // handle store add new product
+    [addProduct.pending]: (state) => {
+      state.loading = true;
+    },
+    [addProduct.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.current = action.payload;
+    },
+    [addProduct.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },
@@ -98,7 +125,7 @@ const productSlice = createSlice({
       state.error = action.error;
     },
 
-    // handle get top products
+    // handle get products by category id
     [getProductsByCategory.pending]: (state) => {
       state.loading = true;
     },
@@ -108,6 +135,19 @@ const productSlice = createSlice({
       state.productByCategory = { ...state.productByCategory, products };
     },
     [getProductsByCategory.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // handle get products by store id
+    [getProductsByStore.pending]: (state) => {
+      state.loading = true;
+    },
+    [getProductsByStore.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.productByStore = action.payload;
+    },
+    [getProductsByStore.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },

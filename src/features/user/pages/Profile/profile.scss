@@ -1,0 +1,41 @@
+.Profile-container {
+}
+.Profile-btn {
+  margin-bottom: 20px;
+}
+.Profile-card {
+  display: flex;
+  align-items: center;
+  padding: 30px;
+}
+.profile-card-info--title {
+  font-size: 32px;
+  font-weight: 500;
+  margin-bottom: 20px !important;
+}
+.Profile-card-img {
+  margin-right: 50px;
+  img {
+    border-radius: 50%;
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+  }
+}
+.profile-card-info {
+  width: 100%;
+}
+.accountInfo {
+  font-size: 18px;
+  font-weight: 300;
+  margin-bottom: 12px !important;
+}
+.profile-card-info--item {
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
+}
+.profile-card-info--group {
+  display: flex;
+  flex-direction: column;
+}

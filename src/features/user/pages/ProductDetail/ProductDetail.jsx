@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import TitleUserPage from '../../../../components/common/TitleUserPage/TitleUserPage';
 import { getProductDetail } from '../../../products/productSlice';
 import { getAllStore } from '../../../storeManager/storeManagerSlice';
+import { totalQuantity } from '../../userSlice';
 import './productDetail.scss';
 
 export default function ProductDetail() {
@@ -15,6 +16,7 @@ export default function ProductDetail() {
   const { productId } = useParams();
   const [productDetail, setProductDetail] = useState(null);
   // const [productByStore, setProductByStore] = useState(null);
+  const [productQuantity, setProductQuantity] = useState(1);
   const [storeInfo, setStoreInfo] = useState(null);
 
   // get product detail by id
@@ -51,7 +53,32 @@ export default function ProductDetail() {
     fetchGetProductDetail();
   }, [dispatch, productId]);
 
-  console.log(storeInfo);
+  const handleAddToCart = () => {
+    const cart = JSON.parse(localStorage.getItem('cart'));
+    console.log(productDetail);
+    if (cart) {
+      const productExits = cart.find((item) => item.id === productDetail.id);
+      if (productExits) {
+        productExits.quantity += productQuantity;
+        const NewCart = cart.filter((item) => item.id !== productDetail.id);
+        NewCart.push(productExits);
+        localStorage.setItem('cart', JSON.stringify(NewCart));
+        const total = cart?.reduce((acc, curr) => (acc = acc + curr.quantity), 0);
+        dispatch(totalQuantity(total));
+      } else {
+        const newItem = { ...productDetail, quantity: productQuantity };
+        cart.push(newItem);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        const total = cart?.reduce((acc, curr) => (acc = acc + curr.quantity), 0);
+        dispatch(totalQuantity(total));
+      }
+    } else {
+      const cartItem = { ...productDetail, quantity: productQuantity };
+      localStorage.setItem('cart', JSON.stringify([cartItem]));
+      dispatch(totalQuantity(productQuantity));
+    }
+  };
+
   return (
     <div className="productDetailWrapper">
       <Box className="homePageCategory">
@@ -95,7 +122,44 @@ export default function ProductDetail() {
                 </Typography>
               </Box>
             )}
-            <Button className="productButtonAddCart" variant="contained" color="secondary">
+            <Box display="flex" alignItem="center">
+              <Button
+                variant="contained"
+                color="secondary"
+                sx={{ magin: 0 }}
+                onClick={() => setProductQuantity((counter) => counter - 1)}
+                disabled={productQuantity === 0 ? true : false}
+              >
+                -
+              </Button>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                width="64px"
+                height="36px"
+                bgcolor="#a5ecd9"
+              >
+                <Typography variant="body2" fontSize="18px">
+                  {productQuantity}
+                </Typography>
+              </Box>
+              <Button
+                variant="contained"
+                color="secondary"
+                sx={{ magin: 0 }}
+                onClick={() => setProductQuantity((counter) => counter + 1)}
+              >
+                +
+              </Button>
+            </Box>
+            <Button
+              className="productButtonAddCart"
+              variant="contained"
+              color="secondary"
+              onClick={handleAddToCart}
+              disabled={productQuantity === 0 ? true : false}
+            >
               Add to cart
             </Button>
           </Box>

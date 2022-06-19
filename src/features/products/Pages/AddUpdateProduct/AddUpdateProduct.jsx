@@ -1,28 +1,30 @@
+import { LoadingButton } from '@mui/lab';
 import { Box, Button, Paper, TextField } from '@mui/material';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import Select from 'react-select';
+import { toast } from 'react-toastify';
 import TitleAdminStorePage from '../../../../components/common/TitleAdminStorePage/TitleAdminStorePage';
 import { ImportFileField } from '../../../../components/formFields/ImportFileField';
 import { getListCategory } from '../../../categories/categoriesSlice';
+import { addProduct } from '../../productSlice';
 import './addUpdateProduct.scss';
-import Select from 'react-select';
-import makeAnimated from 'react-select/animated';
-
-const animatedComponents = makeAnimated();
 
 export default function AddUpdateProduct() {
   const { productId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isEdit = Boolean(productId);
+  const loadingAddUpdateProduct = useSelector((state) => state.products.loading);
 
-  const [listCategory, setListCategory] = useState(null);
+  const [listSelectCategory, setListSelectCategory] = useState(null);
   const [name, setName] = useState(null);
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState(null);
   const [imageProduct, setImageProduct] = useState(null);
-  const [optionCategories, setOptionCategories] = useState(null);
+  const [categories, setCategories] = useState([]);
 
   // get initial list category
   useEffect(() => {
@@ -31,7 +33,21 @@ export default function AddUpdateProduct() {
         const listCategory = await dispatch(getListCategory('page=1'));
         unwrapResult(listCategory);
 
-        setListCategory(listCategory.payload.data);
+        const listCategoryResult = listCategory.payload.data;
+
+        if (listCategoryResult) {
+          let listCategorySelections = listCategoryResult.reduce(function (
+            preVal,
+            curVal,
+            curIndex
+          ) {
+            const newVal = { label: curVal.name, value: curVal.id };
+            return [...preVal, newVal];
+          },
+          []);
+
+          setListSelectCategory(listCategorySelections);
+        }
       } catch (error) {
         console.log('Get list category error: ', error);
       }
@@ -39,22 +55,35 @@ export default function AddUpdateProduct() {
     fetchGetListCategory();
   }, []);
 
-  const handleAddUpdateProduct = () => {
-    const dataSubmit = { name, description, price };
+  const handleAddUpdateProduct = async () => {
+    const formData = new FormData();
+    categories.map((category) => {
+      formData.append('categories', category.value);
+    });
+    formData.append('name', name);
+    formData.append('images', imageProduct);
+    formData.append('description', description);
+    formData.append('price', price);
 
-    console.log('check add update product: ', dataSubmit);
+    try {
+      const resultAddProduct = await dispatch(addProduct(formData));
+      unwrapResult(resultAddProduct);
+
+      toast.success('Add new product success!');
+      navigate('/store/products');
+    } catch (error) {
+      toast.error('Add product error!');
+      console.log(error);
+    }
   };
 
   const handleImportFileChange = (file) => {
     setImageProduct(file);
   };
 
-  console.log(listCategory);
-  // listCategory.map((category) => {
-  //   setOptionCategories({ ...optionCategories, value: category.id, label: category.name });
-  // });
-
-  // console.log(optionCategories);
+  const handleCategoriesChange = (data) => {
+    setCategories(data);
+  };
 
   return (
     <Box className="addUpdateProductWrapper">
@@ -62,7 +91,7 @@ export default function AddUpdateProduct() {
         <TitleAdminStorePage title={isEdit ? 'Update Product' : 'Add Product'} />
       </Box>
       <Paper className="productFieldsWrapper">
-        <form autoComplete="off" onSubmit={handleAddUpdateProduct}>
+        <form autoComplete="off">
           <Box className="addUpdateProductContent">
             <Box className="basicProductInfo">
               <TextField
@@ -102,20 +131,23 @@ export default function AddUpdateProduct() {
               />
             </Box>
             <Box className="imageCategoryProduct">
+              <Box>
+                <span className="imageFIeldTitle">Categories</span>
+                <Select
+                  isMulti
+                  name="colors"
+                  options={listSelectCategory}
+                  className="basic-multi-select"
+                  classNamePrefix="select"
+                  onChange={handleCategoriesChange}
+                />
+              </Box>
               <Box className="imageFieldWrapper">
-                {/* <span className="imageFIeldTitle">Image product</span> */}
+                <span className="imageFIeldTitle">Image product</span>
                 <ImportFileField
                   onImportFileChange={handleImportFileChange}
                   // urlImageCategory={(categoryInfo && categoryInfo.image) || null}
                 />
-              </Box>
-              <Box>
-                {/* <Select
-                  options={options}
-                  closeMenuOnSelect={false}
-                  components={animatedComponents}
-                  isMulti
-                /> */}
               </Box>
             </Box>
           </Box>
@@ -123,7 +155,14 @@ export default function AddUpdateProduct() {
             <Button className="cancelButton" variant="contained" color="secondary">
               Cancel
             </Button>
-            <Button variant="contained">Add Product</Button>
+
+            <LoadingButton
+              onClick={handleAddUpdateProduct}
+              loading={loadingAddUpdateProduct}
+              variant="contained"
+            >
+              Add Product
+            </LoadingButton>
           </Box>
         </form>
       </Paper>

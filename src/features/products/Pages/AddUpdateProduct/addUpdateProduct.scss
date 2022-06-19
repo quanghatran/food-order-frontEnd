@@ -30,6 +30,10 @@
 
     .imageCategoryProduct {
       flex: 1;
+      display: flex;
+      justify-content: flex-start;
+      gap: 40px;
+      flex-direction: column;
 
       .imageFieldWrapper {
         .imageFIeldTitle {

@@ -12,8 +12,13 @@ const userSlice = createSlice({
     current: {},
     loading: false,
     error: '',
+    totalQuantityItemCart: 0,
   },
-  reducers: {},
+  reducers: {
+    totalQuantity: (state, action) => {
+      state.totalQuantityItemCart = action.payload;
+    },
+  },
 
   extraReducers: {
     // handle get use info
@@ -32,5 +37,5 @@ const userSlice = createSlice({
 });
 
 const { reducer, actions } = userSlice;
-export const {} = actions;
+export const { totalQuantity } = actions;
 export default reducer;

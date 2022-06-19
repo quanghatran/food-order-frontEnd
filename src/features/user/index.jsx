@@ -9,6 +9,9 @@ import Cart from './pages/Cart/Cart';
 import ProductPage from './pages/ProductPage/ProductPage';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
 import RestaurantPage from './pages/RestaurantPage/RestaurantPage';
+import ProductStore from './pages/ProductStore/ProductStore';
+import Profile from './pages/Profile/Profile';
+import OrderHistory from './pages/OrderHistory/OrderHistory';
 
 export default function UserFeature() {
   const isLoggedIn = false;
@@ -24,7 +27,10 @@ export default function UserFeature() {
           <Route path="/product" element={<ProductPage />} />
           <Route path="/restaurant" element={<RestaurantPage />} />
           <Route path="/product/:productId" element={<ProductDetail />} />
+          <Route path="/restaurant/:storeId" element={<ProductStore />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/myAccount" element={<Profile />} />
+          <Route path="/orderHistory" element={<OrderHistory />} />
         </Routes>
       </div>
 

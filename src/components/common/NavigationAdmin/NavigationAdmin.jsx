@@ -80,6 +80,8 @@ export default function NavigationAdmin(props) {
   const userInfo = JSON.parse(localStorage.getItem('accountInfo'));
   const user = JSON.parse(localStorage.getItem('account'));
 
+  console.log(userInfo);
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -210,17 +212,28 @@ export default function NavigationAdmin(props) {
               </Badge>
             </IconButton>
             <Box className="leftAppBarAdminInfo">
-              {/* <img
-                className="avatarAdmin"
-                width="40"
-                height="40"
-                src={
-                  userInfo.images
-                    ? userInfo.images
-                    : 'https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/large/800/Baymax.Big-Hero-6.webp'
-                }
-                alt="avatar_admin"
-              /> */}
+              {userInfo ? (
+                <img
+                  className="avatarAdmin"
+                  width="40"
+                  height="40"
+                  src={
+                    userInfo.images ??
+                    'https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/large/800/Baymax.Big-Hero-6.webp'
+                  }
+                  alt="avatar_admin"
+                />
+              ) : (
+                <img
+                  className="avatarAdmin"
+                  width="40"
+                  height="40"
+                  src={
+                    'https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/large/800/Baymax.Big-Hero-6.webp'
+                  }
+                  alt="avatar_admin"
+                />
+              )}
               <span className="adminInfo">
                 <div className="nameAdmin">{user.name}</div>
                 <span className="roleInfo">{user.role} </span>
