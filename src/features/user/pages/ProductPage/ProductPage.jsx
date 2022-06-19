@@ -64,21 +64,21 @@ export default function ProductPage() {
         }}
       >
         <TitleUserPage title="Products" link="#" />
-        <Box className="searchWrapper">
-          <SearchDebouce
-            initialValue={initialValue}
-            onSubmit={handleSubmitSearchForm}
-            width="400px"
-          />
-        </Box>
       </Box>
-      <TextField
-        style={{ width: '400px', marginBottom: '40px' }}
+      <Box className="searchWrapper" style={{ width: '400px', marginBottom: '40px' }}>
+        <SearchDebouce
+          initialValue={initialValue}
+          onSubmit={handleSubmitSearchForm}
+          width="400px"
+        />
+      </Box>
+      {/* <TextField
+       
         id="filled-hidden-label-small"
         placeholder="Search by name"
         variant="outlined"
         size="large"
-      />
+      /> */}
 
       <Box className="listProductContainer">
         <Box sx={{ flexGrow: 1 }}>
