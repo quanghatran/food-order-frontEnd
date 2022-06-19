@@ -10,6 +10,7 @@
     display: flex;
     align-items: center;
     gap: 40px;
+    flex: 1;
 
     .headerNavLogo {
       width: 100px;
@@ -38,14 +39,15 @@
     .headerCart {
       display: flex;
       align-items: center;
-      gap: 30px;
-      padding: 5px 10px;
+      gap: 20px;
+      padding: 8px 10px;
       background: #a5ecd9;
       border-radius: 15px;
       box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 
       .totalPrice {
-        font-weight: bold;
+        // font-weight: bold;
+        font-size: 18px;
         margin-top: 7px;
       }
 
@@ -80,5 +82,23 @@
     width: 100%;
     height: 100%;
     padding: 6px 16px;
+  }
+
+  .CartPopup {
+    ul {
+      padding: 0 !important;
+      li {
+        background: #ffffff !important;
+        padding: 18px;
+        &:hover {
+          background: #ffffff;
+        }
+      }
+    }
+
+    box-shadow: 6px 5px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    height: 100%;
+    width: 100%;
   }
 }

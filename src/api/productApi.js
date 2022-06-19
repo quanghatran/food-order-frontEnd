@@ -36,9 +36,9 @@ const productApi = {
     return axiosClient.get(url, params);
   },
 
-  getProductByStore: (idProduct, params) => {
-    const url = `${GET_PRODUCT_BY_STORE}${idProduct}`;
-    return axiosClient.get(url, params);
+  getProductByStore: (params) => {
+    const url = GET_PRODUCT_BY_STORE;
+    return axiosClient.get(url, { params });
   },
 
   addProduct: (dataAdd) => {

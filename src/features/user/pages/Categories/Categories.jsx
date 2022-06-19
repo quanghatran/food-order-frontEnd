@@ -12,10 +12,13 @@ import './category.scss';
 
 export default function Category() {
   const dispatch = useDispatch();
-  const categoryName = useSelector((state) => state.categories.categoryName);
+
+  const reduxCategoryName = useSelector((state) => state.categories.categoryName);
+
+  console.log(reduxCategoryName);
 
   const [listCategory, setListCategory] = useState(null);
-  const [categoryID, setCategoryID] = useState(categoryName ? categoryName : 'Coffee');
+  const [categoryName, setCategoryName] = useState('');
   const [listProductByCategory, setListProductByCategory] = useState(null);
   const [categorySelected, setNameCategorySelected] = useState();
 
@@ -26,11 +29,32 @@ export default function Category() {
         unwrapResult(listCategory);
 
         setListCategory(listCategory.payload.data);
+        if (reduxCategoryName) {
+          console.log(1);
+          const reduxCategoryData = listCategory.payload.data.find(
+            (category) => category.name === reduxCategoryName
+          );
+          setCategoryName(reduxCategoryName);
 
-        // TODO: fetch list product by categoried that selected
-        if (categorySelected) {
+          // fetch get list initial products by initial category
           try {
-            const listProductByCategory = await dispatch(getProductsByCategory(categorySelected));
+            const listProductByCategory = await dispatch(
+              getProductsByCategory(reduxCategoryData.id)
+            );
+            unwrapResult(listProductByCategory);
+
+            setListProductByCategory(listProductByCategory.payload.data);
+          } catch (error) {
+            console.log('Get list product by categoriy failed: ', error);
+          }
+        } else if (!reduxCategoryName && listCategory.payload.data) {
+          setCategoryName(listCategory.payload.data[0].name);
+
+          // fetch get list initial products by initial category
+          try {
+            const listProductByCategory = await dispatch(
+              getProductsByCategory(listCategory.payload.data[0].id)
+            );
             unwrapResult(listProductByCategory);
 
             setListProductByCategory(listProductByCategory.payload.data);
@@ -43,11 +67,29 @@ export default function Category() {
       }
     };
     fetchGetListCategory();
-  }, [categoryID, categorySelected]);
+  }, [reduxCategoryName]);
+
+  // fetch list product by categoried that selected
+  useEffect(() => {
+    const fetchGetListProduct = async () => {
+      // fetch list product by categoried that selected
+      if (categorySelected) {
+        try {
+          const listProductByCategory = await dispatch(getProductsByCategory(categorySelected));
+          unwrapResult(listProductByCategory);
+
+          setListProductByCategory(listProductByCategory.payload.data);
+        } catch (error) {
+          console.log('Get list product by categoriy failed: ', error);
+        }
+      }
+    };
+    fetchGetListProduct();
+  }, [categoryName, categorySelected]);
 
   const handleChangeCategory = (categoryName, categoryId) => {
     dispatch(searchProductByCategory(categoryName));
-    setCategoryID(categoryName);
+    setCategoryName(categoryName);
     setNameCategorySelected(categoryId);
   };
 
@@ -68,7 +110,7 @@ export default function Category() {
                   {listCategory.map((category) => (
                     <Grid className="categoryItem" item xs={6} key={category.id}>
                       <Box
-                        className={`categoryBox ${categoryID === category.name ? 'active' : ''}`}
+                        className={`categoryBox ${categoryName === category.name ? 'active' : ''}`}
                         onClick={(e) => handleChangeCategory(category.name, category.id)}
                       >
                         <img
@@ -93,7 +135,7 @@ export default function Category() {
             {listProductByCategory && (
               <Box>
                 <Typography className="titleCurve" component="h1" variant="h3">
-                  {categoryID ?? 'Category Name'}
+                  {categoryName ?? 'Category Name'}
                 </Typography>
                 {/* <p className="titleProductByCategories">{categoryID ?? 'Category Name'}</p> */}
                 <Grid container spacing={{ xs: 2, md: 4 }}>

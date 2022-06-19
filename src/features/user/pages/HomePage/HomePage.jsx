@@ -132,7 +132,7 @@ export default function HomePage() {
             <Box className="filterWrapper">
               <Box className="filterTitle">
                 <Typography className="titleCurve" component="h1" variant="h3">
-                  Filtesr
+                  Filters
                 </Typography>
                 <FilterListIcon fontSize="medium" />
               </Box>

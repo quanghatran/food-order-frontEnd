@@ -40,13 +40,13 @@ export default function RestaurantPage() {
       >
         <TitleUserPage title="Restaurants" link="#" />
       </Box>
-      <TextField
+      {/* <TextField
         style={{ width: '400px', marginBottom: '40px' }}
         id="filled-hidden-label-small"
         placeholder="Search by restaurant"
         variant="outlined"
         size="large"
-      />
+      /> */}
       <Stores listStore={listStore} />
     </div>
   );

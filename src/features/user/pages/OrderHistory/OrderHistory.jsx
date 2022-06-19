@@ -14,6 +14,9 @@ import dateFormat from 'dateformat';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import userApi from '../../../../api/userApi';
+import TitleUserPage from '../../../../components/common/TitleUserPage/TitleUserPage';
+import './orderHistory.scss';
+
 const OrderHistory = () => {
   const [orderHistory, setOrderHistory] = useState(null);
   const userInfo = JSON.parse(localStorage.getItem('accountInfo'));
@@ -25,13 +28,14 @@ const OrderHistory = () => {
   }, []);
 
   return (
-    <Box>
-      <TableContainer component={Paper}>
+    <Box className="orderHistoryWrapper">
+      <TitleUserPage title="Orders History" link="#" />
+      <TableContainer className="tableContainer" component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead style={{ background: '#3dbe9c', color: '#fff' }}>
             <TableRow>
               <TableCell className="tableHeaderItem" align="center">
-                My Order
+                My Orders
               </TableCell>
               <TableCell className="tableHeaderItem" align="center">
                 Rating
@@ -83,7 +87,7 @@ const OrderHistory = () => {
                       {item.status === 'active' ? (
                         <b style={{ color: 'green' }}>{item.status}</b>
                       ) : (
-                        <b style={{ color: 'red' }}>{item.status}</b>
+                        <b style={{ color: '#f0932b' }}>{item.status}</b>
                       )}
                     </Box>
                   </TableCell>

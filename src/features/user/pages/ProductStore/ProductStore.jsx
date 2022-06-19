@@ -1,6 +1,6 @@
 import CheckCircleOutlineSharpIcon from '@mui/icons-material/CheckCircleOutlineSharp';
 import DoNotDisturbAltTwoToneIcon from '@mui/icons-material/DoNotDisturbAltTwoTone';
-import { Box, Divider, Rating, Typography } from '@mui/material';
+import { Box, Divider, Grid, Rating, Typography } from '@mui/material';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -9,6 +9,7 @@ import TitleAdminStorePage from '../../../../components/common/TitleAdminStorePa
 import TitleUserPage from '../../../../components/common/TitleUserPage/TitleUserPage';
 import { getProductsByStore } from '../../../products/productSlice';
 import { getAllStore } from '../../../storeManager/storeManagerSlice';
+import Product from '../../components/Product/Product';
 import './productStore.scss';
 
 export default function ProductStore() {
@@ -18,6 +19,7 @@ export default function ProductStore() {
   const [storeInfo, setStoreInfo] = useState(null);
   const [listOwnProducts, setListOwnProducts] = useState(null);
   const [params, setParams] = useState({ page: 1, perPage: 100 });
+  const [storeName, setStoreName] = useState('');
 
   // fetch get list store
   useEffect(() => {
@@ -30,6 +32,24 @@ export default function ProductStore() {
         if (storeId) {
           const storeInfoFind = listStoreFind.find((store) => store.id === storeId);
           setStoreInfo(storeInfoFind);
+          setStoreName(storeInfoFind.name);
+
+          // fetch get list own product of restaurant
+          if (storeName) {
+            const params = { q: storeName };
+            const fetchGetListOwnProduct = async () => {
+              try {
+                const result = await dispatch(getProductsByStore(params));
+                unwrapResult(result);
+
+                setListOwnProducts(result.payload);
+              } catch (error) {
+                console.log('Get list product error: ', error);
+              }
+            };
+
+            fetchGetListOwnProduct();
+          }
         }
       } catch (error) {
         console.log('Get list store error: ', error);
@@ -37,33 +57,12 @@ export default function ProductStore() {
     };
 
     fetchGetListStore();
-  }, [dispatch, params]);
-
-  // fetch get list own product of restaurant
-  useEffect(() => {
-    if (storeId) {
-      const fetchGetListOwnProduct = async () => {
-        try {
-          const result = await dispatch(getProductsByStore(storeId, params));
-          unwrapResult(result);
-
-          console.log(result);
-          setListOwnProducts(result.payload);
-        } catch (error) {
-          console.log('Get list product error: ', error);
-        }
-      };
-
-      fetchGetListOwnProduct();
-    }
-  }, [dispatch, params]);
-
-  console.log('listOwnProducts: ', listOwnProducts);
+  }, [dispatch, params, storeName]);
 
   return (
     <div className="productStoreWrapper storeInfoWrapper">
       <Box className="productStoreInfoWrapper">
-        <TitleUserPage title="Restaurant Information" link="#" />
+        <TitleUserPage title="Information" link="#" />
         {storeInfo && (
           <Box
             style={{
@@ -150,8 +149,19 @@ export default function ProductStore() {
       </Box>
 
       <Box className="listOwnProductStore">
-        <TitleUserPage title="Products Of Restaurant" link="#" />
-        <p>Chờ Tú fix xong api get líst product by store id thì show ra</p>
+        <TitleUserPage title="Products" link="#" />
+        <Grid container spacing={{ xs: 3, md: 6 }}>
+          {listOwnProducts &&
+            listOwnProducts.map((product) => (
+              <Grid key={product.id} item xs={12} md={6} lg={3}>
+                <Product
+                  style={{ marginBottom: '40px' }}
+                  data={product}
+                  // img={img}
+                />
+              </Grid>
+            ))}
+        </Grid>
       </Box>
     </div>
   );

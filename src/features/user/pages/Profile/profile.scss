@@ -6,7 +6,9 @@
 .Profile-card {
   display: flex;
   align-items: center;
-  padding: 30px;
+  padding: 40px;
+  box-shadow: rgb(0 0 0 / 15%) 0px 0.5rem 1rem;
+  border-radius: 15px;
 }
 .profile-card-info--title {
   font-size: 32px;
@@ -38,4 +40,22 @@
 .profile-card-info--group {
   display: flex;
   flex-direction: column;
+}
+
+.myAccount-Form-Edit {
+  display: flex;
+  flex-direction: column;
+}
+
+.myAccount-Edid-Modal {
+  position: absolute;
+  top: 50%;
+  border-radius: 8px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: #fffefe;
+  border: 1px solid gray;
+  box-shadow: 24px;
+  padding: 32px;
 }

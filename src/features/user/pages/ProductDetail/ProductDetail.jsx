@@ -1,4 +1,4 @@
-import { Button, Typography } from '@mui/material';
+import { Button, IconButton, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { unwrapResult } from '@reduxjs/toolkit';
 import React, { useEffect, useState } from 'react';
@@ -9,7 +9,10 @@ import TitleUserPage from '../../../../components/common/TitleUserPage/TitleUser
 import { getProductDetail } from '../../../products/productSlice';
 import { getAllStore } from '../../../storeManager/storeManagerSlice';
 import { totalQuantity } from '../../userSlice';
+import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from '@mui/icons-material/Add';
 import './productDetail.scss';
+import { toast } from 'react-toastify';
 
 export default function ProductDetail() {
   const dispatch = useDispatch();
@@ -77,6 +80,7 @@ export default function ProductDetail() {
       localStorage.setItem('cart', JSON.stringify([cartItem]));
       dispatch(totalQuantity(productQuantity));
     }
+    toast.success('Add product to cart success!');
   };
 
   return (
@@ -122,16 +126,15 @@ export default function ProductDetail() {
                 </Typography>
               </Box>
             )}
-            <Box display="flex" alignItem="center">
-              <Button
-                variant="contained"
+            <Box display="flex" alignItem="center" style={{ marginTop: '10px' }}>
+              <IconButton
+                aria-label="delete"
                 color="secondary"
-                sx={{ magin: 0 }}
                 onClick={() => setProductQuantity((counter) => counter - 1)}
                 disabled={productQuantity === 0 ? true : false}
               >
-                -
-              </Button>
+                <RemoveIcon />
+              </IconButton>
               <Box
                 display="flex"
                 alignItems="center"
@@ -139,19 +142,20 @@ export default function ProductDetail() {
                 width="64px"
                 height="36px"
                 bgcolor="#a5ecd9"
+                borderRadius="10px"
+                marginTop="5px"
               >
                 <Typography variant="body2" fontSize="18px">
                   {productQuantity}
                 </Typography>
               </Box>
-              <Button
-                variant="contained"
+              <IconButton
+                aria-label="delete"
                 color="secondary"
-                sx={{ magin: 0 }}
                 onClick={() => setProductQuantity((counter) => counter + 1)}
               >
-                +
-              </Button>
+                <AddIcon />
+              </IconButton>
             </Box>
             <Button
               className="productButtonAddCart"

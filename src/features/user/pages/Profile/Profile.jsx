@@ -1,25 +1,69 @@
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Box, Button, Paper, Typography } from '@mui/material';
-import { useState } from 'react';
+import { Backdrop, Box, Button, Divider, Fade, Modal, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import userApi from '../../../../api/userApi';
+import TitleUserPage from '../../../../components/common/TitleUserPage/TitleUserPage';
+import EditAccountForm from './EditAccountForm';
 import './profile.scss';
+
 const Profile = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const account = JSON.parse(localStorage.getItem('account'));
   const accountInfo = JSON.parse(localStorage.getItem('accountInfo'));
+  const userUpdateInfo = JSON.parse(localStorage.getItem('userUpdateInfo'));
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
+  const [userUpdatedName, setUserUpdatedName] = useState(userUpdateInfo ? userUpdateInfo.name : '');
+
   const handleClose = () => {
     setIsOpen(false);
   };
   const handleOpen = () => {
     setIsOpen(true);
   };
+  const initialValue = {
+    name: userUpdatedName ? userUpdatedName : account.name,
+    address: accountInfo.address,
+  };
+  const handleSubmitEditAccount = (value) => {
+    (async () => {
+      try {
+        await userApi.patchUpdateUser(value);
+        const responseUserInfo = await userApi.getUserInfo();
+        setUserInfo(responseUserInfo);
+
+        localStorage.setItem('accountInfo', JSON.stringify(responseUserInfo));
+        localStorage.setItem('userUpdateInfo', JSON.stringify(value));
+        setUserUpdatedName(value.name);
+        toast.success('Update account success!');
+      } catch (error) {
+        console.log(error);
+        toast.error('Update account failed!');
+      }
+    })();
+    handleClose();
+  };
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await userApi.getUserInfo();
+        setUserInfo(response);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [userUpdatedName]);
+
   return (
     <Box className="Profile-container">
+      <TitleUserPage title="Profle" link="#" />
       <Box className="Profile-btn">
         <Button variant="contained" endIcon={<SettingsIcon />} onClick={handleOpen}>
           Update Account
         </Button>
       </Box>
-      <Paper className="Profile-card">
+      <Box className="Profile-card">
         <Box className="Profile-card-img">
           <img
             className=""
@@ -32,13 +76,16 @@ const Profile = () => {
           />
         </Box>
         <Box className="profile-card-info">
-          <Typography variant="h3" className="profile-card-info--title">
+          <Typography variant="p" className="profile-card-info--title">
             Basic Infomation
           </Typography>
+          <Box style={{ margin: '40px auto' }}>
+            <Divider style={{ width: '100%' }} />
+          </Box>
           <Box className="profile-card-info--item">
             <Box className="profile-card-info--group">
               <Typography variant="p" className="accountInfo">
-                <b>Name:</b> {account.name}
+                <b>Name:</b> {userUpdatedName ? userUpdatedName : account.name}
               </Typography>
               <Typography className="accountInfo" variant="p">
                 <b>Role:</b> {account.role}
@@ -57,7 +104,33 @@ const Profile = () => {
             </Box>
           </Box>
         </Box>
-      </Paper>
+      </Box>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={isOpen}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={isOpen}>
+          <Box className="myAccount-Edid-Modal">
+            <Typography id="transition-modal-title" variant="h6" component="h2">
+              Edit Account
+            </Typography>
+            <Box id="transition-modal-description" sx={{ mt: 2 }}>
+              <EditAccountForm
+                isClose={handleClose}
+                onSubmit={handleSubmitEditAccount}
+                initialValue={initialValue}
+              />
+            </Box>
+          </Box>
+        </Fade>
+      </Modal>
     </Box>
   );
 };

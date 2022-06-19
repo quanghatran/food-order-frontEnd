@@ -2,6 +2,7 @@ import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@
 import CurrencyFormat from 'react-currency-format';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import imageUnknown from '../../../../assets/images/common/logo_food_order.png';
 import { totalQuantity } from '../../userSlice';
 import './product.scss';
@@ -31,6 +32,7 @@ export default function Product({ data, img }) {
       localStorage.setItem('cart', JSON.stringify([cartItem]));
       dispatch(totalQuantity(1));
     }
+    toast.success('Add product to cart success!');
   };
 
   return (
@@ -40,7 +42,6 @@ export default function Product({ data, img }) {
           component="img"
           alt="green iguana"
           height="200"
-          style={{ objectFit: 'contain' }}
           image={data.images ? data.images[0] : imageUnknown}
         />
         <CardContent>
