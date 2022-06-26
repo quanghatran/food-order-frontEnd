@@ -104,7 +104,13 @@ export default function ProductManager() {
                   >
                     <TableCell align="center" component="th" scope="row">
                       <Box className="userDetail">
-                        <img src={product.images[0]} width="55" height="55" alt="product" />
+                        <img
+                          src={product.images[0]}
+                          width="55"
+                          height="55"
+                          alt="product"
+                          style={{ objectFit: 'cover' }}
+                        />
                         <div className="userDetailBox">
                           <div className="name">
                             <b style={{ fontSize: '18px' }}>{product.name}</b>
@@ -116,8 +122,8 @@ export default function ProductManager() {
                                 value={product.price}
                                 displayType={'text'}
                                 thousandSeparator={true}
-                              />{' '}
-                              vnđ
+                              />
+                              đ
                             </b>
                           </div>
                           <div className="phoneNumber">

@@ -8,8 +8,10 @@ import { useParams } from 'react-router-dom';
 import TitleAdminStorePage from '../../../../components/common/TitleAdminStorePage/TitleAdminStorePage';
 import TitleUserPage from '../../../../components/common/TitleUserPage/TitleUserPage';
 import { getProductsByStore } from '../../../products/productSlice';
+import { getListSaleCodeById } from '../../../saleCode/saleCodeSlice';
 import { getAllStore } from '../../../storeManager/storeManagerSlice';
 import Product from '../../components/Product/Product';
+import SaleCodes from '../../components/SaleCodes/SaleCodes';
 import './productStore.scss';
 
 export default function ProductStore() {
@@ -18,6 +20,7 @@ export default function ProductStore() {
 
   const [storeInfo, setStoreInfo] = useState(null);
   const [listOwnProducts, setListOwnProducts] = useState(null);
+  const [listSaleCode, setListSaleCode] = useState(null);
   const [params, setParams] = useState({ page: 1, perPage: 100 });
   const [storeName, setStoreName] = useState('');
 
@@ -34,22 +37,31 @@ export default function ProductStore() {
           setStoreInfo(storeInfoFind);
           setStoreName(storeInfoFind.name);
 
-          // fetch get list own product of restaurant
-          if (storeName) {
-            const params = { q: storeName };
-            const fetchGetListOwnProduct = async () => {
-              try {
-                const result = await dispatch(getProductsByStore(params));
-                unwrapResult(result);
-
-                setListOwnProducts(result.payload);
-              } catch (error) {
-                console.log('Get list product error: ', error);
-              }
-            };
-
-            fetchGetListOwnProduct();
+          // fetch get list sale code of store
+          try {
+            const resultListSaleCode = await dispatch(getListSaleCodeById(storeId));
+            unwrapResult(resultListSaleCode);
+            setListSaleCode(resultListSaleCode.payload);
+          } catch (error) {
+            console.log(error);
           }
+        }
+
+        // fetch get list own product of store
+        if (storeName) {
+          const params = { q: storeName };
+          const fetchGetListOwnProduct = async () => {
+            try {
+              const result = await dispatch(getProductsByStore(params));
+              unwrapResult(result);
+
+              setListOwnProducts(result.payload);
+            } catch (error) {
+              console.log('Get list product error: ', error);
+            }
+          };
+
+          fetchGetListOwnProduct();
         }
       } catch (error) {
         console.log('Get list store error: ', error);
@@ -148,17 +160,25 @@ export default function ProductStore() {
         )}
       </Box>
 
+      <Box className="listDiscountStore" style={{ marginBottom: '40px' }}>
+        <TitleUserPage title="Sale Codes" link="#" />
+        <Grid container spacing={{ xs: 3, md: 6 }}>
+          {listSaleCode &&
+            listSaleCode.map((saleCode) => (
+              <Grid key={saleCode.id} item xs={12} md={6} lg={2}>
+                <SaleCodes style={{ marginBottom: '40px' }} saleCode={saleCode} />
+              </Grid>
+            ))}
+        </Grid>
+      </Box>
+
       <Box className="listOwnProductStore">
         <TitleUserPage title="Products" link="#" />
         <Grid container spacing={{ xs: 3, md: 6 }}>
           {listOwnProducts &&
             listOwnProducts.map((product) => (
               <Grid key={product.id} item xs={12} md={6} lg={3}>
-                <Product
-                  style={{ marginBottom: '40px' }}
-                  data={product}
-                  // img={img}
-                />
+                <Product style={{ marginBottom: '40px' }} data={product} />
               </Grid>
             ))}
         </Grid>

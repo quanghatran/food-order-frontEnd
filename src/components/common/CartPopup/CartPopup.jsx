@@ -17,7 +17,9 @@ const CartPopup = () => {
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem('cart'));
     const newCart = cart?.filter((el) => el.id !== itemDel?.id);
-    localStorage.setItem('cart', JSON.stringify(newCart));
+    if (cart) {
+      localStorage.setItem('cart', JSON.stringify(newCart));
+    }
     setItem(newCart);
     dispatch(totalQuantity(qty));
   }, [qty]);
@@ -25,19 +27,24 @@ const CartPopup = () => {
     setItemDel(item);
     setQty((counter) => counter - item.quantity);
   };
-  if (cart.length === 0) {
+
+  if (cart) {
+    if (cart.length === 0) {
+      return <Box>Nothing In Cart</Box>;
+    } else
+      return (
+        <Box>
+          {cart?.map((item) => {
+            return (
+              <Box key={item.id}>
+                <ItemCartPopup {...item} item={item} onDelete={handleDeleteItemCart} />
+              </Box>
+            );
+          })}
+        </Box>
+      );
+  } else {
     return <Box>Nothing In Cart</Box>;
-  } else
-    return (
-      <Box>
-        {cart?.map((item) => {
-          return (
-            <Box key={item.id}>
-              <ItemCartPopup {...item} item={item} onDelete={handleDeleteItemCart} />
-            </Box>
-          );
-        })}
-      </Box>
-    );
+  }
 };
 export default CartPopup;

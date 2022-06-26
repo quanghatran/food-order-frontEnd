@@ -58,8 +58,8 @@ export default function ProductSearch({ data, img }) {
                 value={data.Product_price}
                 displayType={'text'}
                 thousandSeparator={true}
-              />{' '}
-              VNĐ
+              />
+              đ
             </b>
           </Typography>
         </CardContent>

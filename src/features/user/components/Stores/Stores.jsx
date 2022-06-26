@@ -31,7 +31,11 @@ export default function Stores({ listStore }) {
                   <img with="120" height="120" src={store.iamges ?? storeImage} alt="storeImage" />
                 </Box>
                 <Box className="storeInfo">
-                  <Typography className="nameStore" variant="h5">
+                  <Typography
+                    className="nameStore"
+                    variant="h5"
+                    style={{ fontSize: '25px', fontWeight: '500' }}
+                  >
                     {store.name}
                   </Typography>
                   <p className="phoneNumberStore">

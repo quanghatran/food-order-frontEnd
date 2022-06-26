@@ -1,0 +1,64 @@
+.saleCodeWrapper {
+  text-align: center;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  .saleCodeBox {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 0.5rem 1rem;
+    border-radius: 15px;
+    background-color: #53d1b0;
+    color: #fff;
+  }
+
+  .MuiButton-contained {
+    border-radius: 15px;
+    background-color: #e67e22;
+    &:hover {
+      background-color: #ff9233;
+    }
+  }
+
+  .saleCodeName {
+    font-size: 20px;
+    font-weight: bold;
+    position: relative;
+    font-style: italic;
+
+    &:after {
+      content: '';
+      position: absolute;
+      height: 1px;
+      width: 100%;
+      background-color: #fff;
+      left: 0;
+      bottom: -3px;
+      right: 0;
+    }
+  }
+
+  .saleCodePercent {
+    font-size: 55px;
+    font-weight: 500;
+    margin-top: 15px;
+    color: #ff9233;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+
+  .saleCodeTimeBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 100;
+    gap: 5px;
+    margin-bottom: 15px;
+  }
+}

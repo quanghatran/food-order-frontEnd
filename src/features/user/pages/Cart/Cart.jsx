@@ -1,8 +1,12 @@
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import { unwrapResult } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import Select from 'react-select';
 import ItemCart from '../../../../components/common/CartItem/ItemCart';
+import TitleUserPage from '../../../../components/common/TitleUserPage/TitleUserPage';
 import { totalQuantity } from '../../userSlice';
+
 import './cart.scss';
 
 export default function Cart() {
@@ -14,6 +18,10 @@ export default function Cart() {
     const total = cartItem?.reduce((acc, curr) => (acc = acc + curr.quantity), 0);
     return total;
   });
+  const [listSaleCode, getListSaleCode] = useState(null);
+
+  const useInfo = JSON.parse(localStorage.getItem('account'));
+
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem('cart'));
     const newCart = cart?.filter((el) => el.id !== itemDel?.id);
@@ -21,41 +29,71 @@ export default function Cart() {
     setItem(newCart);
     dispatch(totalQuantity(qty));
   }, [qty]);
+
   const handleDeleteItemCart = (item) => {
     setItemDel(item);
     setQty((counter) => counter - item.quantity);
   };
+
+  console.log(item);
+
+  console.log(listSaleCode);
   return (
-    <div>
-      <Box mb="44px">
-        <Box
-          display="grid"
-          gridTemplateColumns="repeat(12, 1fr)"
-          className="CartItemTitle-container"
-        >
-          <Box gridColumn="span 2" className="CartItemTitle">
-            Image
-          </Box>
-          <Box gridColumn="span 3" className="CartItemTitle">
-            Product
-          </Box>
-          <Box gridColumn="span 2" className="CartItemTitle">
-            Price
-          </Box>
-          <Box gridColumn="span 3" className="CartItemTitle">
-            Quantity
-          </Box>
-          <Box gridColumn="span 2" className="CartItemTitle">
-            Total
-          </Box>
+    <>
+      <TitleUserPage title="Cart" link="/#" />
+      <div className="cartWrapper">
+        <Box className="listProductSelectedWrapper">
+          {item &&
+            item?.map((item, index) => (
+              <Box key={index} className="listProductSelected">
+                <ItemCart {...item} item={item} onDelete={handleDeleteItemCart} />
+              </Box>
+            ))}
         </Box>
-        {item &&
-          item?.map((item, index) => (
-            <Box key={index}>
-              <ItemCart {...item} item={item} onDelete={handleDeleteItemCart} />
-            </Box>
-          ))}
-      </Box>
-    </div>
+        <Box className="checkoutInformation">
+          <Box className="userReceiveDetail">
+            <h2 style={{ fontWeight: '500' }}>User`s Order Detail</h2>
+            {useInfo ? (
+              <div>
+                <p>
+                  <b>Name:</b> {useInfo.name}
+                </p>
+                <p>
+                  <b>Phone Number:</b> {useInfo.phoneNumber}
+                </p>
+                <p>
+                  <b>Email:</b> {useInfo.email}
+                </p>
+              </div>
+            ) : (
+              <p>You are using as a Guest, please login to continued</p>
+            )}
+          </Box>
+          <Box className="checkoutOption">
+            <h2 style={{ fontWeight: '500' }}>Checkout Option</h2>
+            <Select
+              isMulti
+              name="discount"
+              // options={listSelectCategory}
+              className="basic-multi-select"
+              classNamePrefix="select"
+              // onChange={handleCategoriesChange}
+            />
+            <p>placed for selection sale code</p>
+            <p>Time receive : time checker</p>
+            <p>placed for selection payment method</p>
+          </Box>
+          <Box className="priceInfo">
+            <h3>Order Price</h3>
+            <p>Item price</p>
+            <p>discount</p>
+            <p>subtotal</p>
+          </Box>
+          <Button variant="contained" color="secondary">
+            Checkout
+          </Button>
+        </Box>
+      </div>
+    </>
   );
 }

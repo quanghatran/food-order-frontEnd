@@ -53,3 +53,8 @@
 .textDecorationNone {
   text-decoration: none;
 }
+
+.MuiButton-root {
+  text-transform: capitalize !important;
+  font-size: 400 !important;
+}

@@ -9,7 +9,16 @@ const ItemCartPopup = ({ name, price, quantity, item, images, onDelete }) => {
     <Box className="Item-Group">
       <Box className="Item-Info">
         <Box className="Item-Info-img">
-          <img src={images[0]} alt={name} style={{ width: '50px', height: '50px' }} />
+          <img
+            src={images[0]}
+            alt={name}
+            style={{
+              width: '60px',
+              height: '60px',
+              borderRadius: '6px',
+              boxShadow: '0 0.5rem 1rem rgb(0 0 0 / 15%)',
+            }}
+          />
         </Box>
         <Box className="itemDetailWrapper">
           <Box className="Item-Info-Group">
@@ -27,11 +36,11 @@ const ItemCartPopup = ({ name, price, quantity, item, images, onDelete }) => {
             </Typography>
           </Box>
           <Box className="closeItemPopUp" onClick={() => onDelete(item)}>
-            <DeleteOutlineOutlinedIcon />
+            <DeleteOutlineOutlinedIcon color="error" />
           </Box>
         </Box>
       </Box>
-      <Divider />
+      {/* <Divider /> */}
     </Box>
   );
 };

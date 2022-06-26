@@ -1,4 +1,9 @@
-import { GET_HISTORY_ORDER, GET_USER, PATCH_UPDATE_USER } from '../constants/subUrl';
+import {
+  GET_HISTORY_ORDER,
+  GET_LIST_SALE_CODE_BY_ID,
+  GET_USER,
+  PATCH_UPDATE_USER,
+} from '../constants/subUrl';
 import axiosClient from './axiosClient';
 
 const userApi = {
@@ -15,6 +20,11 @@ const userApi = {
   patchUpdateUser: (query) => {
     const url = PATCH_UPDATE_USER;
     return axiosClient.patch(url, query);
+  },
+
+  getListSaleCodeById: (idStore) => {
+    const url = `${GET_LIST_SALE_CODE_BY_ID}${idStore}`;
+    return axiosClient.get(url);
   },
 };
 

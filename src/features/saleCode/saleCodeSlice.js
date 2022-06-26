@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import storeApi from '../../api/storeApi';
+import userApi from '../../api/userApi';
 
 export const getListSaleCode = createAsyncThunk('saleCode/getListSaleCode', async (params) => {
   const response = await storeApi.getListSaleCode(params);
@@ -26,11 +27,20 @@ export const deleteSaleCode = createAsyncThunk(
   }
 );
 
+export const getListSaleCodeById = createAsyncThunk(
+  'saleCode/getListSaleCodeById',
+  async (idStore) => {
+    const response = await userApi.getListSaleCodeById(idStore);
+    return response;
+  }
+);
+
 const saleCodeSlice = createSlice({
   name: 'saleCode',
   initialState: {
     current: {},
     message: '',
+    listSaleCode: {},
     loading: false,
     error: '',
   },
@@ -75,18 +85,19 @@ const saleCodeSlice = createSlice({
       state.loading = false;
       state.error = action.error;
     },
-    // // handle update category by id
-    // [updateCategory.pending]: (state) => {
-    //   state.loading = true;
-    // },
-    // [updateCategory.fulfilled]: (state, action) => {
-    //   state.loading = false;
-    //   state.message = action.payload;
-    // },
-    // [updateCategory.rejected]: (state, action) => {
-    //   state.loading = false;
-    //   state.error = action.error;
-    // },
+
+    // handle get list sale code by store
+    [getListSaleCodeById.pending]: (state) => {
+      state.loading = true;
+    },
+    [getListSaleCodeById.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.listSaleCode = action.payload;
+    },
+    [getListSaleCodeById.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
   },
 });
 
