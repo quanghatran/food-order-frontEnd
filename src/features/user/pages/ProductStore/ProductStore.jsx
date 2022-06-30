@@ -12,6 +12,8 @@ import { getListSaleCodeById } from '../../../saleCode/saleCodeSlice';
 import { getAllStore } from '../../../storeManager/storeManagerSlice';
 import Product from '../../components/Product/Product';
 import SaleCodes from '../../components/SaleCodes/SaleCodes';
+// import storeImage from '../../../../assets/images/user/food-store.png';
+import storeImage from '../../../../assets/images/user/storeImage.webp';
 import './productStore.scss';
 
 export default function ProductStore() {
@@ -86,11 +88,7 @@ export default function ProductStore() {
           >
             <img
               className="storeAvatar"
-              src={
-                storeInfo.image
-                  ? storeInfo.image
-                  : 'https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/large/800/Baymax.Big-Hero-6.webp'
-              }
+              src={storeInfo.image ? storeInfo.image : storeImage}
               alt="store_avatar"
             />
             <Box className="contentWrapper">

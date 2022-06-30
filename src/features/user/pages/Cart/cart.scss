@@ -5,6 +5,29 @@
   gap: 50px;
   align-items: flex-start;
 
+  .cartAccountWrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+
+    .storeInfo,
+    .accountInfo {
+      flex: 1;
+    }
+  }
+
+  .cartTitle {
+    font-weight: 500;
+    font-size: 22px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .cartDivider {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
   .listProductSelectedWrapper {
     flex: 1;
 
@@ -20,5 +43,51 @@
     box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%);
     border-radius: 15px;
     flex: 1;
+  }
+
+  .userReceiveDetail {
+    .storeInfoWrapper {
+      display: flex;
+      gap: 50px;
+      justify-content: flex-start;
+
+      .storeImage {
+        width: 300px;
+        // height: 200px;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .cartSelectionWrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+
+    .selectionDiscount {
+      flex: 1;
+    }
+
+    .selectionPaymetMethod {
+      flex: 1;
+    }
+  }
+  .priceWrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .price {
+    font-size: 18px;
+    flex: 1;
+  }
+
+  .subtotal {
+    font-size: 25px;
+  }
+
+  .MuiButton-root {
+    text-transform: uppercase !important;
   }
 }

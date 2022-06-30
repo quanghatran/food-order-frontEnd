@@ -1,7 +1,9 @@
 import { Grid, Rating, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
-import storeImage from '../../../../assets/images/common/food-store.png';
+// import storeImage from '../../../../assets/images/common/food-store.png';
+import storeImage from '../../../../assets/images/user/storeImage.webp';
+
 import './stores.scss';
 
 export default function Stores({ listStore }) {

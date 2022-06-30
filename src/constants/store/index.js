@@ -60,12 +60,12 @@ export const listStoreNavbar = [
       { id: 35, title: 'Add Product', link: '/store/products/add' },
     ],
   },
-  {
-    id: 89,
-    title: 'Monthly Fee',
-    icon: <CurrencyExchangeIcon />,
-    link: '/store/monthly-fee',
-  },
+  // {
+  //   id: 89,
+  //   title: 'Monthly Fee',
+  //   icon: <CurrencyExchangeIcon />,
+  //   link: '/store/monthly-fee',
+  // },
   // {
   //   id: 12,
   //   title: 'Categories',

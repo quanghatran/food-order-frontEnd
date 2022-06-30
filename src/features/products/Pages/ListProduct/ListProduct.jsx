@@ -15,30 +15,30 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import TitleAdminStorePage from '../../../../components/common/TitleAdminStorePage/TitleAdminStorePage';
+import { getProductsByCategory } from '../../productSlice.js';
 import './listProduct.scss';
-import { getOwnerProducts } from '../../productSlice.js';
 
 export default function ListProduct() {
   const dispatch = useDispatch();
 
+  const storeInfo = JSON.parse(localStorage.getItem('account'));
   const [ownerProducts, setOwnerProducts] = useState(null);
 
   // get list product created by specific store
   useEffect(() => {
     const fetchGetOwnerProducts = async () => {
-      try {
-        const result = await dispatch(getOwnerProducts());
-        unwrapResult(result);
-
-        setOwnerProducts(result.payload.data);
-      } catch (error) {
-        console.log('Get list product error: ', error);
+      if (storeInfo.id) {
+        try {
+          const result = await dispatch(getProductsByCategory(storeInfo.id));
+          unwrapResult(result);
+          setOwnerProducts(result.payload.data);
+        } catch (error) {
+          console.log('Get list product error: ', error);
+        }
       }
     };
     fetchGetOwnerProducts();
-  }, []);
-
-  console.log(ownerProducts);
+  }, [storeInfo.id]);
 
   return (
     <Box className="listProductWrapper">

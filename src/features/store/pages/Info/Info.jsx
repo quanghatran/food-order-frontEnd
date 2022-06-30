@@ -10,6 +10,7 @@ import { getStoreInfo } from '../../storeSlice.js';
 import CheckCircleOutlineSharpIcon from '@mui/icons-material/CheckCircleOutlineSharp';
 import DoNotDisturbAltTwoToneIcon from '@mui/icons-material/DoNotDisturbAltTwoTone';
 import UpdateStore from '../../components/UpdateStore';
+import storeImage from '../../../../assets/images/user/storeImage.webp';
 
 export default function Info() {
   const dispatch = useDispatch();
@@ -57,11 +58,7 @@ export default function Info() {
         <Paper className="storeInfoContent">
           <img
             className="storeAvatar"
-            src={
-              storeInfo.image
-                ? storeInfo.image
-                : 'https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/large/800/Baymax.Big-Hero-6.webp'
-            }
+            src={storeInfo.image ? storeInfo.image : storeImage}
             alt="store_avatar"
           />
           <Box className="contentWrapper">

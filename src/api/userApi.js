@@ -3,6 +3,7 @@ import {
   GET_LIST_SALE_CODE_BY_ID,
   GET_USER,
   PATCH_UPDATE_USER,
+  POST_CREATE_ORDER,
 } from '../constants/subUrl';
 import axiosClient from './axiosClient';
 
@@ -25,6 +26,10 @@ const userApi = {
   getListSaleCodeById: (idStore) => {
     const url = `${GET_LIST_SALE_CODE_BY_ID}${idStore}`;
     return axiosClient.get(url);
+  },
+  postOrder: (data) => {
+    const url = POST_CREATE_ORDER;
+    return axiosClient.post(url, data);
   },
 };
 

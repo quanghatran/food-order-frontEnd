@@ -15,8 +15,6 @@ axiosClient.interceptors.request.use(async (req) => {
 
   // verify token
   if (verifyToken) {
-    console.log(1);
-
     req.headers = {
       ...req.headers,
       Authorization: `Bearer ${verifyToken}`,
@@ -26,8 +24,6 @@ axiosClient.interceptors.request.use(async (req) => {
 
   // attach access token
   if (accessToken) {
-    console.log(2);
-
     req.headers = {
       ...req.headers,
       Authorization: `Bearer ${accessToken}`,

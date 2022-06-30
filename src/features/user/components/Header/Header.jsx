@@ -45,13 +45,17 @@ export default function Header({ isLoggedIn }) {
     localStorage.clear();
     navigate('/auth/login');
   };
+
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem('cart'));
     const total = cart?.reduce((acc, curr) => (acc = acc + curr.quantity), 0);
 
     const totalPrice = cart?.reduce((acc, curr) => (acc = acc + curr.quantity * curr.price), 0);
-    setTotalPrice(totalPrice);
+    if (totalPrice) {
+      localStorage.setItem('cartPrice', JSON.stringify(totalPrice));
+    }
 
+    setTotalPrice(totalPrice);
     setQuantity(total);
   }, [totalQuantityItemCart]);
 

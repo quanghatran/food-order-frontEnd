@@ -31,7 +31,7 @@ export default function AddUpdateSaleCode({
   const handleFormSubmit = async () => {
     const dataSubmit = {
       name: saleCodeName,
-      discountType: 'price',
+      discountType: 'percent',
       discountPercent: saleCodePercent,
       discountPrice: 0,
       status: 'active',

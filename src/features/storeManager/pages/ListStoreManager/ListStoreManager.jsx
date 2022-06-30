@@ -18,7 +18,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
 import PopUpConfirm from '../../../../components/common/PopUpConfirm/PopUpConfirm';
 import { toast } from 'react-toastify';
-
+import storeImage from '../../../../assets/images/user/storeImage.webp';
 export default function ListStoreManager() {
   const dispatch = useDispatch();
 
@@ -120,10 +120,7 @@ export default function ListStoreManager() {
                         <img
                           className="userImage"
                           style={{ objectFit: 'cover' }}
-                          src={
-                            store.image ??
-                            'https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/large/800/Baymax.Big-Hero-6.webp'
-                          }
+                          src={store.image ?? storeImage}
                           width="55"
                           height="55"
                           alt="user"

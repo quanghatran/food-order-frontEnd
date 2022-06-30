@@ -47,7 +47,7 @@ const ItemCart = ({ price, quantity, name, images, item, onDelete }) => {
             onClick={() => handleClickShowItemDetail(item.id)}
           />
           <Box className="contentWrapper">
-            <h3 style={{ cursor: 'pointer' }} onClick={() => handleClickShowItemDetail(item.id)}>
+            <h3 className="cartTitle" onClick={() => handleClickShowItemDetail(item.id)}>
               {name}
             </h3>
             <Rating name="read-only" defaultValue={4.5} precision={0.5} readOnly />
@@ -57,43 +57,45 @@ const ItemCart = ({ price, quantity, name, images, item, onDelete }) => {
             </p>
           </Box>
         </Box>
-        <Box className="modifyItemCart">
-          <IconButton
-            aria-label="delete"
-            color="primary"
-            disabled={qty === 0 ? true : false}
-            onClick={() => handleMinusQty(item)}
-          >
-            <RemoveIcon />
-          </IconButton>
+        <Box style={{ display: 'flex', alignItem: 'center', gap: '40px' }}>
+          <Box className="modifyItemCart">
+            <IconButton
+              aria-label="delete"
+              color="primary"
+              disabled={qty === 0 ? true : false}
+              onClick={() => handleMinusQty(item)}
+            >
+              <RemoveIcon />
+            </IconButton>
 
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            width="64px"
-            height="36px"
-            bgcolor="#a5ecd9"
-            borderRadius="10px"
-            marginTop="5px"
-          >
-            <Typography variant="body2" fontSize="18px">
-              {qty}
-            </Typography>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              width="64px"
+              height="36px"
+              bgcolor="#a5ecd9"
+              borderRadius="10px"
+              marginTop="5px"
+            >
+              <Typography variant="body2" fontSize="18px">
+                {qty}
+              </Typography>
+            </Box>
+
+            <IconButton onClick={() => handleAddQty(item)} aria-label="delete" color="primary">
+              <AddIcon />
+            </IconButton>
           </Box>
 
-          <IconButton onClick={() => handleAddQty(item)} aria-label="delete" color="primary">
-            <AddIcon />
-          </IconButton>
-        </Box>
-
-        <Box gridColumn="span 2" className="totalCart">
-          <Box style={{ fontSize: '20px', fontWeight: '500' }}>
-            <CurrencyFormat value={qty * price} displayType={'text'} thousandSeparator={true} />đ
+          <Box gridColumn="span 2" className="totalCart">
+            <Box style={{ fontSize: '20px', fontWeight: '500' }}>
+              <CurrencyFormat value={qty * price} displayType={'text'} thousandSeparator={true} />đ
+            </Box>
+            <IconButton onClick={() => onDelete(item)} color="error">
+              <DeleteOutlineOutlinedIcon />
+            </IconButton>
           </Box>
-          <IconButton onClick={() => onDelete(item)} color="error">
-            <DeleteOutlineOutlinedIcon />
-          </IconButton>
         </Box>
       </Box>
     </Box>
