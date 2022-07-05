@@ -6,12 +6,18 @@ export const getStoreInfo = createAsyncThunk('store/getStoreInfo', async (params
   return response;
 });
 
+export const getListStoreOrder = createAsyncThunk('store/getListStoreOrder', async (params) => {
+  const response = await storeApi.getListStoreOrder(params);
+  return response;
+});
+
 const storeSlice = createSlice({
   name: 'store',
   initialState: {
     current: {},
     loading: false,
     error: '',
+    storeOrder: {},
   },
   reducers: {},
 
@@ -25,6 +31,19 @@ const storeSlice = createSlice({
       state.current = action.payload;
     },
     [getStoreInfo.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // handle get store info
+    [getListStoreOrder.pending]: (state) => {
+      state.loading = true;
+    },
+    [getListStoreOrder.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.storeOrder = action.payload;
+    },
+    [getListStoreOrder.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },

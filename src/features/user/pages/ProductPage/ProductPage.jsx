@@ -83,10 +83,10 @@ export default function ProductPage() {
       <Box className="listProductContainer">
         <Box sx={{ flexGrow: 1 }}>
           {searchProducts === null ? (
-            <Grid container spacing={{ xs: 3, md: 6 }}>
+            <Grid container spacing={{ xs: 2, md: 4 }}>
               {listProduct &&
                 listProduct.map((product) => (
-                  <Grid key={product.id} item xs={12} md={6} lg={3}>
+                  <Grid key={product.id} item xs={12} md={6} lg={2}>
                     <Product
                       style={{ marginBottom: '40px' }}
                       data={product}
@@ -96,10 +96,10 @@ export default function ProductPage() {
                 ))}
             </Grid>
           ) : (
-            <Grid container spacing={{ xs: 3, md: 6 }}>
+            <Grid container spacing={{ xs: 2, md: 4 }}>
               {searchProducts &&
                 searchProducts.map((product) => (
-                  <Grid key={product.id} item xs={12} md={6} lg={3}>
+                  <Grid key={product.id} item xs={12} md={6} lg={2}>
                     <ProductSearch
                       style={{ marginBottom: '40px' }}
                       data={product}

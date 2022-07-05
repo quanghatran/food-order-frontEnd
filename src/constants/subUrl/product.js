@@ -8,3 +8,4 @@ export const GET_PRODUCT_BY_STORE = '/api/v1/product/search-by-store-name/';
 
 export const POST_ADD_PRODUCT = '/api/v1/store/add-product';
 export const GET_PRODUCT_BY_NAME = '/api/v1/product/search-by-product-name';
+export const DELETE_PRODUCT = '/api/v1/store/product/';

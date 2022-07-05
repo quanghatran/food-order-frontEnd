@@ -1,4 +1,5 @@
 import {
+  DELETE_PRODUCT,
   GET_ALL_PRODUCT,
   GET_OWNER_PRODUCTS,
   GET_PRODUCT_BY_CATEGORY,
@@ -28,7 +29,7 @@ const productApi = {
 
   getTopProducts: (params) => {
     const url = GET_TOP_PRODUCTS;
-    return axiosClient.get(url, params);
+    return axiosClient.get(url, { params });
   },
 
   getProductsByCategory: (idCategory, params) => {
@@ -49,6 +50,11 @@ const productApi = {
   getProductByName: (query) => {
     const url = `${GET_PRODUCT_BY_NAME}?q=${query}`;
     return axiosClient.get(url);
+  },
+
+  deleteProduct: (idProduct) => {
+    const url = `${DELETE_PRODUCT}${idProduct}`;
+    return axiosClient.delete(url);
   },
 };
 

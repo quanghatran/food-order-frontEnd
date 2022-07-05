@@ -8,8 +8,6 @@ export default function OrderFeature() {
     <div className="orderFeature">
       <Routes>
         <Route index element={<ListOrder />} />
-        {/* <Route path="/register" element={<Register />} /> */}
-        {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
       </Routes>
     </div>
   );

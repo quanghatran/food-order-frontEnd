@@ -94,9 +94,9 @@ export default function ListSaleCode() {
     try {
       await dispatch(deleteSaleCode(idSaleCode));
       setIsDataChange(!isDataChange);
-      toast.success('Delete category success!');
+      toast.success('Delete sale code success!');
     } catch (error) {
-      toast.error('Delete category failed!');
+      toast.error('Delete sale code failed!');
       console.log(error);
     }
     setIsConfirmOpen(false);
@@ -160,7 +160,9 @@ export default function ListSaleCode() {
                     key={saleCode.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <TableCell align="center">{saleCode.name}</TableCell>
+                    <TableCell align="center">
+                      <b>{saleCode.name}</b>
+                    </TableCell>
                     <TableCell align="center">{saleCode.discountPercent}%</TableCell>
                     <TableCell align="center">{saleCode.status}</TableCell>
                     <TableCell align="center">

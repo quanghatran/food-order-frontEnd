@@ -203,6 +203,8 @@ export default function ProductDetail() {
               className="productButtonAddCart"
               variant="contained"
               color="secondary"
+              size="large"
+              style={{ color: '#fff' }}
               onClick={handleAddToCart}
               disabled={productQuantity === 0 ? true : false}
             >

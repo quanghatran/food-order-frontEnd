@@ -1,6 +1,7 @@
 import {
   DELETE_SALE_CODE,
   GET_LIST_SALE_CODE,
+  GET_LIST_STORE_ORDER,
   GET_STORE_INFO,
   POST_ADD_SALE_CODE,
 } from '../constants/subUrl';
@@ -20,6 +21,11 @@ const storeApi = {
   getListSaleCode: (params) => {
     const url = GET_LIST_SALE_CODE;
     return axiosClient.get(url, params);
+  },
+
+  getListStoreOrder: (params) => {
+    const url = GET_LIST_STORE_ORDER;
+    return axiosClient.get(url, { params });
   },
 
   deleteSaleCode: (idSaleCode, params) => {

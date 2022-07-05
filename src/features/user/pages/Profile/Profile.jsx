@@ -119,7 +119,7 @@ const Profile = () => {
         <Fade in={isOpen}>
           <Box className="myAccount-Edid-Modal">
             <Typography id="transition-modal-title" variant="h6" component="h2">
-              Edit Account
+              Update Account
             </Typography>
             <Box id="transition-modal-description" sx={{ mt: 2 }}>
               <EditAccountForm

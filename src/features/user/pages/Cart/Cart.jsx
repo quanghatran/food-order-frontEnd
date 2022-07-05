@@ -2,7 +2,7 @@ import { Box, Button, Divider, Rating, TextField } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { TimePicker } from '@mui/x-date-pickers';
+import { MobileDateTimePicker, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { unwrapResult } from '@reduxjs/toolkit';
@@ -83,8 +83,8 @@ export default function Cart() {
       fetchGetStoreInfo();
     }
 
-    dispatch(totalQuantity(qty));
-  }, [dispatch, qty, discount]);
+    // dispatch(totalQuantity(qty));
+  }, [dispatch, qty, discount, totalQuantityItemCart]);
 
   useEffect(() => {
     const totalPrice = JSON.parse(localStorage.getItem('cartPrice'));
@@ -98,6 +98,14 @@ export default function Cart() {
   };
 
   const handleDiscountChange = (event) => {
+    if (event.target.value && listSaleCode) {
+      const selectedSaleCode = listSaleCode.find(
+        (saleCode) => saleCode.discountPercent === event.target.value
+      );
+      setDiscountId(selectedSaleCode.id);
+    }
+
+    // console.log(event);
     setDiscount(event.target.value);
   };
 
@@ -134,7 +142,7 @@ export default function Cart() {
         items: items,
         paymentType: 'cash',
         timeReceive: timePick,
-        // discountId: 'faield',
+        discountId: discountId,
       };
 
       console.log('check out: ', data);
@@ -280,7 +288,7 @@ export default function Cart() {
                   <p style={{ marginBottom: '0px', marginTop: '20px' }}>
                     <span>Time Pick Up:</span>
                   </p>
-                  <TimePicker
+                  {/* <TimePicker
                     autoOk
                     variant="inline"
                     inputVariant="outlined"
@@ -288,6 +296,17 @@ export default function Cart() {
                     onChange={(newValue) => {
                       setTimePick(newValue);
                     }}
+                    renderInput={(params) => <TextField margin="normal" fullWidth {...params} />}
+                  /> */}
+
+                  <MobileDateTimePicker
+                    value={timePick}
+                    onChange={(newValue) => {
+                      setTimePick(newValue);
+                    }}
+                    minDate={new Date()}
+                    inputFormat="hh:mm a - dd/MM/yyyy"
+                    mask="___/__/__ __:__ _M"
                     renderInput={(params) => <TextField margin="normal" fullWidth {...params} />}
                   />
                 </LocalizationProvider>

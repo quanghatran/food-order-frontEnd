@@ -1,11 +1,13 @@
 .productWrapper {
   border-radius: 15px;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  overflow: hidden;
 
   .productButtonAddCart {
     margin-bottom: 10px;
-    justify-content: flex-end;
+    justify-content: center !important;
     border-radius: 15px;
+    color: #fff;
   }
 
   .MuiPaper-root {

@@ -160,7 +160,7 @@ export default function ProductStore() {
 
       <Box className="listDiscountStore" style={{ marginBottom: '40px' }}>
         <TitleUserPage title="Sale Codes" link="#" />
-        <Grid container spacing={{ xs: 3, md: 6 }}>
+        <Grid container spacing={{ xs: 2, md: 4 }}>
           {listSaleCode &&
             listSaleCode.map((saleCode) => (
               <Grid key={saleCode.id} item xs={12} md={6} lg={2}>
@@ -172,10 +172,10 @@ export default function ProductStore() {
 
       <Box className="listOwnProductStore">
         <TitleUserPage title="Products" link="#" />
-        <Grid container spacing={{ xs: 3, md: 6 }}>
+        <Grid container spacing={{ xs: 2, md: 4 }}>
           {listOwnProducts &&
             listOwnProducts.map((product) => (
-              <Grid key={product.id} item xs={12} md={6} lg={3}>
+              <Grid key={product.id} item xs={12} md={6} lg={2}>
                 <Product style={{ marginBottom: '40px' }} data={product} />
               </Grid>
             ))}

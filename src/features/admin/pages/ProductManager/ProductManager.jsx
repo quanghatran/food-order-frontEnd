@@ -8,6 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Pagination,
 } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import { unwrapResult } from '@reduxjs/toolkit';
@@ -24,7 +25,10 @@ export default function ProductManager() {
   const dispatch = useDispatch();
 
   const [listProduct, setListProduct] = useState(null);
+  const [totalProduct, setTotalProduct] = useState(0);
+  const [params, setParams] = useState({ page: 1, perPage: 5 });
   const [listStore, setListStore] = useState(null);
+  const [isDataChange, setIsDataChange] = useState(false);
 
   // get all store
   useEffect(() => {
@@ -32,30 +36,31 @@ export default function ProductManager() {
       try {
         const result = await dispatch(getAllStore());
         unwrapResult(result);
+
         setListStore(result.payload);
       } catch (error) {
         console.log('Get list product error: ', error);
       }
     };
     fetchGetListStore();
-  }, []);
 
-  // get all products in system
-  useEffect(() => {
+    // get all products in system
     const fetchGetListProduct = async () => {
       try {
-        const result = await dispatch(getListProduct());
+        const result = await dispatch(getListProduct(params));
         unwrapResult(result);
-
+        setTotalProduct(result.payload.count);
         setListProduct(result.payload.data);
       } catch (error) {
         console.log('Get list product error: ', error);
       }
     };
     fetchGetListProduct();
-  }, []);
+  }, [totalProduct, params, isDataChange]);
 
-  console.log(listStore);
+  const handlePaginationChange = (event, value) => {
+    setParams({ ...params, page: value });
+  };
 
   return (
     <Box className="listProductWrapper listCategoryWrapper listUserWrapper">
@@ -72,6 +77,9 @@ export default function ProductManager() {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead style={{ background: '#3dbe9c', color: '#fff' }}>
               <TableRow>
+                <TableCell className="tableHeaderItem" align="center">
+                  STT
+                </TableCell>
                 <TableCell className="tableHeaderItem" align="center">
                   Basic Information
                 </TableCell>
@@ -97,19 +105,30 @@ export default function ProductManager() {
             </TableHead>
             <TableBody>
               {listProduct ? (
-                listProduct.map((product) => (
+                listProduct.map((product, index) => (
                   <TableRow
                     key={product.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
+                    <TableCell
+                      style={{ color: '#000', fontWeight: '500' }}
+                      className="tableHeaderItem"
+                      align="center"
+                    >
+                      {index + 1}
+                    </TableCell>
                     <TableCell align="center" component="th" scope="row">
                       <Box className="userDetail">
                         <img
                           src={product.images[0]}
-                          width="55"
-                          height="55"
+                          width="90"
+                          height="90"
                           alt="product"
-                          style={{ objectFit: 'cover' }}
+                          style={{
+                            objectFit: 'cover',
+                            borderRadius: '15px',
+                            boxShadow: '0 0.5rem 1rem rgb(0 0 0 / 15%)',
+                          }}
                         />
                         <div className="userDetailBox">
                           <div className="name">
@@ -137,19 +156,13 @@ export default function ProductManager() {
                         </div>
                       </Box>
                     </TableCell>
-                    <TableCell align="left" style={{ maxWidth: '200px' }}>
+                    <TableCell align="left" style={{ maxWidth: '500px', fontSize: '13px' }}>
                       {product.description}
                     </TableCell>
                     <TableCell align="center">{product.boughtNum}</TableCell>
                     <TableCell align="center">
-                      {product.storeId}
-
-                      {/* {listStore.find((store) => {
-                        if (store === product.storeId) {
-                          console.log(store.name);
-                          return store.name;
-                        }
-                      })} */}
+                      {/* {product.storeId} */}
+                      <span style={{ color: 'red' }}>Store Name</span>
                     </TableCell>
                     <TableCell align="center">
                       {moment(product.createdAt).format('DD MMM YYYY')}
@@ -191,6 +204,14 @@ export default function ProductManager() {
             </TableBody>
           </Table>
         </TableContainer>
+        <Box className="paginationBox" style={{ marginBottom: '30px' }}>
+          <Pagination
+            count={Math.ceil(totalProduct / params.perPage)}
+            shape="rounded"
+            color="primary"
+            onChange={handlePaginationChange}
+          />
+        </Box>
       </Box>
     </Box>
   );

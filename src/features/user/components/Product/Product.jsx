@@ -1,12 +1,5 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Rating,
-  Typography,
-} from '@mui/material';
+import { Button, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import { useState } from 'react';
 import CurrencyFormat from 'react-currency-format';
 import { useDispatch } from 'react-redux';
@@ -81,51 +74,75 @@ export default function Product({ data }) {
 
   return (
     <div className="productWrapper">
-      <Card>
+      <Box>
         <CardMedia
           component="img"
-          alt="green iguana"
+          alt="green"
           height="200"
           image={data.images ? data.images[0] : imageUnknown}
         />
-        <CardContent>
+        <CardContent style={{ marginRight: '10px' }}>
           <Link className="textDecorationNone nameLinkProduct" to={`/product/${data.id}`}>
             <Typography
               gutterBottom
               variant="h5"
               component="div"
-              style={{ fontSize: '25px', fontWeight: '500' }}
+              style={{ fontSize: '20px', fontWeight: '400' }}
             >
               {data.name}
             </Typography>
           </Link>
-          <Rating name="read-only" defaultValue={4.5} precision={0.5} readOnly />
-          <Typography style={{ fontSize: '18px' }} variant="body2" color="text.secondary">
-            <b>
+          {/* <Rating name="read-only" defaultValue={4.5} precision={0.5} readOnly /> */}
+          <Box style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
+            <Typography
+              style={{ fontSize: '17px', fontWeight: '400' }}
+              variant="p"
+              color="text.secondary"
+            >
               <CurrencyFormat value={data.price} displayType={'text'} thousandSeparator={true} />đ
-            </b>
-          </Typography>
+            </Typography>
+            <Typography
+              style={{ fontSize: '17px', fontWeight: '400' }}
+              variant="p"
+              color="text.secondary"
+            >
+              {data.boughtNum} Bought
+            </Typography>
+          </Box>
         </CardContent>
-        <CardActions>
+        <CardActions
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginRight: '10px',
+          }}
+        >
           <Link
             style={{ marginRight: '15px', marginLeft: '10px' }}
             className="textDecorationNone nameLinkProduct"
             to={`/product/${data.id}`}
           >
-            <Button className="productButtonAddCart" variant="contained" color="primary">
+            <Button
+              className="productButtonAddCart"
+              size="small"
+              variant="contained"
+              color="primary"
+            >
               Detail
             </Button>
           </Link>
           <Button
             className="productButtonAddCart"
             variant="contained"
+            size="small"
             color="secondary"
+            style={{ color: '#fff' }}
             onClick={() => handleAddToCart(data.id)}
           >
             Add to cart
           </Button>
         </CardActions>
-      </Card>
+      </Box>
 
       {data.id === productClickedId && (
         <PopUpConfirm

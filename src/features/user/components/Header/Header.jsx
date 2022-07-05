@@ -55,7 +55,11 @@ export default function Header({ isLoggedIn }) {
       localStorage.setItem('cartPrice', JSON.stringify(totalPrice));
     }
 
-    setTotalPrice(totalPrice);
+    if (totalPrice) {
+      setTotalPrice(totalPrice);
+    } else {
+      setTotalPrice(0);
+    }
     setQuantity(total);
   }, [totalQuantityItemCart]);
 
@@ -70,7 +74,7 @@ export default function Header({ isLoggedIn }) {
           <NavLink to="/category">Categories</NavLink>
           <NavLink to="/product">Products</NavLink>
           <NavLink to="/restaurant">Restaurants</NavLink>
-          {/* <NavLink to="/contact">Contact</NavLink> */}
+          <NavLink to="/cart">Cart</NavLink>
           {/* <NavLink to="/help">Help</NavLink> */}
         </Box>
       </Box>

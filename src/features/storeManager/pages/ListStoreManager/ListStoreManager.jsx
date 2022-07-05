@@ -119,11 +119,15 @@ export default function ListStoreManager() {
                       <Box className="userDetail">
                         <img
                           className="userImage"
-                          style={{ objectFit: 'cover' }}
+                          style={{
+                            objectFit: 'cover',
+                            borderRadius: '50%',
+                            boxShadow: '0 0.5rem 1rem rgb(0 0 0 / 15%)',
+                          }}
+                          width="90"
+                          height="90"
                           src={store.image ?? storeImage}
-                          width="55"
-                          height="55"
-                          alt="user"
+                          alt="store"
                         />
                         <div className="userDetailBox">
                           <div

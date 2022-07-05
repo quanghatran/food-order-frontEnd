@@ -128,9 +128,14 @@ export default function ListUserManager() {
                         <img
                           className="userImage"
                           src={user.avatar}
-                          width="55"
-                          height="55"
                           alt="user"
+                          style={{
+                            objectFit: 'cover',
+                            borderRadius: '50%',
+                            boxShadow: '0 0.5rem 1rem rgb(0 0 0 / 15%)',
+                          }}
+                          width="90"
+                          height="90"
                         />
                         <div className="userDetailBox">
                           <div className="name">
@@ -146,7 +151,11 @@ export default function ListUserManager() {
                     </TableCell>
                     <TableCell align="center">
                       {/* {moment(user.createdAt).format('DD MMM YYYY')} */}
-                      {user.isVerify === true ? 'verified' : 'not verified'}
+                      {user.isVerify === true ? (
+                        <b style={{ color: 'green' }}>verified</b>
+                      ) : (
+                        <b style={{ color: 'red' }}>not verified</b>
+                      )}
                     </TableCell>
                     <TableCell align="center">
                       {moment(user.createdAt).format('DD MMM YYYY')}

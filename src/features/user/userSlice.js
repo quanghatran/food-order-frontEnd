@@ -11,11 +11,22 @@ export const postOrder = createAsyncThunk('user/postOrder', async (params) => {
   return response;
 });
 
+export const cancelOrder = createAsyncThunk('user/cancelOrder', async (idOrder) => {
+  const response = await userApi.cancelOrder(idOrder);
+  return response;
+});
+
+export const ratingOrder = createAsyncThunk('user/ratingOrder', async (idOrder, data) => {
+  const response = await userApi.ratingOrder(idOrder, data);
+  return response;
+});
+
 const userSlice = createSlice({
   name: 'user',
   initialState: {
     current: {},
     loading: false,
+    message: '',
     error: '',
     totalQuantityItemCart: 0,
   },
@@ -48,6 +59,32 @@ const userSlice = createSlice({
       state.current = action.payload;
     },
     [postOrder.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // handle cancel order
+    [cancelOrder.pending]: (state) => {
+      state.loading = true;
+    },
+    [cancelOrder.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    [cancelOrder.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // handle rating order
+    [ratingOrder.pending]: (state) => {
+      state.loading = true;
+    },
+    [ratingOrder.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    [ratingOrder.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },

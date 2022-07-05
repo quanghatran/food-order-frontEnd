@@ -175,7 +175,9 @@ export default function ListCategory() {
                     <TableCell align="center" component="th" scope="row">
                       <img src={category.image} width="45" height="45" alt="category" />
                     </TableCell>
-                    <TableCell align="center">{category.name}</TableCell>
+                    <TableCell align="center">
+                      <b>{category.name}</b>
+                    </TableCell>
                     <TableCell align="center">
                       {moment(category.createdAt).format('DD MMM YYYY')}
                     </TableCell>

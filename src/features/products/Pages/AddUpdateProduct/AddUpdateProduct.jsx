@@ -57,6 +57,7 @@ export default function AddUpdateProduct() {
 
   const handleAddUpdateProduct = async () => {
     const formData = new FormData();
+    // formData.append('categories', '');
     categories.map((category) => {
       formData.append('categories', category.value);
     });

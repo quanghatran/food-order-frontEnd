@@ -22,7 +22,6 @@ export default function HomePage() {
   const [listCategory, setListCategory] = useState(null);
   const [listStore, setListStore] = useState(null);
   const [topProducts, setTopProducts] = useState(null);
-  // const [topProducts, setTopProducts] = useState(null);
   const [searchProducts, setSearchProducts] = useState('');
   const [nameCategory1, setNameCategory1] = useState('');
   const [listProductByCategory1, setListProductByCategory1] = useState(null);
@@ -91,7 +90,7 @@ export default function HomePage() {
         const resultTopProducts = await dispatch(getTopProducts({ limit: 8 }));
         unwrapResult(resultTopProducts);
 
-        setTopProducts(resultTopProducts.payload.data);
+        setTopProducts(resultTopProducts.payload);
       } catch (error) {
         console.log('Get list category error: ', error);
       }
@@ -145,8 +144,25 @@ export default function HomePage() {
               </Box>
             </Box>
           </Box>
+
           {searchProducts === '' ? (
             <Box className="homePageProductsWrapper">
+              {topProducts && (
+                <Box>
+                  <Typography className="titleCurve" component="h1" variant="h3">
+                    Top Product
+                  </Typography>
+                  <Grid container spacing={{ xs: 2, md: 4 }}>
+                    {topProducts
+                      .filter((product) => product.boughtNum > 0)
+                      .map((product, index) => (
+                        <Grid key={index} item xs={12} md={6} lg={3}>
+                          <Product style={{ marginBottom: '40px' }} data={product} />
+                        </Grid>
+                      ))}
+                  </Grid>
+                </Box>
+              )}
               {listProductByCategory1 && (
                 <Box>
                   <Typography className="titleCurve" component="h1" variant="h3">

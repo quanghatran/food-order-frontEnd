@@ -19,7 +19,6 @@ export default function AddUpdateSaleCode({
   isAddUpdateSaleCodeOpen,
   handleAddUpdateSaleCodeClose,
   onFormSubmit,
-  saleCodeInfo,
 }) {
   const { loading } = useSelector((state) => state.saleCodes);
 
@@ -41,8 +40,6 @@ export default function AddUpdateSaleCode({
 
     onFormSubmit(dataSubmit);
   };
-
-  console.log(saleCodeInfo);
 
   return (
     <Dialog

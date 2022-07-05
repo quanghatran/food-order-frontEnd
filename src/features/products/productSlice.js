@@ -45,6 +45,11 @@ export const getProductsByStore = createAsyncThunk(
   }
 );
 
+export const deleteProduct = createAsyncThunk('products/deleteProduct', async (productId) => {
+  const response = await productApi.deleteProduct(productId);
+  return response;
+});
+
 const productSlice = createSlice({
   name: 'products',
   initialState: {
@@ -148,6 +153,19 @@ const productSlice = createSlice({
       state.productByStore = action.payload;
     },
     [getProductsByStore.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // handle get products by store id
+    [deleteProduct.pending]: (state) => {
+      state.loading = true;
+    },
+    [deleteProduct.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    [deleteProduct.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },

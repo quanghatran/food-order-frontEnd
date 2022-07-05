@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
 import CurrencyFormat from 'react-currency-format';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -34,6 +34,8 @@ export default function ProductSearch({ data, img }) {
     }
     toast.success('Add product to cart success!');
   };
+
+  console.log(data);
   return (
     <div className="productWrapper">
       <Card>
@@ -44,26 +46,46 @@ export default function ProductSearch({ data, img }) {
           image={data.Product_images ? data.Product_images[0] : imageUnknown}
         />
         <CardContent>
-          <Link className="textDecorationNone nameLinkProduct" to={`/product/${data.Product_id}`}>
-            <Typography gutterBottom variant="h5" component="div">
-              <b>{data.Product_name}</b>
+          <Link className="textDecorationNone nameLinkProduct" to={`/product/${data.id}`}>
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              style={{ fontSize: '20px', fontWeight: '400' }}
+            >
+              {data.Product_name}
             </Typography>
           </Link>
-          {/* <Typography variant="body2" color="text.secondary">
-            {data.description}
-          </Typography> */}
-          <Typography style={{ fontSize: '18px' }} variant="body2" color="text.secondary">
-            <b>
+
+          <Box style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
+            <Typography
+              style={{ fontSize: '17px', fontWeight: '400' }}
+              variant="p"
+              color="text.secondary"
+            >
               <CurrencyFormat
                 value={data.Product_price}
                 displayType={'text'}
                 thousandSeparator={true}
               />
               đ
-            </b>
-          </Typography>
+            </Typography>
+            <Typography
+              style={{ fontSize: '17px', fontWeight: '400' }}
+              variant="p"
+              color="text.secondary"
+            >
+              {data.Product_bought_num} Bought
+            </Typography>
+          </Box>
         </CardContent>
-        <CardActions>
+        <CardActions
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginRight: '10px',
+          }}
+        >
           <Link
             style={{ marginRight: '15px', marginLeft: '10px' }}
             className="textDecorationNone nameLinkProduct"
@@ -83,6 +105,7 @@ export default function ProductSearch({ data, img }) {
             size="small"
             variant="contained"
             color="secondary"
+            style={{ color: '#fff' }}
             onClick={handleAddToCart}
           >
             Add to cart

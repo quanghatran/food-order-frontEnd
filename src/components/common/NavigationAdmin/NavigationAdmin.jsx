@@ -80,8 +80,6 @@ export default function NavigationAdmin(props) {
   const userInfo = JSON.parse(localStorage.getItem('accountInfo'));
   const user = JSON.parse(localStorage.getItem('account'));
 
-  console.log(userInfo);
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -197,17 +195,17 @@ export default function NavigationAdmin(props) {
           >
             <img src={menuIcon} alt="menu" />
           </IconButton>
-          <Search>
+          {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase placeholder="Search" inputProps={{ 'aria-label': 'search' }} />
-          </Search>
+          </Search> */}
 
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show new notifications" color="inherit">
-              <Badge badgeContent={3} color="secondary">
+              <Badge badgeContent={0} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
