@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import SearchIcon from '@mui/icons-material/Search';
 import {
   AppBar,
   Badge,
@@ -20,12 +19,12 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import menuIcon from '../../../assets/images/admin/menu.svg';
+import StoreImage from '../../../assets/images/user/storeImage.webp';
 import PopUpConfirm from '../PopUpConfirm/PopUpConfirm';
 import './navigationAdmin.scss';
-
 const drawerWidth = 240;
 
 const Search = styled('div')(({ theme }) => ({
@@ -210,15 +209,22 @@ export default function NavigationAdmin(props) {
               </Badge>
             </IconButton>
             <Box className="leftAppBarAdminInfo">
-              {userInfo ? (
+              {user && user?.role === 'admin' ? (
                 <img
                   className="avatarAdmin"
                   width="40"
                   height="40"
                   src={
-                    userInfo.images ??
                     'https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/large/800/Baymax.Big-Hero-6.webp'
                   }
+                  alt="avatar_admin"
+                />
+              ) : user && user?.role === 'store' ? (
+                <img
+                  className="avatarAdmin"
+                  width="40"
+                  height="40"
+                  src={StoreImage}
                   alt="avatar_admin"
                 />
               ) : (

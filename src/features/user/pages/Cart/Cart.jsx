@@ -173,6 +173,7 @@ export default function Cart() {
     navigate('/auth/login');
   };
 
+  console.log(item);
   return (
     <>
       <TitleUserPage title="Cart" link="/#" />
@@ -218,7 +219,7 @@ export default function Cart() {
                         </div>
                       </div>
                     ) : (
-                      <p style={{ color: 'yellow' }}>Error when loading restaurant information</p>
+                      <p style={{ color: 'red' }}>Error when loading restaurant information</p>
                     )}
                   </div>
                   <div className="accountInfo">

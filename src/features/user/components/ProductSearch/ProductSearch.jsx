@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import imageUnknown from '../../../../assets/images/common/logo_food_order.png';
 import { totalQuantity } from '../../userSlice';
 import './productSearch.scss';
-export default function ProductSearch({ data, img }) {
+export default function ProductSearch({ data, storeInfo }) {
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {
@@ -46,17 +46,33 @@ export default function ProductSearch({ data, img }) {
           image={data.Product_images ? data.Product_images[0] : imageUnknown}
         />
         <CardContent>
-          <Link className="textDecorationNone nameLinkProduct" to={`/product/${data.id}`}>
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="div"
-              style={{ fontSize: '20px', fontWeight: '400' }}
-            >
-              {data.Product_name}
-            </Typography>
-          </Link>
-
+          <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Link className="textDecorationNone nameLinkProduct" to={`/product/${data.id}`}>
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                style={{ fontSize: '20px', fontWeight: '400' }}
+              >
+                {data.Product_name}
+              </Typography>
+            </Link>
+            {storeInfo && (
+              <Link
+                className="textDecorationNone nameLinkProduct"
+                to={`/restaurant/${storeInfo.id}`}
+              >
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                  style={{ fontSize: '16px', fontWeight: '400', color: 'rgba(0, 0, 0, 0.6)' }}
+                >
+                  {storeInfo.name}
+                </Typography>
+              </Link>
+            )}
+          </Box>
           <Box style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
             <Typography
               style={{ fontSize: '17px', fontWeight: '400' }}

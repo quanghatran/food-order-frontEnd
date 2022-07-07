@@ -1,16 +1,15 @@
-import SettingsIcon from '@mui/icons-material/Settings';
-import { Box, Button, Divider, Paper, Rating, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
-import TitleAdminStorePage from '../../../../components/common/TitleAdminStorePage/TitleAdminStorePage';
-import './info.scss';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { getStoreInfo } from '../../storeSlice.js';
 import CheckCircleOutlineSharpIcon from '@mui/icons-material/CheckCircleOutlineSharp';
 import DoNotDisturbAltTwoToneIcon from '@mui/icons-material/DoNotDisturbAltTwoTone';
-import UpdateStore from '../../components/UpdateStore';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { Box, Button, Divider, Paper, Rating, Typography } from '@mui/material';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import storeImage from '../../../../assets/images/user/storeImage.webp';
+import TitleAdminStorePage from '../../../../components/common/TitleAdminStorePage/TitleAdminStorePage';
+import UpdateStore from '../../components/UpdateStore';
+import { getStoreInfo } from '../../storeSlice.js';
+import './info.scss';
 
 export default function Info() {
   const dispatch = useDispatch();

@@ -1,4 +1,5 @@
 import {
+  GET_ADMIN_INFO,
   GET_HISTORY_ORDER,
   GET_LIST_SALE_CODE_BY_ID,
   GET_USER,
@@ -6,12 +7,18 @@ import {
   PATCH_UPDATE_USER,
   POST_CREATE_ORDER,
   POST_RATING_ORDER,
+  USER_GET_NOTIFICATION,
 } from '../constants/subUrl';
 import axiosClient from './axiosClient';
 
 const userApi = {
   getUserInfo: (params) => {
     const url = GET_USER;
+    return axiosClient.get(url, params);
+  },
+
+  getAdminInfo: (params) => {
+    const url = GET_ADMIN_INFO;
     return axiosClient.get(url, params);
   },
 
@@ -43,6 +50,11 @@ const userApi = {
   ratingOrder: (idOrder, dataRating) => {
     const url = `${POST_RATING_ORDER}${idOrder}`;
     return axiosClient.post(url, dataRating);
+  },
+
+  userGetNotification: (params) => {
+    const url = USER_GET_NOTIFICATION;
+    return axiosClient.get(url, params);
   },
 };
 

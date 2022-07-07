@@ -10,7 +10,7 @@ import PopUpConfirm from '../../../../components/common/PopUpConfirm/PopUpConfir
 import { totalQuantity } from '../../userSlice';
 import './product.scss';
 
-export default function Product({ data }) {
+export default function Product({ data, storeInfo }) {
   const dispatch = useDispatch();
   const [productClickedId, setProductClickedId] = useState('');
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -82,27 +82,45 @@ export default function Product({ data }) {
           image={data.images ? data.images[0] : imageUnknown}
         />
         <CardContent style={{ marginRight: '10px' }}>
-          <Link className="textDecorationNone nameLinkProduct" to={`/product/${data.id}`}>
-            <Typography
-              gutterBottom
-              variant="h5"
-              component="div"
-              style={{ fontSize: '20px', fontWeight: '400' }}
-            >
-              {data.name}
-            </Typography>
-          </Link>
+          <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Link className="textDecorationNone nameLinkProduct" to={`/product/${data.id}`}>
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                style={{ fontSize: '20px', fontWeight: '500' }}
+              >
+                {data.name}
+              </Typography>
+            </Link>
+
+            {storeInfo && (
+              <Link
+                className="textDecorationNone nameLinkProduct"
+                to={`/restaurant/${storeInfo.id}`}
+              >
+                <Typography
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                  style={{ fontSize: '16px', fontWeight: '400', color: 'rgba(0, 0, 0, 0.6)' }}
+                >
+                  {storeInfo.name}
+                </Typography>
+              </Link>
+            )}
+          </Box>
           {/* <Rating name="read-only" defaultValue={4.5} precision={0.5} readOnly /> */}
           <Box style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
             <Typography
-              style={{ fontSize: '17px', fontWeight: '400' }}
+              style={{ fontSize: '17px', fontWeight: '500' }}
               variant="p"
-              color="text.secondary"
+              // color="text.secondary"
             >
               <CurrencyFormat value={data.price} displayType={'text'} thousandSeparator={true} />đ
             </Typography>
             <Typography
-              style={{ fontSize: '17px', fontWeight: '400' }}
+              style={{ fontSize: '16px', fontWeight: '400' }}
               variant="p"
               color="text.secondary"
             >

@@ -6,6 +6,11 @@ export const getUserInfo = createAsyncThunk('user/getUserInfo', async (params) =
   return response;
 });
 
+export const getAdminInfo = createAsyncThunk('user/getAdminInfo', async (params) => {
+  const response = await userApi.getAdminInfo(params);
+  return response;
+});
+
 export const postOrder = createAsyncThunk('user/postOrder', async (params) => {
   const response = await userApi.postOrder(params);
   return response;
@@ -16,8 +21,13 @@ export const cancelOrder = createAsyncThunk('user/cancelOrder', async (idOrder) 
   return response;
 });
 
-export const ratingOrder = createAsyncThunk('user/ratingOrder', async (idOrder, data) => {
-  const response = await userApi.ratingOrder(idOrder, data);
+export const ratingOrder = createAsyncThunk('user/ratingOrder', async (data) => {
+  const response = await userApi.ratingOrder(data.idOrder, data.dataRating);
+  return response;
+});
+
+export const userGetNotification = createAsyncThunk('user/userGetNotification', async (params) => {
+  const response = await userApi.userGetNotification(params);
   return response;
 });
 
@@ -25,7 +35,9 @@ const userSlice = createSlice({
   name: 'user',
   initialState: {
     current: {},
+    adminInfo: {},
     loading: false,
+    notification: {},
     message: '',
     error: '',
     totalQuantityItemCart: 0,
@@ -46,6 +58,19 @@ const userSlice = createSlice({
       state.current = action.payload;
     },
     [getUserInfo.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // handle get admin info
+    [getAdminInfo.pending]: (state) => {
+      state.loading = true;
+    },
+    [getAdminInfo.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.adminInfo = action.payload;
+    },
+    [getAdminInfo.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },
@@ -82,9 +107,22 @@ const userSlice = createSlice({
     },
     [ratingOrder.fulfilled]: (state, action) => {
       state.loading = false;
-      state.message = action.payload;
+      state.current = action.payload;
     },
     [ratingOrder.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // handle get notification
+    [userGetNotification.pending]: (state) => {
+      state.loading = true;
+    },
+    [userGetNotification.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.notification = action.payload;
+    },
+    [userGetNotification.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },

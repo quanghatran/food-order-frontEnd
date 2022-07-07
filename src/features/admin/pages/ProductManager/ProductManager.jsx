@@ -62,6 +62,13 @@ export default function ProductManager() {
     setParams({ ...params, page: value });
   };
 
+  const checkNameStore = (idProduct) => {
+    if (idProduct && listStore) {
+      const store = listStore.find((store) => store.id === idProduct);
+      return store.name;
+    }
+  };
+
   return (
     <Box className="listProductWrapper listCategoryWrapper listUserWrapper">
       <Box className="headerListCategory">
@@ -162,7 +169,7 @@ export default function ProductManager() {
                     <TableCell align="center">{product.boughtNum}</TableCell>
                     <TableCell align="center">
                       {/* {product.storeId} */}
-                      <span style={{ color: 'red' }}>Store Name</span>
+                      <span>{checkNameStore(product.storeId)}</span>
                     </TableCell>
                     <TableCell align="center">
                       {moment(product.createdAt).format('DD MMM YYYY')}

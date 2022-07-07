@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import TitleUserPage from '../../../../components/common/TitleUserPage/TitleUserPage';
 import { getListCategory, searchProductByCategory } from '../../../categories/categoriesSlice';
 import { getProductsByCategory } from '../../../products/productSlice';
+import { getAllStore } from '../../../storeManager/storeManagerSlice';
 import '../../components/Categories/categories.scss';
 import Product from '../../components/Product/Product';
 import '../HomePage/homePage.scss';
@@ -21,6 +22,7 @@ export default function Category() {
   const [categoryName, setCategoryName] = useState('');
   const [listProductByCategory, setListProductByCategory] = useState(null);
   const [categorySelected, setNameCategorySelected] = useState();
+  const [listStore, setListStore] = useState(null);
 
   useEffect(() => {
     const fetchGetListCategory = async () => {
@@ -66,9 +68,24 @@ export default function Category() {
         console.log('Get list category error: ', error);
       }
     };
-    fetchGetListCategory();
-  }, [reduxCategoryName]);
 
+    // fetch get list store
+    const fetchGetListStore = async () => {
+      try {
+        const listStore = await dispatch(getAllStore());
+        unwrapResult(listStore);
+
+        setListStore(listStore.payload);
+      } catch (error) {
+        console.log('Get list store error: ', error);
+      }
+    };
+
+    fetchGetListStore();
+    fetchGetListCategory();
+  }, [reduxCategoryName, dispatch]);
+
+  console.log(listStore);
   // fetch list product by categoried that selected
   useEffect(() => {
     const fetchGetListProduct = async () => {
@@ -85,13 +102,22 @@ export default function Category() {
       }
     };
     fetchGetListProduct();
-  }, [categoryName, categorySelected]);
+  }, [categoryName, categorySelected, dispatch]);
 
   const handleChangeCategory = (categoryName, categoryId) => {
     dispatch(searchProductByCategory(categoryName));
     setCategoryName(categoryName);
     setNameCategorySelected(categoryId);
   };
+
+  const findStoreInfo = (idStore) => {
+    if (listStore) {
+      const storeInfo = listStore.find((store) => store.id === idStore);
+      return storeInfo;
+    }
+  };
+
+  console.log(listProductByCategory);
 
   return (
     <div className="categoryWrapper homePageWrapper categoriesWrapper">
@@ -141,7 +167,11 @@ export default function Category() {
                 <Grid container spacing={{ xs: 2, md: 4 }}>
                   {listProductByCategory.map((productCategory) => (
                     <Grid key={productCategory.productId} item xs={12} md={6} lg={3}>
-                      <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
+                      <Product
+                        style={{ marginBottom: '40px' }}
+                        data={productCategory.product}
+                        storeInfo={findStoreInfo(productCategory.product.storeId)}
+                      />
                     </Grid>
                   ))}
                 </Grid>

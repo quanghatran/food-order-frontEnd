@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import logoFoodApp from '../../../../assets/images/common/logo_food_order.png';
-import { getUserInfo } from '../../../user/userSlice';
+import { getAdminInfo, getUserInfo } from '../../../user/userSlice';
 import { getStoreInfo } from '../../../store/storeSlice';
 import { postAuthLogin } from '../../authSlice';
 import './login.scss';
@@ -43,11 +43,12 @@ export default function Login() {
 
           toast.success('Login Success');
           if (result.payload.user.role === 'admin') {
+            const accountInfo = await dispatch(getAdminInfo());
+            await localStorage.setItem('accountInfo', JSON.stringify(accountInfo.payload[0]));
             navigate('/admin');
           } else if (result.payload.user.role === 'store') {
             const accountInfo = await dispatch(getStoreInfo());
             await localStorage.setItem('accountInfo', JSON.stringify(accountInfo.payload));
-
             navigate('/store');
           } else {
             const accountInfo = await dispatch(getUserInfo());

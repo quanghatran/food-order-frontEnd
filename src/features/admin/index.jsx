@@ -1,13 +1,13 @@
 import { Route, Routes } from 'react-router-dom';
 import NavigationAdmin from '../../components/common/NavigationAdmin/NavigationAdmin';
+import { listAdminNavbar } from '../../constants/admin/';
 import CategoriesFeature from '../categories';
-import Products from '../products';
 import StoresManagerFeature from '../storeManager';
 import UserManagerFeature from '../userManager';
 import './admin.scss';
+import AdminInfo from './pages/AdminInfo/AdminInfo';
 import HomePage from './pages/HomePage/HomePage';
-import { listAdminNavbar } from '../../constants/admin/';
-import React from 'react';
+import OrderManager from './pages/OrderManager/OrderManager';
 import ProductManager from './pages/ProductManager/ProductManager';
 
 export default function AdminFeature() {
@@ -23,7 +23,8 @@ export default function AdminFeature() {
           <Route path="/user/*" element={<UserManagerFeature />} />
 
           <Route path="/category/*" element={<CategoriesFeature />} />
-          {/* <Route path="/register" element={<Register />} /> */}
+          <Route path="/orders" element={<OrderManager />} />
+          <Route path="/info" element={<AdminInfo />} />
           {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
         </Routes>
       </div>

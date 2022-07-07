@@ -1,13 +1,13 @@
-import { Box, Button, IconButton, Rating, Typography } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import RemoveIcon from '@mui/icons-material/Remove';
+import { Box, IconButton, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import CurrencyFormat from 'react-currency-format';
 import { useDispatch } from 'react-redux';
-import { totalQuantity } from '../../../features/user/userSlice';
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import './itemCart.scss';
 import { useNavigate } from 'react-router-dom';
+import { totalQuantity } from '../../../features/user/userSlice';
+import './itemCart.scss';
 
 const ItemCart = ({ price, quantity, name, images, item, onDelete }) => {
   const [qty, setQty] = useState(quantity);
@@ -50,14 +50,15 @@ const ItemCart = ({ price, quantity, name, images, item, onDelete }) => {
             <h3 className="cartTitle" onClick={() => handleClickShowItemDetail(item.id)}>
               {name}
             </h3>
-            <Rating name="read-only" defaultValue={4.5} precision={0.5} readOnly />
+            {/* <Rating name="read-only" defaultValue={4.5} precision={0.5} readOnly /> */}
+            <p>{item.boughtNum} Bought</p>
             <p className="productPrice">
               {' '}
               <CurrencyFormat value={price} displayType={'text'} thousandSeparator={true} />đ
             </p>
           </Box>
         </Box>
-        <Box style={{ display: 'flex', alignItem: 'center', gap: '40px' }}>
+        <Box style={{ display: 'flex', alignItem: 'center', gap: '10px' }}>
           <Box className="modifyItemCart">
             <IconButton
               aria-label="delete"
@@ -89,7 +90,7 @@ const ItemCart = ({ price, quantity, name, images, item, onDelete }) => {
           </Box>
 
           <Box gridColumn="span 2" className="totalCart">
-            <Box style={{ fontSize: '20px', fontWeight: '500' }}>
+            <Box style={{ fontSize: '18px', fontWeight: '500' }}>
               <CurrencyFormat value={qty * price} displayType={'text'} thousandSeparator={true} />đ
             </Box>
             <IconButton onClick={() => onDelete(item)} color="error">

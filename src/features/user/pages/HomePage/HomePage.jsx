@@ -1,23 +1,24 @@
-import { Box, Grid, TextField, Typography } from '@mui/material';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import { Box, Grid, Typography } from '@mui/material';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import productApi from '../../../../api/productApi';
+import SearchDebouce from '../../../../components/common/SearchDebounce/SearchForm';
 import TitleUserPage from '../../../../components/common/TitleUserPage/TitleUserPage';
 import { getListCategory } from '../../../categories/categoriesSlice';
 import { getProductsByCategory, getTopProducts } from '../../../products/productSlice';
 import { getAllStore } from '../../../storeManager/storeManagerSlice';
 import Categories from '../../components/Categories/Categories';
 import Product from '../../components/Product/Product';
+import ProductSearch from '../../components/ProductSearch/ProductSearch';
 import Slider from '../../components/Slider/Slider';
 import Stores from '../../components/Stores/Stores';
 import './homePage.scss';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import productApi from '../../../../api/productApi';
-import SearchDebouce from '../../../../components/common/SearchDebounce/SearchForm';
-import ProductSearch from '../../components/ProductSearch/ProductSearch';
 
 export default function HomePage() {
   const dispatch = useDispatch();
+  const accountInfo = JSON.parse(localStorage.getItem('accountInfo'));
 
   const [listCategory, setListCategory] = useState(null);
   const [listStore, setListStore] = useState(null);
@@ -31,6 +32,11 @@ export default function HomePage() {
   const [listProductByCategory3, setListProductByCategory3] = useState(null);
   const [nameCategory4, setNameCategory4] = useState('');
   const [listProductByCategory4, setListProductByCategory4] = useState(null);
+  const [isDataChange, setIsDataChange] = useState(false);
+
+  const initialValue = {
+    search: '',
+  };
 
   // fetch get list category
   useEffect(() => {
@@ -64,7 +70,9 @@ export default function HomePage() {
     };
 
     fetchGetListCategory();
-  }, [dispatch]);
+
+    console.log(1);
+  }, [dispatch, isDataChange]);
 
   // fetch get list store
   useEffect(() => {
@@ -97,21 +105,50 @@ export default function HomePage() {
     };
 
     fetchGetTopProduct();
-  }, [dispatch]);
+  }, [dispatch, isDataChange]);
 
-  const initialValue = {
-    search: '',
-  };
   const handleSubmitSearchForm = (FormValue) => {
+    console.log(FormValue.searchTerm);
+    setIsDataChange(!isDataChange);
     if (FormValue.searchTerm === '') return;
     (async () => {
       try {
         const response = await productApi.getProductByName(FormValue.searchTerm);
-        setSearchProducts(response);
+
+        if (response) {
+          Object.keys(response).forEach(function (key) {
+            response[key].boughtNum = response[key].Product_bought_num;
+            response[key].description = response[key].Product_description;
+            response[key].id = response[key].Product_id;
+            response[key].images = response[key].Product_images;
+            response[key].name = response[key].Product_name;
+            response[key].price = response[key].Product_price;
+            response[key].store = findStoreInfo(response[key].Product_storeId);
+
+            delete response[key].Product_bought_num;
+            delete response[key].Product_description;
+            delete response[key].Product_id;
+            delete response[key].Product_images;
+            delete response[key].Product_name;
+            delete response[key].Product_price;
+            delete response[key].Product_storeId;
+            delete response[key].Product_created_at;
+            delete response[key].Product_status;
+            delete response[key].Product_updated_at;
+          });
+          setSearchProducts(response);
+        }
       } catch (error) {
         console.log(error);
       }
     })();
+  };
+
+  const findStoreInfo = (idStore) => {
+    if (listStore) {
+      const storeInfo = listStore.find((store) => store.id === idStore);
+      return storeInfo;
+    }
   };
 
   return (
@@ -150,14 +187,18 @@ export default function HomePage() {
               {topProducts && (
                 <Box>
                   <Typography className="titleCurve" component="h1" variant="h3">
-                    Top Product
+                    Top Products
                   </Typography>
                   <Grid container spacing={{ xs: 2, md: 4 }}>
                     {topProducts
                       .filter((product) => product.boughtNum > 0)
                       .map((product, index) => (
                         <Grid key={index} item xs={12} md={6} lg={3}>
-                          <Product style={{ marginBottom: '40px' }} data={product} />
+                          <Product
+                            style={{ marginBottom: '40px' }}
+                            data={product}
+                            storeInfo={product.store}
+                          />
                         </Grid>
                       ))}
                   </Grid>
@@ -169,9 +210,13 @@ export default function HomePage() {
                     {nameCategory1 ?? 'Category Name'}
                   </Typography>
                   <Grid container spacing={{ xs: 2, md: 4 }}>
-                    {listProductByCategory1.map((productCategory, index) => (
+                    {listProductByCategory1.slice(0, 8).map((productCategory, index) => (
                       <Grid key={index} item xs={12} md={6} lg={3}>
-                        <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
+                        <Product
+                          style={{ marginBottom: '40px' }}
+                          data={productCategory.product}
+                          storeInfo={findStoreInfo(productCategory.product?.storeId)}
+                        />
                       </Grid>
                     ))}
                   </Grid>
@@ -184,9 +229,13 @@ export default function HomePage() {
                     {nameCategory2 ?? 'Category Name'}
                   </Typography>
                   <Grid container spacing={{ xs: 2, md: 4 }}>
-                    {listProductByCategory2.map((productCategory, index) => (
+                    {listProductByCategory2.slice(0, 8).map((productCategory, index) => (
                       <Grid key={index} item xs={12} md={6} lg={3}>
-                        <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
+                        <Product
+                          style={{ marginBottom: '40px' }}
+                          data={productCategory.product}
+                          storeInfo={findStoreInfo(productCategory.product?.storeId)}
+                        />
                       </Grid>
                     ))}
                   </Grid>
@@ -199,9 +248,13 @@ export default function HomePage() {
                     {nameCategory3 ?? 'Category Name'}
                   </Typography>
                   <Grid container spacing={{ xs: 2, md: 4 }}>
-                    {listProductByCategory3.map((productCategory, index) => (
+                    {listProductByCategory3.slice(0, 8).map((productCategory, index) => (
                       <Grid key={index} item xs={12} md={6} lg={3}>
-                        <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
+                        <Product
+                          style={{ marginBottom: '40px' }}
+                          data={productCategory.product}
+                          storeInfo={findStoreInfo(productCategory.product?.storeId)}
+                        />
                       </Grid>
                     ))}
                   </Grid>
@@ -214,9 +267,13 @@ export default function HomePage() {
                     {nameCategory4 ?? 'Category Name'}
                   </Typography>
                   <Grid container spacing={{ xs: 2, md: 4 }}>
-                    {listProductByCategory4.map((productCategory, index) => (
+                    {listProductByCategory4.slice(0, 8).map((productCategory, index) => (
                       <Grid key={index} item xs={12} md={6} lg={3}>
-                        <Product style={{ marginBottom: '40px' }} data={productCategory.product} />
+                        <Product
+                          style={{ marginBottom: '40px' }}
+                          data={productCategory.product}
+                          storeInfo={findStoreInfo(productCategory.product?.storeId)}
+                        />
                       </Grid>
                     ))}
                   </Grid>
@@ -234,7 +291,16 @@ export default function HomePage() {
                     {searchProducts &&
                       searchProducts.map((product, index) => (
                         <Grid key={index} item xs={12} md={6} lg={3}>
-                          <ProductSearch style={{ marginBottom: '40px' }} data={product} />
+                          {/* <ProductSearch
+                            style={{ marginBottom: '40px' }}
+                            data={product}
+                            storeInfo={findStoreInfo(product?.Product_storeId)}
+                          /> */}
+                          <Product
+                            style={{ marginBottom: '40px' }}
+                            data={product}
+                            storeInfo={product.store}
+                          />
                         </Grid>
                       ))}
                   </Grid>

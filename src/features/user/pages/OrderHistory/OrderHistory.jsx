@@ -12,6 +12,7 @@ import {
 import { unwrapResult } from '@reduxjs/toolkit';
 import dateFormat from 'dateformat';
 import { useEffect, useState } from 'react';
+import CurrencyFormat from 'react-currency-format';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import userApi from '../../../../api/userApi';
@@ -91,12 +92,15 @@ const OrderHistory = () => {
     setIsRatingOpen(false);
   };
 
-  const handleRatingSubmit = async (dataSubmit) => {
+  const handleRatingSubmit = async (dataRating) => {
+    const data = {
+      idOrder,
+      dataRating,
+    };
     try {
-      const result = await dispatch(ratingOrder(idOrder, dataSubmit));
+      const result = await dispatch(ratingOrder(data));
       unwrapResult(result);
 
-      console.log(result);
       toast.success('Rating order successfully');
     } catch (error) {
       toast.error('Rating order failed');
@@ -178,13 +182,20 @@ const OrderHistory = () => {
                           </b>
                         </Box>
                       </TableCell>
-                      <TableCell align="center">{item.totalPrice}</TableCell>
+                      <TableCell align="center">
+                        <CurrencyFormat
+                          value={item.totalPrice}
+                          displayType={'text'}
+                          thousandSeparator={true}
+                        />
+                        đ
+                      </TableCell>
                       <TableCell align="center">{item.paymentType}</TableCell>
                       <TableCell align="center">
-                        {item.isPayment === true ? (
-                          <b style={{ color: '#333' }}>paid</b>
+                        {item.isPayment === true || item.status === 'success' ? (
+                          <b style={{ color: 'green' }}>paid</b>
                         ) : (
-                          <b style={{ color: '#333' }}>unpaid</b>
+                          <b style={{ color: '#f0932b' }}>unpaid</b>
                         )}
                       </TableCell>
                       <TableCell align="center">

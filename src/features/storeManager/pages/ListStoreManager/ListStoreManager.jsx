@@ -10,15 +10,13 @@ import { Box } from '@mui/system';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import storeImage from '../../../../assets/images/user/storeImage.webp';
+import PopUpConfirm from '../../../../components/common/PopUpConfirm/PopUpConfirm';
 import TitleAdminStorePage from '../../../../components/common/TitleAdminStorePage/TitleAdminStorePage';
 import '../../../categories/pages/ListCategory/listCategory.scss';
 import { deleteStore, getAllStore } from '../../storeManagerSlice';
 import './listStoreManager.scss';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
-import PopUpConfirm from '../../../../components/common/PopUpConfirm/PopUpConfirm';
-import { toast } from 'react-toastify';
-import storeImage from '../../../../assets/images/user/storeImage.webp';
 export default function ListStoreManager() {
   const dispatch = useDispatch();
 

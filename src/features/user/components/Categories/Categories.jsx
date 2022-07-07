@@ -25,7 +25,7 @@ export default function Categories({ listCategory }) {
             spacing={{ xs: 3, md: 6 }}
             columns={{ xs: 4, sm: 8, md: 12 }}
           >
-            {listCategory.map((category) => (
+            {listCategory.slice(0, 8).map((category) => (
               <Grid className="categoryItem" item xs={2} sm={3} md={3} key={category.id}>
                 <Box
                   className="categoryBox"
