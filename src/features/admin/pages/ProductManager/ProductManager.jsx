@@ -26,7 +26,7 @@ export default function ProductManager() {
 
   const [listProduct, setListProduct] = useState(null);
   const [totalProduct, setTotalProduct] = useState(0);
-  const [params, setParams] = useState({ page: 1, perPage: 5 });
+  const [params, setParams] = useState({ page: 1, perPage: 8 });
   const [listStore, setListStore] = useState(null);
   const [isDataChange, setIsDataChange] = useState(false);
 

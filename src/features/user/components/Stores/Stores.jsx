@@ -23,7 +23,7 @@ export default function Stores({ listStore }) {
         columns={{ xs: 4, sm: 8, md: 12 }}
       >
         {listStore &&
-          listStore.map((store) => (
+          listStore.slice(0, 8).map((store) => (
             <Grid key={store.id} item xs={2} sm={3} md={3}>
               <Box
                 className="listStoreItem"

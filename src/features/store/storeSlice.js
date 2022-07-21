@@ -11,6 +11,11 @@ export const getListStoreOrder = createAsyncThunk('store/getListStoreOrder', asy
   return response;
 });
 
+export const getOrderById = createAsyncThunk('store/getOrderById', async (idOrder) => {
+  const response = await storeApi.getOrderById(idOrder);
+  return response;
+});
+
 const storeSlice = createSlice({
   name: 'store',
   initialState: {
@@ -44,6 +49,19 @@ const storeSlice = createSlice({
       state.storeOrder = action.payload;
     },
     [getListStoreOrder.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // handle get store info
+    [getOrderById.pending]: (state) => {
+      state.loading = true;
+    },
+    [getOrderById.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.storeOrder = action.payload;
+    },
+    [getOrderById.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },

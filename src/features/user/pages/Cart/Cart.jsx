@@ -95,6 +95,7 @@ export default function Cart() {
   const handleDeleteItemCart = (item) => {
     setItemDel(item);
     setQty((counter) => counter - item.quantity);
+    toast.success('Update cart success!');
   };
 
   const handleDiscountChange = (event) => {
@@ -102,11 +103,15 @@ export default function Cart() {
       const selectedSaleCode = listSaleCode.find(
         (saleCode) => saleCode.discountPercent === event.target.value
       );
-      setDiscountId(selectedSaleCode.id);
+
+      if (selectedSaleCode) {
+        setDiscountId(selectedSaleCode.id);
+      }
     }
 
     // console.log(event);
     setDiscount(event.target.value);
+    toast.success('Update discount success!');
   };
 
   const handlePaymentMethodChange = (event) => {
@@ -173,7 +178,6 @@ export default function Cart() {
     navigate('/auth/login');
   };
 
-  console.log(item);
   return (
     <>
       <TitleUserPage title="Cart" link="/#" />

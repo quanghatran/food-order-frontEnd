@@ -23,7 +23,7 @@ export default function ListUserManager() {
   const dispatch = useDispatch();
 
   const [listUsers, setListUsers] = useState(null);
-  const [params, setParams] = useState({ page: 1, perPage: 5 });
+  const [params, setParams] = useState({ page: 1, perPage: 8 });
   const [totalUser, setTotalUser] = useState(0);
   const [nameConfirm, setNameConfirm] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);

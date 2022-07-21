@@ -80,6 +80,8 @@ export default function ListProduct() {
     setNameConfirm(null);
   };
 
+  console.log(listProduct);
+
   return (
     <Box className="listProductWrapper listCategoryWrapper listUserWrapper">
       <Box className="headerListCategory">

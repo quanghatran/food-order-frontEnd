@@ -77,6 +77,13 @@ export default function ProductStore() {
     <div className="productStoreWrapper storeInfoWrapper">
       <Box className="productStoreInfoWrapper">
         <TitleUserPage title="Information" link="#" />
+        <Box className="searchWrapper" style={{ width: '400px', marginBottom: '40px' }}>
+          {/* <SearchDebouce
+            initialValue={initialValue}
+            onSubmit={handleSubmitSearchForm}
+            width="400px"
+          /> */}
+        </Box>
         {storeInfo && (
           <Box
             style={{
@@ -160,26 +167,32 @@ export default function ProductStore() {
 
       <Box className="listDiscountStore" style={{ marginBottom: '40px' }}>
         <TitleUserPage title="Sale Codes" link="#" />
-        <Grid container spacing={{ xs: 2, md: 4 }}>
-          {listSaleCode &&
-            listSaleCode.map((saleCode) => (
+        {listSaleCode && listSaleCode?.length > 0 ? (
+          <Grid container spacing={{ xs: 2, md: 4 }}>
+            {listSaleCode.map((saleCode) => (
               <Grid key={saleCode.id} item xs={12} md={6} lg={2}>
                 <SaleCodes style={{ marginBottom: '40px' }} saleCode={saleCode} />
               </Grid>
             ))}
-        </Grid>
+          </Grid>
+        ) : (
+          <Box>Sale code is empty</Box>
+        )}
       </Box>
 
       <Box className="listOwnProductStore">
         <TitleUserPage title="Products" link="#" />
-        <Grid container spacing={{ xs: 2, md: 4 }}>
-          {listOwnProducts &&
-            listOwnProducts.map((product) => (
+        {listOwnProducts && listOwnProducts?.length > 0 ? (
+          <Grid container spacing={{ xs: 2, md: 4 }}>
+            {listOwnProducts.map((product) => (
               <Grid key={product.id} item xs={12} md={6} lg={2}>
                 <Product style={{ marginBottom: '40px' }} data={product} />
               </Grid>
             ))}
-        </Grid>
+          </Grid>
+        ) : (
+          <Box>Product is empty</Box>
+        )}
       </Box>
     </div>
   );

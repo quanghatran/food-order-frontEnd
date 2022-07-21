@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import CurrencyFormat from 'react-currency-format';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { totalQuantity } from '../../../features/user/userSlice';
 import './itemCart.scss';
 
@@ -24,9 +25,12 @@ const ItemCart = ({ price, quantity, name, images, item, onDelete }) => {
     dispatch(totalQuantity(total));
   }, [qty, dispatch, item]);
   const handleAddQty = () => {
+    toast.success('Update cart success!');
     setQty((counter) => counter + 1);
   };
+
   const handleMinusQty = () => {
+    toast.success('Update cart success!');
     setQty((counter) => counter - 1);
   };
 
