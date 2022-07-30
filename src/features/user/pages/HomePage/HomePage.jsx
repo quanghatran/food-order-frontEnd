@@ -70,8 +70,6 @@ export default function HomePage() {
     };
 
     fetchGetListCategory();
-
-    console.log(1);
   }, [dispatch, isDataChange]);
 
   // fetch get list store

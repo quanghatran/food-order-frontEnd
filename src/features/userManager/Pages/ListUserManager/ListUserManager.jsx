@@ -166,7 +166,7 @@ export default function ListUserManager() {
                     <TableCell align="center">
                       <Box>
                         <Button
-                          variant="text"
+                          variant="outlined"
                           size="small"
                           style={{ margin: 'auto 10px' }}
                           color="secondary"
@@ -174,7 +174,7 @@ export default function ListUserManager() {
                         >
                           Delete
                         </Button>
-                        <Button
+                        {/* <Button
                           variant="text"
                           size="small"
                           style={{ margin: 'auto 10px' }}
@@ -182,7 +182,7 @@ export default function ListUserManager() {
                           // onClick={(e) => handleClickUpdateCategory(category.id, category)}
                         >
                           Update
-                        </Button>
+                        </Button> */}
                       </Box>
                     </TableCell>
                   </TableRow>

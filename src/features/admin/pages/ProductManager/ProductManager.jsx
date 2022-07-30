@@ -180,7 +180,7 @@ export default function ProductManager() {
                     <TableCell align="center">
                       <Box>
                         <Button
-                          variant="text"
+                          variant="outlined"
                           size="small"
                           style={{ margin: 'auto 10px' }}
                           color="secondary"

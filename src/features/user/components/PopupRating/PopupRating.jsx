@@ -50,7 +50,7 @@ export default function PopupRating({ isRatingOpen, handleRatingClose, onSubmit 
           Rating Order
         </DialogTitle>
         <DialogContent>
-          <Box px={3}>
+          <Box px={3} style={{ width: '400px' }}>
             <Box mt={3}>
               <Box className="imageFieldWrapper" style={{ marginBottom: '25px' }}>
                 <span className="imageFIeldTitle">Image</span>

@@ -180,7 +180,7 @@ export default function ListSaleCode() {
                     <TableCell align="center">
                       <Box>
                         <Button
-                          variant="text"
+                          variant="outlined"
                           size="small"
                           style={{ margin: 'auto 10px' }}
                           color="secondary"
@@ -189,7 +189,7 @@ export default function ListSaleCode() {
                           Delete
                         </Button>
                         <Button
-                          variant="text"
+                          variant="outlined"
                           size="small"
                           style={{ margin: 'auto 10px' }}
                           color="primary"

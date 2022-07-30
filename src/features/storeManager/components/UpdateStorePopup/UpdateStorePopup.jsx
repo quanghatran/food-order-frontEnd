@@ -13,11 +13,11 @@ import {
 import { Box } from '@mui/system';
 import { useState } from 'react';
 
-export default function PopupUpdateOrder({
-  isUpdateOrderOpen,
-  handleUpdateOrderClose,
+export default function UpdateStorePopup({
+  isUpdateStatusStoreOpen,
+  handleUpdateStatusStoreClose,
   onSubmit,
-  orderStatus,
+  // storeStatus,
 }) {
   const [status, setStatus] = useState('');
 
@@ -25,15 +25,15 @@ export default function PopupUpdateOrder({
     setStatus(event.target.value);
   };
 
-  const handleFormSubmitRating = () => {
+  const handleFormSubmitUpdateStatus = () => {
     onSubmit(status);
     setStatus('');
   };
 
   return (
     <Dialog
-      open={isUpdateOrderOpen}
-      onClose={handleUpdateOrderClose}
+      open={isUpdateStatusStoreOpen}
+      onClose={handleUpdateStatusStoreClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -42,38 +42,25 @@ export default function PopupUpdateOrder({
           style={{ backgroundColor: '#3dbe9c', marginBottom: '20px', color: '#fff' }}
           id="alert-dialog-title"
         >
-          Update Order
+          Update Store
         </DialogTitle>
         <DialogContent>
           <Box px={3} style={{ width: '300px', marginTop: '20px' }}>
             <FormControl fullWidth>
-              <InputLabel label="Status Order" id="update-order-status">
-                Status Order
+              <InputLabel label="Status Store" id="update-order-status">
+                Status Store
               </InputLabel>
-              {orderStatus === 'pending' && (
-                <Select
-                  labelId="update-order-status"
-                  id="demo-update-order-status"
-                  value={status}
-                  label="Status Order"
-                  onChange={handleChangeStatus}
-                >
-                  <MenuItem value="confirm">Confirm</MenuItem>
-                  <MenuItem value="canceled">Canceled</MenuItem>
-                </Select>
-              )}
-              {orderStatus === 'confirm' && (
-                <Select
-                  labelId="update-order-status"
-                  id="demo-update-order-status"
-                  value={status}
-                  label="Status Order"
-                  onChange={handleChangeStatus}
-                >
-                  <MenuItem value="success">Success</MenuItem>
-                  <MenuItem value="failed">Failed</MenuItem>
-                </Select>
-              )}
+
+              <Select
+                labelId="update-order-status"
+                id="demo-update-order-status"
+                value={status}
+                label="Status Store"
+                onChange={handleChangeStatus}
+              >
+                <MenuItem value="active">Active</MenuItem>
+                <MenuItem value="inactive">Inactive</MenuItem>
+              </Select>
             </FormControl>
           </Box>
         </DialogContent>
@@ -82,14 +69,14 @@ export default function PopupUpdateOrder({
             size="small"
             variant="contained"
             color="secondary"
-            onClick={handleUpdateOrderClose}
+            onClick={handleUpdateStatusStoreClose}
           >
             Cancel
           </Button>
 
           <LoadingButton
             size="small"
-            onClick={handleFormSubmitRating}
+            onClick={handleFormSubmitUpdateStatus}
             color="primary"
             variant="contained"
             autoFocus

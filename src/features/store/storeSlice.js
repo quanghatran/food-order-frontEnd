@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import storeApi from '../../api/storeApi';
+import orderApi from '../../api/orderApi';
 
 export const getStoreInfo = createAsyncThunk('store/getStoreInfo', async (params) => {
   const response = await storeApi.getStoreInfo(params);
@@ -16,6 +17,32 @@ export const getOrderById = createAsyncThunk('store/getOrderById', async (idOrde
   return response;
 });
 
+export const storeUpdateOrder = createAsyncThunk(
+  'store/storeUpdateOrder',
+  async ({ orderId, status }) => {
+    const response = await storeApi.updateOderById(orderId, { status: status });
+    return response;
+  }
+);
+
+export const getOrderReportByMonthStore = createAsyncThunk(
+  'admin/getOrderReportByMonth',
+  async (month) => {
+    const response = await storeApi.getOrderReportByMonthStore(month);
+    return response;
+  }
+);
+
+export const getProductsOrder = createAsyncThunk('admin/getProductsOrder', async (idOrder) => {
+  const response = await orderApi.getProductsOrder(idOrder);
+  return response;
+});
+
+export const getRatingOrder = createAsyncThunk('admin/getRatingOrder', async (idOrder) => {
+  const response = await orderApi.getRatingOrder(idOrder);
+  return response;
+});
+
 const storeSlice = createSlice({
   name: 'store',
   initialState: {
@@ -23,6 +50,9 @@ const storeSlice = createSlice({
     loading: false,
     error: '',
     storeOrder: {},
+    statusOrder: '',
+    productsOrder: {},
+    ratingOrder: {},
   },
   reducers: {},
 
@@ -62,6 +92,58 @@ const storeSlice = createSlice({
       state.storeOrder = action.payload;
     },
     [getOrderById.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // update order by id
+    [storeUpdateOrder.pending]: (state) => {
+      state.loading = true;
+    },
+    [storeUpdateOrder.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.statusOrder = action.payload;
+    },
+    [storeUpdateOrder.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // get order report by month
+    [getOrderReportByMonthStore.pending]: (state) => {
+      state.loading = true;
+    },
+    [getOrderReportByMonthStore.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.current = action.payload;
+    },
+    [getOrderReportByMonthStore.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // get products order
+    [getProductsOrder.pending]: (state) => {
+      state.loading = true;
+    },
+    [getProductsOrder.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.productsOrder = action.payload;
+    },
+    [getProductsOrder.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // get rating order
+    [getRatingOrder.pending]: (state) => {
+      state.loading = true;
+    },
+    [getRatingOrder.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.ratingOrder = action.payload;
+    },
+    [getRatingOrder.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },

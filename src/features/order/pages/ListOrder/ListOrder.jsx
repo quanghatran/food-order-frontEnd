@@ -14,9 +14,18 @@ import dateFormat from 'dateformat';
 import { useEffect, useState } from 'react';
 import CurrencyFormat from 'react-currency-format';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import TitleAdminStorePage from '../../../../components/common/TitleAdminStorePage/TitleAdminStorePage';
 import { getListSaleCode } from '../../../saleCode/saleCodeSlice';
-import { getListStoreOrder, getOrderById } from '../../../store/storeSlice';
+import {
+  getListStoreOrder,
+  getOrderById,
+  getProductsOrder,
+  getRatingOrder,
+  storeUpdateOrder,
+} from '../../../store/storeSlice';
+import PopupRatingOrder from '../../components/PopupRatingOrder/PopupRatingOrder';
+import PopupShowsProducts from '../../components/PopupShowsProducts/PopupShowsProducts';
 import PopupUpdateOrder from '../../components/PopupUpdateOrder/PopupUpdateOrder';
 import './listOrder.scss';
 
@@ -28,6 +37,12 @@ export default function ListOrder() {
   const [listDetailOrder, setListDetailOrder] = useState([]);
   const [orderId, setOrderId] = useState('');
   const [isUpdateOrderOpen, setIsUpdateOrderOpen] = useState(false);
+  const [isPopupShowsProductsOpen, setIsPopupShowsProductsOpen] = useState(false);
+  const [isRatingOrder, setIsRatingOrder] = useState(false);
+  const [orderStatus, setOrderStatus] = useState('');
+  const [isDataChange, setIsDataChange] = useState(false);
+  const [productsOrder, setProductOrders] = useState(null);
+  const [ratingOrder, setRatingOrder] = useState(null);
 
   // get list store order
   useEffect(() => {
@@ -57,7 +72,7 @@ export default function ListOrder() {
 
     fetchGetListSaleCode();
     fetchGetListStoreOrder();
-  }, [dispatch]);
+  }, [dispatch, isDataChange]);
 
   useEffect(() => {
     if (listStoreOrder) {
@@ -75,7 +90,7 @@ export default function ListOrder() {
         fetchGetOrderById();
       });
     }
-  }, [dispatch, listStoreOrder]);
+  }, [dispatch, listStoreOrder, isDataChange]);
 
   const findSaleCode = (idSaleCode) => {
     if (idSaleCode && listSaleCode) {
@@ -106,35 +121,76 @@ export default function ListOrder() {
     }
   };
 
-  const handleOpenUpdateOrder = (orderId) => {
+  const handleOpenUpdateOrder = (orderId, orderStatus) => {
     setOrderId(orderId);
     setIsUpdateOrderOpen(true);
+    setOrderStatus(orderStatus);
   };
 
   const handleUpdateOrderClose = () => {
     setOrderId('');
     setIsUpdateOrderOpen(false);
+    setOrderStatus('');
   };
 
-  const handleSubmitUpdateOrder = (data) => {
+  const handleClosePopupProducts = () => {
+    setIsPopupShowsProductsOpen(false);
+    setProductOrders(null);
+  };
+
+  const handleSubmitUpdateOrder = async (status) => {
+    if (orderId && status) {
+      try {
+        const resultUpdateOrder = await dispatch(storeUpdateOrder({ orderId, status }));
+        unwrapResult(resultUpdateOrder);
+        toast.success('Update order success');
+
+        setIsDataChange(!isDataChange);
+      } catch (error) {
+        toast.error(`Update order failed`);
+      }
+    } else {
+      toast.error(`Update order failed`);
+    }
     setOrderId('');
     setIsUpdateOrderOpen(false);
+  };
 
-    console.log(data);
-    console.log(orderId);
+  const handleOpenProductsOrder = async (idOrder) => {
+    if (idOrder) {
+      setIsPopupShowsProductsOpen(true);
+      try {
+        const resultProductsOrder = await dispatch(getProductsOrder(idOrder));
+        unwrapResult(resultProductsOrder);
+        setProductOrders(resultProductsOrder.payload);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const handleCloseRatingOrder = () => {
+    setIsRatingOrder(false);
+    setRatingOrder(null);
+  };
+
+  const handleOpenRatingOrder = async (idOrder) => {
+    if (idOrder) {
+      setIsRatingOrder(true);
+      try {
+        const resultRatingOrder = await dispatch(getRatingOrder(idOrder));
+        unwrapResult(resultRatingOrder);
+        setRatingOrder(resultRatingOrder.payload);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (
     <div className="listOrderWrapper listSaleCodeWrapper">
       <Box className="headerListSaleCode">
         <TitleAdminStorePage title="List Order" />
-        {/* <Button
-          variant="contained"
-          endIcon={<AddIcon />}
-          // onClick={handleAddUpdateSaleCodeOpen}
-        >
-          Add
-        </Button> */}
       </Box>
       <Box>
         <TableContainer component={Paper}>
@@ -231,29 +287,37 @@ export default function ListOrder() {
 
                         <TableCell align="center">
                           <Box>
-                            {/* <Button
-                              variant="text"
-                              size="small"
-                              style={{ margin: 'auto 10px' }}
-                              color="secondary"
-                              // disabled
-                            >
-                              Delete
-                            </Button> */}
                             <Button
-                              variant="text"
+                              variant="outlined"
                               size="small"
                               style={{ margin: 'auto 10px' }}
                               color="primary"
-                              disabled={
-                                order.status === 'success' ||
-                                order.status === 'cancelled' ||
-                                order.status === 'failed'
-                              }
-                              onClick={(e) => handleOpenUpdateOrder(order.id)}
+                              onClick={(e) => handleOpenProductsOrder(order.id)}
                             >
-                              Update
+                              Detail
                             </Button>
+                            {(order.status === 'pending' || order.status === 'confirm') && (
+                              <Button
+                                variant="outlined"
+                                size="small"
+                                style={{ margin: 'auto 10px' }}
+                                color="primary"
+                                onClick={(e) => handleOpenUpdateOrder(order.id, order.status)}
+                              >
+                                Update
+                              </Button>
+                            )}
+                            {order.status === 'success' && (
+                              <Button
+                                variant="outlined"
+                                size="small"
+                                style={{ margin: 'auto 10px' }}
+                                color="success"
+                                onClick={(e) => handleOpenRatingOrder(order.id)}
+                              >
+                                Rating
+                              </Button>
+                            )}
                           </Box>
                         </TableCell>
                       </TableRow>
@@ -271,8 +335,21 @@ export default function ListOrder() {
         </TableContainer>
         <PopupUpdateOrder
           isUpdateOrderOpen={isUpdateOrderOpen}
+          orderStatus={orderStatus}
           handleUpdateOrderClose={handleUpdateOrderClose}
           onSubmit={handleSubmitUpdateOrder}
+        />
+
+        <PopupShowsProducts
+          isPopupShowsProductsOpen={isPopupShowsProductsOpen}
+          handleClosePopupProducts={handleClosePopupProducts}
+          dataListProduct={productsOrder}
+        />
+
+        <PopupRatingOrder
+          isRatingOrder={isRatingOrder}
+          handleCloseRatingOrder={handleCloseRatingOrder}
+          dataRatingOrder={ratingOrder}
         />
       </Box>
     </div>

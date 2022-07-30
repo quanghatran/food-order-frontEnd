@@ -51,8 +51,6 @@ export default function ProductDetail() {
           const foundStoreInfo = listStore.find((store) => store.id === storeId);
           setStoreInfo(foundStoreInfo);
 
-          console.log(foundStoreInfo);
-
           if (foundStoreInfo) {
             const params = { q: foundStoreInfo.name };
             try {
@@ -81,6 +79,9 @@ export default function ProductDetail() {
 
       if (productExits) {
         productExits.quantity += 1;
+
+        console.log(productExits);
+
         const NewCart = cart.filter((item) => item.id !== productDetail.id);
         NewCart.push(productExits);
         localStorage.setItem('cart', JSON.stringify(NewCart));
@@ -88,6 +89,7 @@ export default function ProductDetail() {
         dispatch(totalQuantity(total));
         toast.success('Update cart success!');
       } else {
+        console.log(2);
         let productStoreId = localStorage.getItem('productStoreId');
 
         if (productDetail.storeId === productStoreId) {

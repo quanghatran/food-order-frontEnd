@@ -18,6 +18,9 @@ import { toast } from 'react-toastify';
 import userApi from '../../../../api/userApi';
 import PopUpConfirm from '../../../../components/common/PopUpConfirm/PopUpConfirm';
 import TitleUserPage from '../../../../components/common/TitleUserPage/TitleUserPage';
+import PopupRatingOrder from '../../../order/components/PopupRatingOrder/PopupRatingOrder';
+import PopupShowsProducts from '../../../order/components/PopupShowsProducts/PopupShowsProducts';
+import { getProductsOrder, getRatingOrder } from '../../../store/storeSlice';
 import PopupRating from '../../components/PopupRating/PopupRating';
 import { cancelOrder, ratingOrder } from '../../userSlice';
 import './orderHistory.scss';
@@ -29,8 +32,11 @@ const OrderHistory = () => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [idOrder, setIdOrder] = useState('');
   const [isRatingOpen, setIsRatingOpen] = useState(false);
-
+  const [isRatingOrder, setIsRatingOrder] = useState(false);
   const userInfo = JSON.parse(localStorage.getItem('accountInfo'));
+  const [ratingOrder, setRatingOrder] = useState(null);
+  const [isPopupShowsProductsOpen, setIsPopupShowsProductsOpen] = useState(false);
+  const [productsOrder, setProductOrders] = useState(null);
 
   useEffect(() => {
     const getHistoryOrders = async () => {
@@ -83,9 +89,30 @@ const OrderHistory = () => {
     }
   };
 
-  const handleOPenRatingOrder = (idOrder) => {
-    setIdOrder(idOrder);
-    setIsRatingOpen(true);
+  const handleCloseRatingOrder = () => {
+    setIsRatingOrder(false);
+    setRatingOrder(null);
+  };
+
+  const handleOPenRatingOrder = async (idOrder) => {
+    if (idOrder) {
+      try {
+        const resultRatingOrder = await dispatch(getRatingOrder(idOrder));
+        unwrapResult(resultRatingOrder);
+        setRatingOrder(resultRatingOrder.payload);
+        console.log(0);
+        if (resultRatingOrder.payload && !Array.isArray(resultRatingOrder.payload)) {
+          console.log(resultRatingOrder.payload);
+          setIsRatingOrder(true);
+        } else {
+          console.log(2);
+          setIdOrder(idOrder);
+          setIsRatingOpen(true);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   const handleRatingClose = () => {
@@ -110,8 +137,23 @@ const OrderHistory = () => {
     setIdOrder('');
   };
 
-  console.log(orderHistory);
+  const handleClosePopupProducts = () => {
+    setIsPopupShowsProductsOpen(false);
+    setProductOrders(null);
+  };
 
+  const handleOpenProductsOrder = async (idOrder) => {
+    if (idOrder) {
+      setIsPopupShowsProductsOpen(true);
+      try {
+        const resultProductsOrder = await dispatch(getProductsOrder(idOrder));
+        unwrapResult(resultProductsOrder);
+        setProductOrders(resultProductsOrder.payload);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
   return (
     <Box className="orderHistoryWrapper">
       <TitleUserPage title="Orders History" link="#" />
@@ -206,24 +248,36 @@ const OrderHistory = () => {
                       </TableCell>
                       <TableCell align="center">
                         <Button
-                          disabled={item.status !== 'pending' && true}
+                          variant="outlined"
                           size="small"
-                          variant="contained"
-                          onClick={() => handleOpenCancelOrderConfirm(item.id)}
-                          color="secondary"
-                        >
-                          Cancel Oder
-                        </Button>
-                        <Button
-                          size="small"
-                          disabled={item.status !== 'success' && true}
-                          variant="contained"
-                          onClick={() => handleOPenRatingOrder(item.id)}
-                          style={{ marginLeft: '20px' }}
+                          style={{ margin: 'auto 10px' }}
                           color="primary"
+                          onClick={(e) => handleOpenProductsOrder(item.id)}
                         >
-                          Rating
+                          Detail
                         </Button>
+                        {item.status === 'pending' && (
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            onClick={() => handleOpenCancelOrderConfirm(item.id)}
+                            color="secondary"
+                          >
+                            Cancel Order
+                          </Button>
+                        )}
+
+                        {item.status === 'success' && (
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            onClick={() => handleOPenRatingOrder(item.id)}
+                            style={{ marginLeft: '20px' }}
+                            color="success"
+                          >
+                            Rating
+                          </Button>
+                        )}
                       </TableCell>
                     </TableRow>
                   )
@@ -246,6 +300,18 @@ const OrderHistory = () => {
         isRatingOpen={isRatingOpen}
         handleRatingClose={handleRatingClose}
         onSubmit={handleRatingSubmit}
+      />
+
+      <PopupRatingOrder
+        isRatingOrder={isRatingOrder}
+        handleCloseRatingOrder={handleCloseRatingOrder}
+        dataRatingOrder={ratingOrder}
+      />
+
+      <PopupShowsProducts
+        isPopupShowsProductsOpen={isPopupShowsProductsOpen}
+        handleClosePopupProducts={handleClosePopupProducts}
+        dataListProduct={productsOrder}
       />
     </Box>
   );

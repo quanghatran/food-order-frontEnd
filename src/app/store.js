@@ -7,6 +7,7 @@ import saleCodesReducer from '../features/saleCode/saleCodeSlice';
 import storeReducer from '../features/store/storeSlice';
 import productsReducer from '../features/products/productSlice';
 import storeManagerReducer from '../features/storeManager/storeManagerSlice';
+import adminReducer from '../features/admin/adminSlice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   store: storeReducer,
   products: productsReducer,
   storeManager: storeManagerReducer,
+  admin: adminReducer,
 });
 
 export const store = configureStore({

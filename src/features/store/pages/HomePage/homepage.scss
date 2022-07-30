@@ -1,0 +1,34 @@
+.homePageStoreWrapper {
+  .boxChart {
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%);
+    border-radius: 15px;
+  }
+
+  .boxPieChart {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .overallWrapepr {
+    display: flex;
+    justify-content: flex-start;
+    gap: 50px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+
+    .revenueClass {
+      font-size: 25px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #333;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%);
+    }
+  }
+}

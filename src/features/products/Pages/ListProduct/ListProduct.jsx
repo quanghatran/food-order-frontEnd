@@ -26,11 +26,12 @@ export default function ListProduct() {
   const dispatch = useDispatch();
 
   const storeInfo = JSON.parse(localStorage.getItem('account'));
-  const [params, setParams] = useState({ page: 1, perPage: 10 });
+  const [params, setParams] = useState({ page: 1, perPage: 100 });
   const [listProduct, setListProduct] = useState(null);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [nameConfirm, setNameConfirm] = useState(null);
   const [idConfirm, setIdConfirm] = useState(null);
+  const [isDataChange, setIsDataChange] = useState(false);
 
   useEffect(() => {
     const fetchGetListProduct = async () => {
@@ -51,18 +52,18 @@ export default function ListProduct() {
       }
     };
     fetchGetListProduct();
-  }, [storeInfo.id, params]);
+  }, [storeInfo.id, params, isDataChange]);
 
   const handleUpdateProduct = (idProduct) => {
     console.log('update product: ', idProduct);
   };
 
   const handleDeleteProduct = async () => {
-    console.log(idConfirm);
     try {
       const resultDeleteProduct = await dispatch(deleteProduct(idConfirm));
+      setIsDataChange(!isDataChange);
+      setIsConfirmOpen(false);
       unwrapResult(resultDeleteProduct);
-      console.log(resultDeleteProduct);
       toast.success('Delete product success');
     } catch (error) {
       toast.error(`Delete product failed`);
@@ -79,8 +80,6 @@ export default function ListProduct() {
     setIsConfirmOpen(false);
     setNameConfirm(null);
   };
-
-  console.log(listProduct);
 
   return (
     <Box className="listProductWrapper listCategoryWrapper listUserWrapper">
@@ -185,7 +184,7 @@ export default function ListProduct() {
                       <TableCell align="center">
                         <Box>
                           <Button
-                            variant="text"
+                            variant="outlined"
                             size="small"
                             style={{ margin: 'auto 10px' }}
                             color="secondary"
@@ -195,7 +194,7 @@ export default function ListProduct() {
                             Delete
                           </Button>
                           <Button
-                            variant="text"
+                            variant="outlined"
                             size="small"
                             style={{ margin: 'auto 10px' }}
                             color="primary"

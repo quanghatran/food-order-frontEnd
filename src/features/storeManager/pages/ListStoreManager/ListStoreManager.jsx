@@ -15,6 +15,7 @@ import storeImage from '../../../../assets/images/user/storeImage.webp';
 import PopUpConfirm from '../../../../components/common/PopUpConfirm/PopUpConfirm';
 import TitleAdminStorePage from '../../../../components/common/TitleAdminStorePage/TitleAdminStorePage';
 import '../../../categories/pages/ListCategory/listCategory.scss';
+import UpdateStorePopup from '../../components/UpdateStorePopup/UpdateStorePopup';
 import { deleteStore, getAllStore } from '../../storeManagerSlice';
 import './listStoreManager.scss';
 export default function ListStoreManager() {
@@ -25,6 +26,8 @@ export default function ListStoreManager() {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [idConfirm, setIdConfirm] = useState(null);
   const [isDataChange, setIsDataChange] = useState(false);
+  const [isUpdateStoreStatusOpen, setIsUpdateStoreStatusOpen] = useState(false);
+  const [storeId, setStoreId] = useState('');
 
   // get list store
   useEffect(() => {
@@ -71,6 +74,22 @@ export default function ListStoreManager() {
   const onConfirmSubmit = () => {
     handleClickRemoveStore(idConfirm);
     setIsConfirmOpen(false);
+  };
+
+  const handleOpenUpdateOrder = (storeName, storeId) => {
+    setStoreId(storeId);
+    setIsUpdateStoreStatusOpen(true);
+  };
+
+  const handleUpdateStatusStoreClose = () => {
+    setStoreId('');
+    setIsUpdateStoreStatusOpen(false);
+  };
+
+  const handleUpdateStatusStoreSubmit = (data) => {
+    console.log(data);
+    setIsDataChange(!isDataChange);
+    setIsUpdateStoreStatusOpen(false);
   };
 
   return (
@@ -182,7 +201,7 @@ export default function ListStoreManager() {
                     <TableCell align="center">
                       <Box>
                         <Button
-                          variant="text"
+                          variant="outlined"
                           size="small"
                           style={{ margin: 'auto 10px' }}
                           color="secondary"
@@ -191,11 +210,11 @@ export default function ListStoreManager() {
                           Delete
                         </Button>
                         <Button
-                          variant="text"
+                          variant="outlined"
                           size="small"
                           style={{ margin: 'auto 10px' }}
                           color="primary"
-                          // onClick={(e) => handleClickUpdateCategory(category.id, category)}
+                          onClick={(e) => handleOpenUpdateOrder(store.name, store.id)}
                         >
                           Update
                         </Button>
@@ -206,7 +225,7 @@ export default function ListStoreManager() {
               ) : (
                 <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell align="center">
-                    <p>Don`t have any user yet!</p>
+                    <p>Don`t have any store yet!</p>
                   </TableCell>
                 </TableRow>
               )}
@@ -240,6 +259,12 @@ export default function ListStoreManager() {
         isConfirmOpen={isConfirmOpen}
         handleConfirmClose={handleConfirmClose}
         onConfirmSubmit={onConfirmSubmit}
+      />
+
+      <UpdateStorePopup
+        isUpdateStatusStoreOpen={isUpdateStoreStatusOpen}
+        handleUpdateStatusStoreClose={handleUpdateStatusStoreClose}
+        onSubmit={handleUpdateStatusStoreSubmit}
       />
     </Box>
   );

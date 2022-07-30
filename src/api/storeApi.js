@@ -2,9 +2,13 @@ import {
   DELETE_SALE_CODE,
   GET_LIST_SALE_CODE,
   GET_LIST_STORE_ORDER,
+  GET_NEW_USER_AND_STORE_BY_MONTH,
   GET_ORDER_BY_ID,
+  GET_ORDER_REPORT_BY_MONTH,
+  GET_ORDER_REPORT_BY_MONTH_STORE,
   GET_STORE_INFO,
   POST_ADD_SALE_CODE,
+  UPDATE_ORDER_BY_ID,
 } from '../constants/subUrl';
 import axiosClient from './axiosClient';
 
@@ -37,6 +41,16 @@ const storeApi = {
   deleteSaleCode: (idSaleCode, params) => {
     const url = `${DELETE_SALE_CODE}${idSaleCode}`;
     return axiosClient.delete(url, params);
+  },
+
+  updateOderById: (idOrder, statusOrder) => {
+    const url = `${UPDATE_ORDER_BY_ID}${idOrder}`;
+    return axiosClient.patch(url, statusOrder);
+  },
+
+  getOrderReportByMonthStore: (month) => {
+    const url = `${GET_ORDER_REPORT_BY_MONTH_STORE}?month=${month}`;
+    return axiosClient.get(url);
   },
 };
 
