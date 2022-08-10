@@ -43,6 +43,14 @@ export const getRatingOrder = createAsyncThunk('admin/getRatingOrder', async (id
   return response;
 });
 
+export const getNotificationStore = createAsyncThunk(
+  'admin/getNotificationStore',
+  async (prams) => {
+    const response = await storeApi.getNotificationStore(prams);
+    return response;
+  }
+);
+
 const storeSlice = createSlice({
   name: 'store',
   initialState: {
@@ -144,6 +152,19 @@ const storeSlice = createSlice({
       state.ratingOrder = action.payload;
     },
     [getRatingOrder.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // getNotificationStore
+    [getNotificationStore.pending]: (state) => {
+      state.loading = true;
+    },
+    [getNotificationStore.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.current = action.payload;
+    },
+    [getNotificationStore.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },

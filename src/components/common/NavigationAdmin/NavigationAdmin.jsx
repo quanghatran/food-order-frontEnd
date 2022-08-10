@@ -16,15 +16,23 @@ import {
   ListItemButton,
   ListItemText,
   ListSubheader,
+  Menu,
+  MenuItem,
   Toolbar,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import menuIcon from '../../../assets/images/admin/menu.svg';
 import StoreImage from '../../../assets/images/user/storeImage.webp';
+import { getNotificationAdmin } from '../../../features/admin/adminSlice';
+import { getNotificationStore } from '../../../features/store/storeSlice';
 import PopUpConfirm from '../PopUpConfirm/PopUpConfirm';
 import './navigationAdmin.scss';
+import dateFormat from 'dateformat';
+import { patchSeenNotification } from '../../../features/user/userSlice';
 const drawerWidth = 240;
 
 const Search = styled('div')(({ theme }) => ({
@@ -73,10 +81,15 @@ export default function NavigationAdmin(props) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(idAdminNavbar || 1);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [notifications, setNotifications] = useState(null);
+  const [isDataChange, setIsDataChange] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const userInfo = JSON.parse(localStorage.getItem('accountInfo'));
+  // const userInfo = JSON.parse(localStorage.getItem('accountInfo'));
   const user = JSON.parse(localStorage.getItem('account'));
 
   const handleDrawerToggle = () => {
@@ -172,6 +185,63 @@ export default function NavigationAdmin(props) {
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
+  const handleClickShowNotification = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseNotification = () => {
+    setAnchorEl(null);
+  };
+
+  // get notification for admin and store owner
+  useEffect(() => {
+    const fetchGetNotification = async () => {
+      if (user && user?.role === 'admin') {
+        try {
+          const result = await dispatch(getNotificationAdmin());
+          unwrapResult(result);
+          setNotifications(result.payload.slice(0, 10));
+        } catch (error) {
+          console.log('get notification admin falied: ', error);
+        }
+      } else if (user && user?.role === 'store') {
+        try {
+          const result = await dispatch(getNotificationStore());
+          unwrapResult(result);
+          setNotifications(result.payload.slice(0, 10));
+        } catch (error) {
+          console.log('get notification store owner falied: ', error);
+        }
+      } else {
+        return;
+      }
+    };
+
+    fetchGetNotification();
+  }, [dispatch, isDataChange]);
+
+  const handleGetBageNotifications = () => {
+    if (notifications) {
+      const numNotification = notifications.filter(
+        (notification) => notification.status === 'unseen'
+      ).length;
+
+      // setNumNotifications(numNotification);
+      return numNotification;
+    }
+  };
+
+  const handleSeenNotification = async (id) => {
+    if (id) {
+      try {
+        const result = await dispatch(patchSeenNotification(id));
+        unwrapResult(result);
+        setIsDataChange(!isDataChange);
+      } catch (error) {
+        console.log('get notification admin falied: ', error);
+      }
+    }
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -203,8 +273,13 @@ export default function NavigationAdmin(props) {
 
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show new notifications" color="inherit">
-              <Badge badgeContent={0} color="secondary">
+            <IconButton
+              size="large"
+              aria-label="show new notifications"
+              color="inherit"
+              onClick={handleClickShowNotification}
+            >
+              <Badge badgeContent={handleGetBageNotifications()} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -290,6 +365,38 @@ export default function NavigationAdmin(props) {
         handleConfirmClose={handleConfirmClose}
         onConfirmSubmit={onConfirmSubmit}
       />
+
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleCloseNotification}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        {(notifications && notifications?.length) > 0 ? (
+          notifications.map((notification) => (
+            <MenuItem onClick={() => handleSeenNotification(notification.id)} key={notification.id}>
+              <div style={{ fontSize: '13px' }}>
+                <div style={{ fontSize: '16px' }}>
+                  {notification.status === 'unseen' ? (
+                    <b>{notification.message}</b>
+                  ) : (
+                    <span>{notification.message}</span>
+                  )}
+                </div>
+                <span>
+                  {dateFormat(notification.created_at, 'hh:MM TT')} -{' '}
+                  {dateFormat(notification.created_at, 'dd/mm/yyyy')}
+                </span>
+              </div>
+            </MenuItem>
+          ))
+        ) : (
+          <MenuItem>Don`t have any notification</MenuItem>
+        )}
+      </Menu>
     </Box>
   );
 }

@@ -2,8 +2,10 @@ import {
   GET_ADMIN_INFO,
   GET_HISTORY_ORDER,
   GET_LIST_SALE_CODE_BY_ID,
+  GET_NOTIFICATION_USER,
   GET_USER,
   PATCH_CANCEL_ORDER,
+  PATCH_SEEN_NOTIFICATION,
   PATCH_UPDATE_USER,
   POST_CREATE_ORDER,
   POST_RATING_ORDER,
@@ -55,6 +57,16 @@ const userApi = {
   userGetNotification: (params) => {
     const url = USER_GET_NOTIFICATION;
     return axiosClient.get(url, params);
+  },
+
+  getNotificationUser: () => {
+    const url = GET_NOTIFICATION_USER;
+    return axiosClient.get(url);
+  },
+
+  seenNotification: (id) => {
+    const url = `${PATCH_SEEN_NOTIFICATION}${id}`;
+    return axiosClient.patch(url);
   },
 };
 

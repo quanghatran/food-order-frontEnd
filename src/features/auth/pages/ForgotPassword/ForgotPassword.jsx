@@ -70,7 +70,7 @@ export default function ForgotPassword() {
                 fullWidth
                 className="loginButton"
               >
-                RESET Password
+                Reset Password
               </LoadingButton>
             </form>
           </div>

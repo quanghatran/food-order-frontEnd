@@ -1,0 +1,9 @@
+.orderManagerAdminWrapper {
+  .paginationBox {
+    margin-top: 30px;
+
+    .MuiPagination-ul {
+      justify-content: flex-end;
+    }
+  }
+}

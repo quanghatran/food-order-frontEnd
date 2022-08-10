@@ -15,6 +15,8 @@ import Fade from '@mui/material/Fade';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Box } from '@mui/system';
+import { unwrapResult } from '@reduxjs/toolkit';
+import dateFormat from 'dateformat';
 import { useEffect, useRef, useState } from 'react';
 import CurrencyFormat from 'react-currency-format';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,8 +24,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import logo from '../../../../assets/images/common/logo_food_order.png';
 import userIcon from '../../../../assets/images/user/user-icon.png';
 import CartPopup from '../../../../components/common/CartPopup/CartPopup';
-import { userGetNotification } from '../../userSlice';
-import './header.scss';
+import { patchSeenNotification, userGetNotification } from '../../userSlice';
 import './header.scss';
 
 export default function Header({ isLoggedIn }) {
@@ -34,10 +35,10 @@ export default function Header({ isLoggedIn }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const { totalQuantityItemCart } = useSelector((state) => state.user);
   const [anchorPopUp, setAnchorPopUp] = useState(null);
-  const [notiffication, setNotification] = useState(null);
-
+  const [notifications, setNotifications] = useState(null);
   const [openNotification, setOpenNotification] = useState(false);
   const anchorRefNotification = useRef(null);
+  const [isDataChange, setIsDataChange] = useState(false);
 
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -83,7 +84,7 @@ export default function Header({ isLoggedIn }) {
     const getNotification = async () => {
       try {
         const resultGetNotification = await dispatch(userGetNotification());
-        setNotification(resultGetNotification.payload);
+        setNotifications(resultGetNotification.payload);
       } catch (error) {
         console.log('get notification failed: ', error);
       }
@@ -91,6 +92,8 @@ export default function Header({ isLoggedIn }) {
 
     getNotification();
   }, [totalQuantityItemCart]);
+
+  console.log(notifications);
 
   const handleToggleNotification = () => {
     setOpenNotification((prevOpen) => !prevOpen);
@@ -101,6 +104,45 @@ export default function Header({ isLoggedIn }) {
       return;
     }
     setOpenNotification(false);
+  };
+
+  // get notification for user
+  useEffect(() => {
+    const fetchGetNotification = async () => {
+      if (userInfo && userInfo?.role === 'user') {
+        try {
+          const result = await dispatch(userGetNotification());
+          unwrapResult(result);
+          setNotifications(result.payload.slice(0, 10));
+        } catch (error) {
+          console.log('get notification admin falied: ', error);
+        }
+      }
+    };
+
+    fetchGetNotification();
+  }, [dispatch, isDataChange]);
+
+  const handleSeenNotification = async (id) => {
+    if (id) {
+      try {
+        const result = await dispatch(patchSeenNotification(id));
+        unwrapResult(result);
+        setIsDataChange(!isDataChange);
+      } catch (error) {
+        console.log('get notification admin falied: ', error);
+      }
+    }
+  };
+
+  const handleGetBageNotifications = () => {
+    if (notifications) {
+      const numNotification = notifications.filter(
+        (notification) => notification.status === 'unseen'
+      ).length;
+
+      return numNotification;
+    }
   };
 
   return (
@@ -136,7 +178,7 @@ export default function Header({ isLoggedIn }) {
             </Button>
             <span style={{ position: 'relative' }}>
               <IconButton size="large" aria-label="show new notifications" color="inherit">
-                <Badge badgeContent={0} color="secondary">
+                <Badge badgeContent={handleGetBageNotifications()} color="secondary">
                   <NotificationsIcon
                     ref={anchorRefNotification}
                     id="composition-button-notification"
@@ -183,16 +225,29 @@ export default function Header({ isLoggedIn }) {
                           id="composition-menu-notification"
                           aria-labelledby="composition-button-notification"
                         >
-                          {notiffication && notiffication.length <= 0 ? (
-                            <MenuItem onClick={handleCloseNotification}>
-                              <span style={{ fontSize: '15px' }}>Do not have any notification</span>
-                            </MenuItem>
-                          ) : (
-                            notiffication.map((notification, index) => (
-                              <MenuItem key={index} onClick={handleCloseNotification}>
-                                My account
+                          {(notifications && notifications?.length) > 0 ? (
+                            notifications.map((notification) => (
+                              <MenuItem
+                                onClick={() => handleSeenNotification(notification.id)}
+                                key={notification.id}
+                              >
+                                <div style={{ fontSize: '13px' }}>
+                                  <div style={{ fontSize: '16px' }}>
+                                    {notification.status === 'unseen' ? (
+                                      <b>{notification.message}</b>
+                                    ) : (
+                                      <span>{notification.message}</span>
+                                    )}
+                                  </div>
+                                  <span>
+                                    {dateFormat(notification.created_at, 'hh:MM TT')} -{' '}
+                                    {dateFormat(notification.created_at, 'dd/mm/yyyy')}
+                                  </span>
+                                </div>
                               </MenuItem>
                             ))
+                          ) : (
+                            <MenuItem>Don`t have any notification</MenuItem>
                           )}
                         </MenuList>
                       </ClickAwayListener>

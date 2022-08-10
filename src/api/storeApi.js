@@ -3,6 +3,7 @@ import {
   GET_LIST_SALE_CODE,
   GET_LIST_STORE_ORDER,
   GET_NEW_USER_AND_STORE_BY_MONTH,
+  GET_NOTIFICATION_STORE,
   GET_ORDER_BY_ID,
   GET_ORDER_REPORT_BY_MONTH,
   GET_ORDER_REPORT_BY_MONTH_STORE,
@@ -50,6 +51,11 @@ const storeApi = {
 
   getOrderReportByMonthStore: (month) => {
     const url = `${GET_ORDER_REPORT_BY_MONTH_STORE}?month=${month}`;
+    return axiosClient.get(url);
+  },
+
+  getNotificationStore: () => {
+    const url = GET_NOTIFICATION_STORE;
     return axiosClient.get(url);
   },
 };

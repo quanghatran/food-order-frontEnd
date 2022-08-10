@@ -21,8 +21,9 @@ import TitleUserPage from '../../../../components/common/TitleUserPage/TitleUser
 import PopupRatingOrder from '../../../order/components/PopupRatingOrder/PopupRatingOrder';
 import PopupShowsProducts from '../../../order/components/PopupShowsProducts/PopupShowsProducts';
 import { getProductsOrder, getRatingOrder } from '../../../store/storeSlice';
+import { getAllStore } from '../../../storeManager/storeManagerSlice';
 import PopupRating from '../../components/PopupRating/PopupRating';
-import { cancelOrder, ratingOrder } from '../../userSlice';
+import { cancelOrder, ratingOrder, ratingOrderFunction } from '../../userSlice';
 import './orderHistory.scss';
 
 const OrderHistory = () => {
@@ -37,6 +38,7 @@ const OrderHistory = () => {
   const [ratingOrder, setRatingOrder] = useState(null);
   const [isPopupShowsProductsOpen, setIsPopupShowsProductsOpen] = useState(false);
   const [productsOrder, setProductOrders] = useState(null);
+  const [listStore, setListStore] = useState(null);
 
   useEffect(() => {
     const getHistoryOrders = async () => {
@@ -50,6 +52,20 @@ const OrderHistory = () => {
 
     getHistoryOrders();
   }, [idOrder]);
+
+  // get list store information
+  useEffect(() => {
+    const fetchGetListStore = async () => {
+      try {
+        const result = await dispatch(getAllStore());
+        unwrapResult(result);
+        setListStore(result.payload);
+      } catch (error) {
+        console.log('Get list product error: ', error);
+      }
+    };
+    fetchGetListStore();
+  }, [dispatch]);
 
   const handleOpenCancelOrderConfirm = (idOrder) => {
     if (idOrder) {
@@ -124,8 +140,9 @@ const OrderHistory = () => {
       idOrder,
       dataRating,
     };
+
     try {
-      const result = await dispatch(ratingOrder(data));
+      const result = await dispatch(ratingOrderFunction(data));
       unwrapResult(result);
 
       toast.success('Rating order successfully');
@@ -142,6 +159,19 @@ const OrderHistory = () => {
     setProductOrders(null);
   };
 
+  const findStoreName = (storeId) => {
+    if (listStore && storeId) {
+      const foundStore = listStore.find((store) => store.id === storeId);
+      return (
+        <div>
+          <div style={{ fontWeight: 'bold', fontSize: '17px' }}>{foundStore.name}</div>
+          <div style={{ fontSize: '13px' }}>{foundStore.address}</div>
+          <div style={{ fontSize: '13px' }}>{foundStore.phoneNumber}</div>
+        </div>
+      );
+    }
+  };
+
   const handleOpenProductsOrder = async (idOrder) => {
     if (idOrder) {
       setIsPopupShowsProductsOpen(true);
@@ -154,6 +184,7 @@ const OrderHistory = () => {
       }
     }
   };
+
   return (
     <Box className="orderHistoryWrapper">
       <TitleUserPage title="Orders History" link="#" />
@@ -166,6 +197,9 @@ const OrderHistory = () => {
               </TableCell>
               <TableCell className="tableHeaderItem" align="center">
                 Status
+              </TableCell>
+              <TableCell className="tableHeaderItem" align="center">
+                Store owner
               </TableCell>
               <TableCell className="tableHeaderItem" align="center">
                 Total Price
@@ -225,6 +259,7 @@ const OrderHistory = () => {
                           </b>
                         </Box>
                       </TableCell>
+                      <TableCell align="center">{findStoreName(item.storeId)}</TableCell>
                       <TableCell align="center">
                         <CurrencyFormat
                           value={item.totalPrice}

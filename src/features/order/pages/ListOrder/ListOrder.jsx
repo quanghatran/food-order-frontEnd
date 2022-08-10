@@ -95,7 +95,11 @@ export default function ListOrder() {
   const findSaleCode = (idSaleCode) => {
     if (idSaleCode && listSaleCode) {
       const saleCode = listSaleCode?.find((saleCode) => saleCode.id === idSaleCode);
-      return `${saleCode.name} (${saleCode.discountPercent}%)`;
+      if (saleCode) {
+        return `${saleCode?.name} (${saleCode?.discountPercent}%)`;
+      } else {
+        return 'undefined';
+      }
     }
   };
 
@@ -282,7 +286,6 @@ export default function ListOrder() {
                           {dateFormat(order.updatedAt, 'hh:MM TT')}
                           <br />
                           {dateFormat(order.updatedAt, 'dd/mm/yyyy')}
-                          List Order{' '}
                         </TableCell>
 
                         <TableCell align="center">

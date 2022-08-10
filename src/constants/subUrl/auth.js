@@ -7,3 +7,4 @@ export const GET_STORE_VERIFY = '/api/v1/auth/store/verify';
 export const GET_USER_RESETPASSWORD = '/api/v1/auth/user/reset-password';
 export const GET_STORE_RESETPASSWORD = '/api/v1/auth/store/reset-password';
 export const POST_LOGIN = '/api/v1/auth/login';
+export const GET_NOTIFICATION_ADMIN = '/api/v1/test/notification/admin';

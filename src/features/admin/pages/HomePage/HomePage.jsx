@@ -134,8 +134,6 @@ export default function HomePage() {
     };
   }
 
-  console.log(dataPrev);
-
   return (
     <div className="homePageAdminWrapper">
       <TitleAdminStorePage title="Dashboard" />

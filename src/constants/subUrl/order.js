@@ -5,3 +5,4 @@ export const GET_ORDER_REPORT_BY_MONTH_STORE = '/api/v1/test/store/order/report/
 
 export const GET_PRODUCTS_ORDER = '/api/v1/test/order/detail/';
 export const GET_RATING_ORDER = '/api/v1/test/rating/detail/';
+export const GET_ALL_ORDER = '/api/v1/test/order/all';

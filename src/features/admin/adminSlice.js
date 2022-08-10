@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import adminApi from '../../api/adminApi';
+import orderApi from '../../api/orderApi';
 
 export const getNewJoinAccount = createAsyncThunk('admin/getNewJoinAccount', async (params) => {
   const response = await adminApi.getNewUserAndStoreByMonth(params);
@@ -14,6 +15,16 @@ export const getOrderReportByMonth = createAsyncThunk(
   }
 );
 
+export const getAllOrderFeatrure = createAsyncThunk('admin/getAllOrderFeatrure', async (prams) => {
+  const response = await orderApi.getAllOrder(prams);
+  return response;
+});
+
+export const getNotificationAdmin = createAsyncThunk('admin/getNotificationAdmin', async (id) => {
+  const response = await adminApi.getNotificationAdmin(id);
+  return response;
+});
+
 const adminSlice = createSlice({
   name: 'admin',
   initialState: {
@@ -21,6 +32,7 @@ const adminSlice = createSlice({
     loading: false,
     message: '',
     error: '',
+    orders: [],
   },
   reducers: {},
 
@@ -47,6 +59,45 @@ const adminSlice = createSlice({
       state.current = action.payload;
     },
     [getOrderReportByMonth.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // get all order in the system
+    [getAllOrderFeatrure.pending]: (state) => {
+      state.loading = true;
+    },
+    [getAllOrderFeatrure.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.orders = action.payload;
+    },
+    [getAllOrderFeatrure.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // getNotificationAdmin
+    [getNotificationAdmin.pending]: (state) => {
+      state.loading = true;
+    },
+    [getNotificationAdmin.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.current = action.payload;
+    },
+    [getNotificationAdmin.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+
+    // getNotificationAdmin
+    [getNotificationAdmin.pending]: (state) => {
+      state.loading = true;
+    },
+    [getNotificationAdmin.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.current = action.payload;
+    },
+    [getNotificationAdmin.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },

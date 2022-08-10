@@ -21,13 +21,18 @@ export const cancelOrder = createAsyncThunk('user/cancelOrder', async (idOrder) 
   return response;
 });
 
-export const ratingOrder = createAsyncThunk('user/ratingOrder', async (data) => {
+export const ratingOrderFunction = createAsyncThunk('user/ratingOrderFunction', async (data) => {
   const response = await userApi.ratingOrder(data.idOrder, data.dataRating);
   return response;
 });
 
 export const userGetNotification = createAsyncThunk('user/userGetNotification', async (params) => {
   const response = await userApi.userGetNotification(params);
+  return response;
+});
+
+export const patchSeenNotification = createAsyncThunk('user/PatchSeenNotification', async (id) => {
+  const response = await userApi.seenNotification(id);
   return response;
 });
 
@@ -102,14 +107,14 @@ const userSlice = createSlice({
     },
 
     // handle rating order
-    [ratingOrder.pending]: (state) => {
+    [ratingOrderFunction.pending]: (state) => {
       state.loading = true;
     },
-    [ratingOrder.fulfilled]: (state, action) => {
+    [ratingOrderFunction.fulfilled]: (state, action) => {
       state.loading = false;
       state.current = action.payload;
     },
-    [ratingOrder.rejected]: (state, action) => {
+    [ratingOrderFunction.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },
